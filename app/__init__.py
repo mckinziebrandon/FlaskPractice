@@ -26,13 +26,5 @@ app.config.from_object('config')
 # Initialize our database.
 db = SQLAlchemy(app)
 
-# LoginManger handles users' logged in state.
-lm = LoginManager()
-lm.init_app(app)
-# Tell Flask-Login what view logs users in.
-lm.login_view = 'login'
-# OpenID will provide authentication.
-oid = OpenID(app, os.path.join(basedir, 'tmp'))
-
 # Name clash: app package (below) != app object (above).
 from app import views, models

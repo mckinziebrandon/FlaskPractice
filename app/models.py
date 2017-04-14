@@ -14,7 +14,7 @@ from flask_login import LoginManager, UserMixin
 from flask_sqlalchemy import SQLAlchemy
 
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     """A model that represents our users.
 
     Jargon:
@@ -37,9 +37,9 @@ class User(db.Model):
     # Pass boolean args to indicate which fields are unique/indexed.
     # Note: 'unique' here means [a given user] 'has only one'.
     id          = db.Column(db.Integer, primary_key=True)
-    #social_id   = db.Column(db.String(64), nullable=False, unique=True)
-    nickname    = db.Column(db.String(64), index=True, unique=True)
-    email       = db.Column(db.String(128), index=True, unique=True)
+    social_id   = db.Column(db.String(64), nullable=False, unique=True)
+    nickname    = db.Column(db.String(64), nullable=False)
+    email       = db.Column(db.String(128), nullable=True)
     # Relationships are not actual database fields (not shown on a db diagram).
     # They are typically on the 'one' side of a 'one-to-many' relationship.
     # - backref: *defines* a field that will be added to the instances of
@@ -85,39 +85,3 @@ class Post(db.Model):
     def __repr__(self):
         return '<Post %r>' % self.body
 
-
-class OAuthSignIn(object):
-    providers = None
-
-    def __init__(self, provider_name):
-        self.provider_name = provider_name
-        credentials = app.config['OAUTH_CREDENTIALS'][provider_name]
-        self.consumer_id = credentials['id']
-        self.consumer_secret = credentials['secret']
-
-    def authorize(self):
-        pass
-
-    def callback(self):
-        pass
-
-    def get_callback_url(self):
-        return url_for('oauth_callback', provider=self.provider_name,
-                       _external=True)
-
-    @classmethod
-    def get_provider(self, provider_name):
-        if self.providers is None:
-            self.providers = {}
-            for provider_class in self.__subclasses__():
-                provider = provider_class()
-                self.providers[provider.provider_name] = provider
-        return self.providers[provider_name]
-
-
-class FacebookSignIn(OAuthSignIn):
-    pass
-
-
-class TwitterSignIn(OAuthSignIn):
-    pass

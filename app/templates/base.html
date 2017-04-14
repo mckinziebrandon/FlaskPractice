@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html lang="en">
 <!-- app/templates/base.html: Base template that includes:
     * navigation bar
     * title logic
@@ -7,37 +9,43 @@ Misc. Notes:
     - The 'block' control statement defines the place(s) where the derived
       templates can insert themselves.
 -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<html>
+    {% if title %}
+    <title>{{ title }} - microblog</title>
+    {% else %}
+    <title>Welcome to microblog</title>
+    {%  endif %}
 
-    <!-- Navigation bar. -->
-    <head>
-        {% if title %}
-        <title>{{ title }} - microblog</title>
-        {% else %}
-        <title>Welcome to microblog</title>
-        {%  endif %}
-    </head>
 
-    <!-- The body -->
-    <body>
-        <div>Microblog: <a href="/index">Home</a></div>
-        <hr>
+    <link rel="stylesheet" type="text/css"
+          href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
 
-        <!-- Display any flash() message calls from e.g. views.py -->
-        {%  with messages = get_flashed_messages() %}
-            {%  if messages %}
-                <ul>
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-                </ul>
-            {% endif %}
-        {% endwith %}
 
-        <!-- Declare a block with name 'content' for derived templates. -->
-        {% block content %}{%  endblock %}
-    </body>
+</head>
+
+<!-- The body -->
+<body>
+    <div>Microblog: <a href="/index">Home</a></div>
+    <hr>
+
+    <!-- Display any flash() message calls from e.g. views.py -->
+    {%  with messages = get_flashed_messages() %}
+        {%  if messages %}
+            <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Declare a block with name 'content' for derived templates. -->
+    {% block content %}{%  endblock %}
+</body>
 
 </html>
 

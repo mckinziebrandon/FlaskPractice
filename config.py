@@ -13,17 +13,3 @@ WTF_CSRF_ENABLED = True
 # Used to create cryptographic token used to valide a form.
 SECRET_KEY = 'you-might-guess-if-you-are-clever'
 
-# Define the list of supported OpenID providers.
-# We will use it for our login in views.py and login.html.
-OPENID_PROVIDERS = [
-    {'name': 'Yahoo', 'url': 'https://me.yahoo.com'},
-    {'name': 'Flickr', 'url': 'http://www.flickr.com/<username>'},
-    {'name': 'MyOpenID', 'url': 'https://www.myopenid.com'}
-]
-
-OAUTH_CREDENTIALS = {
-    'facebook': {
-        'id': '470154729788964',
-        'secret': '010cc08bd4f51e34f3f3e684fbdea8a7'
-    }
-}
