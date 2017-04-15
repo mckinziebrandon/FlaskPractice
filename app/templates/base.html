@@ -20,17 +20,72 @@ Misc. Notes:
     <title>Welcome to microblog</title>
     {%  endif %}
 
-
+    <!-- Bootstrap core CSS -->
     <link rel="stylesheet" type="text/css"
           href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
 
+    <!-- Bootstrap theme -->
+    <link rel="stylesheet" type="text/css"
+          href="{{ url_for('static', filename='css/bootstrap-theme.min.css') }}">
 
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" type="text/css"
+          href="{{ url_for('static', filename='css/theme.css') }}">
+
+    <!-- My own styles. -->
+    <link rel="stylesheet" type="text/css"
+          href="{{ url_for('static', filename='css/style_additions.css') }}">
 </head>
 
 <!-- The body -->
 <body>
-    <div>Microblog: <a href="/index">Home</a></div>
-    <hr>
+
+    {%  set navigation_bar = [
+        ('/', 'index', 'Index'),
+        ('/bootstrap_reference', 'bootstrap_reference', 'Bootstrap Reference'),
+        ('/input_practice', 'input_practice', 'Input Practice')
+    ] -%}
+    {%  set active_page = active_page|default('index') -%}
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+              {% for _ in range(3) %}
+                  <span class="icon-bar"></span>
+              {% endfor %}
+          </button>
+          <a class="navbar-brand" href="/">Me Finna Flask</a>
+        </div>
+
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+              {%  for href, id, caption in navigation_bar %}
+                  <li {% if id == active_page %} class="active" {% endif %}>
+                      <a href="{{ href|e }}">{{ caption|e }}</a>
+                  </li>
+              {% endfor %}
+
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Nav header</li>
+
+                <li><a href="#">Separated link</a></li>
+                <li><a href="#">One more separated link</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
 
     <!-- Display any flash() message calls from e.g. views.py -->
     {%  with messages = get_flashed_messages() %}
@@ -44,7 +99,12 @@ Misc. Notes:
     {% endwith %}
 
     <!-- Declare a block with name 'content' for derived templates. -->
-    {% block content %}{%  endblock %}
+    {% block content %}{%  endblock content %}
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 </body>
 
 </html>

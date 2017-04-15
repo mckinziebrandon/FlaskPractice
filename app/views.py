@@ -16,16 +16,35 @@ from app import app, db
 from flask import render_template
 from flask import flash, redirect
 from flask import session, url_for, request, g
-from flask_login import login_user, logout_user
-from flask_login import current_user, login_required
-from .forms import LoginForm
-from .models import User
+from .forms import BasicForm
+from .models import User, Post
 
 
 @app.route('/')
 @app.route('/index')
 def index():
+    users = User.query.all()
     return render_template('index.html',
                            title='Home',
-                           user={'nickname': 'fuck you'})
+                           users=users)
 
+
+@app.route('/input_practice', methods=['GET', 'POST'])
+def input_practice():
+    basic_form = BasicForm(request.form)
+    return render_template('input_practice.html',
+                           form=basic_form)
+
+
+@app.route('/add', methods=['POST'])
+def add_user():
+    db.session.add(User(nickname=request.form['nickname'],
+                        email=request.form['email']))
+    db.session.commit()
+    flash('New user entry was successfully added to db.')
+    return redirect(url_for('input_practice'))
+
+
+@app.route('/bootstrap_reference')
+def bootstrap_reference():
+    return render_template('bootstrap_reference.html')

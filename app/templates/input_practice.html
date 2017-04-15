@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% set active_page = "input_practice" %}
+{% block content %}
+<div class="container">
+
+    <div class="jumbotron">
+        <h1>IHAVENOIDEAWHATIMDOING</h1>
+        <p>How to database?</p>
+    </div>
+
+    <div class="row">
+
+        <h2>Ok, Basic HTML Plz</h2>
+
+        <div class="col-sm-4">
+            <form action="/input_practice" method="POST">
+                <div class="input-group">
+                <input type="text"
+                       placeholder="Hey idiot"
+                       class="form-control"
+                       name="{{ form.message.name }}">
+
+                <div class="input-group-btn">
+                <button type="submit" class="btn btn-primary">
+                    Submit
+                </button>
+                </div>
+                </div>
+            </form>
+            <!-- IMPORTANT: name MUST be the same as form.message.name. -->
+        </div>
+
+        <div class="col-sm-6">
+        {%  if form.message.data %}
+            <div class="alert alert-success" role="alert">
+            <strong>Message:</strong> {{ form.message.data }}
+            </div>
+        {% endif %}
+        </div>
+    </div>
+
+
+    <hr>
+    <div class="row">
+        <h2>Add to Database</h2>
+
+        <form action="{{ url_for('add_user') }}"
+              method="post"
+              class="add-user"
+              id="user-form">
+            <input id="userName"
+                   type="text"
+                   placeholder="John"
+                   name="nickname">
+
+            <input id="userEmail"
+                   type="text"
+                   placeholder="email@email.com"
+                   name="email">
+
+            <button id="user-submit" type="submit" class="btn btn-primary">
+                Submit
+            </button>
+        </form>
+
+    </div>
+
+</div>
+{%  endblock content %}
+
