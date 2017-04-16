@@ -16,6 +16,7 @@ from app import app, db
 from flask import render_template
 from flask import flash, redirect
 from flask import session, url_for, request, g
+from datetime import datetime
 from .forms import BasicForm
 from .models import User, Post
 
@@ -38,8 +39,14 @@ def input_practice():
 
 @app.route('/add', methods=['POST'])
 def add_user():
-    db.session.add(User(nickname=request.form['nickname'],
-                        email=request.form['email']))
+    u = User.query.filter_by(nickname=request.form['nickname']).first()
+    if u is None:
+        u = User(nickname=request.form['nickname'])
+    p = Post(body=request.form['post-body'],
+             timestamp=datetime.utcnow(),
+             author=u)
+    db.session.add(u)
+    db.session.add(p)
     db.session.commit()
     flash('New user entry was successfully added to db.')
     return redirect(url_for('input_practice'))

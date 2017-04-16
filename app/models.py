@@ -33,9 +33,8 @@ class User(db.Model):
     # (Yes, this is terrible design but we have no choice).
     # Pass boolean args to indicate which fields are unique/indexed.
     # Note: 'unique' here means [a given user] 'has only one'.
-    id          = db.Column(db.Integer, primary_key=True)
-    nickname    = db.Column(db.String(64), index=True, unique=True)
-    email       = db.Column(db.String(128), index=True, unique=True)
+    id = db.Column(db.Integer, primary_key=True)
+    nickname = db.Column(db.String(64), index=True, unique=True)
     # Relationships are not actual database fields (not shown on a db diagram).
     # They are typically on the 'one' side of a 'one-to-many' relationship.
     # - backref: *defines* a field that will be added to the instances of
@@ -56,12 +55,12 @@ class Post(db.Model):
         user_id: (db.Integer)
     """
 
-    id          = db.Column(db.Integer, primary_key=True)
-    body        = db.Column(db.String(140))
-    timestamp   = db.Column(db.DateTime)
-    # Establish link bw foreign key (user_id) and 'id' field of table it refers to.
-    # One-to-many: one user writes many posts.
-    user_id     = db.Column(db.Integer, db.ForeignKey('user.id'))
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.String(140))
+    timestamp = db.Column(db.DateTime)
+    # Establish link bw foreign key (user_id) and 'id' field of
+    # table it refers to. One-to-many: one user writes many posts.
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
         return '<Post %r>' % self.body

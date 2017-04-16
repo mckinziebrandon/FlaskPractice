@@ -48,19 +48,28 @@
               method="post"
               class="add-user"
               id="user-form">
+
+        <div class="formgroup">
+            <label for="userName">User Name:</label>
             <input id="userName"
                    type="text"
                    placeholder="John"
                    name="nickname">
-
-            <input id="userEmail"
-                   type="text"
-                   placeholder="email@email.com"
-                   name="email">
+        </div>
+        <div class="form-group">
+            <label for="post-body">
+                Blog Post:
+            </label>
+            <textarea class="form-control"
+                      id="post-body"
+                      rows="3"
+                      name="post-body"></textarea>
+        </div>
 
             <button id="user-submit" type="submit" class="btn btn-primary">
                 Submit
             </button>
+
         </form>
 
     </div>
