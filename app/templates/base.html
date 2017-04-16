@@ -9,7 +9,9 @@ Misc. Notes:
     - The 'block' control statement defines the place(s) where the derived
       templates can insert themselves.
 -->
+
 <head>
+    {% block head %}
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -35,6 +37,7 @@ Misc. Notes:
     <!-- My own styles. -->
     <link rel="stylesheet" type="text/css"
           href="{{ url_for('static', filename='css/style_additions.css') }}">
+    {% endblock head %}
 </head>
 
 <!-- The body -->
@@ -43,7 +46,8 @@ Misc. Notes:
     {%  set navigation_bar = [
         ('/', 'index', 'Index'),
         ('/bootstrap_reference', 'bootstrap_reference', 'Bootstrap Reference'),
-        ('/input_practice', 'input_practice', 'Input Practice')
+        ('/input_practice', 'input_practice', 'Input Practice'),
+        ('/coursera', 'coursera', 'Coursera')
     ] -%}
     {%  set active_page = active_page|default('index') -%}
 

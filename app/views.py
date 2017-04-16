@@ -55,3 +55,8 @@ def add_user():
 @app.route('/bootstrap_reference')
 def bootstrap_reference():
     return render_template('bootstrap_reference.html')
+
+
+@app.route('/coursera')
+def coursera():
+    return render_template('coursera.html')

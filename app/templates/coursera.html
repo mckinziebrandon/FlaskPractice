@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% set active_page = "coursera" %}
+
+<head>
+  {% block head %}
+    {{ super() }}
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.10.0/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.10.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <style type="text/css">
+      pre > code {
+        /* TAKE THAT */
+        margin-left: -6em;
+      }
+    </style>
+  {% endblock head %}
+</head>
+
+
+{% block content %}
+  <div class="container">
+    <div class="jumbotron">
+      <h1>Eloquent JavaScript</h1>
+      <p>Muh Notes</p>
+    </div>
+
+
+    <!-- Begin: Accordian -->
+    <div id="accordian" role="tablist" aria-multiselectable="true">
+
+      <!-- Begin: Card One -->
+      <div class="card">
+
+        <!-- Card Header -->
+        <div class="card-header" role="tab" id="course-one">
+          <h2 class="mb-0">
+            <a data-toggle="collapse" data-parent="#accordian" href="#course-one-content"
+               aria-expanded="true" aria-controls="#course-one-content">
+              The Document Object Model
+            </a></h2>
+        </div>
+
+        <!-- Card Content -->
+        <div id="course-one-content" class="collapse" role="tabpanel" aria-labelledby="course-one">
+
+          <h4>Moving Through The Tree</h4>
+          <div class="card-block row">
+            <div class="col-sm-5">
+              <ul>
+                <li>The global variable <code>document</code> gives us access
+                  to the browser's tree-like data structure. It's root node is
+                  <code>document.documentElement</code> which points to the head element.
+                </li>
+
+                <li>Each DOM node object has a <code>nodeType</code> property.</li>
+
+              </ul>
+            </div>
+            <div class="col-sm-6">
+          <pre><code class="js">
+            function talksAbout(node, string) {
+              if (node.nodeType == document.ELEMENT_NODE) {
+                for (var i = 0; i < node.childNodes.length; i++) {
+                  if (talksAbout(node.childNodes[i], string))
+                    return true;
+                }
+                return false;
+              } else if (node.nodeType == document.TEXT_NODE) {
+                return node.nodeValue.indexOf(string) > -1;
+              }
+            }
+          </code></pre>
+            </div>
+          </div>
+
+          <h4>Changing The Document</h4>
+          <div class="card-block row">
+            <div class="col-sm-5">
+              <ul>
+                <li>Element nodes have a lot of methods we can use to change their content, such as
+                  removeChild, appendChild, insertBefore, etc. The snippet on the right shows how to
+                  insert a node (first arg) before another (second arg).
+                </li>
+
+              </ul>
+            </div>
+            <div class="col-sm-6">
+            <pre><code class="js">
+            var paragraphs = document.body.getElementsByTagName("p");
+            document.body.insertBefore(paragraphs[2], paragraphs[0]);
+            </code></pre>
+            </div>
+          </div>
+
+          <div class="cardify" title="Heckin Title">
+            <ul>
+              <li>goodboye?</li>
+              <li>yes!?</li>
+            </ul>
+          </div>
+
+        </div>  <!-- End: Card Content -->
+      </div>  <!-- End: Card One -->
+
+      <!-- Begin: Card Two -->
+      <div class="card">
+
+        <!-- Card Header -->
+        <div class="card-header" role="tab" id="exercises">
+          <h2 class="mb-0">
+            <a data-toggle="collapse" data-parent="#accordian" href="#exercises-content"
+               aria-expanded="true" aria-controls="#exercises-content">
+              Exercises
+            </a></h2>
+        </div>
+
+        <div id="exercises-content" class="collapse" role="tabpanel" aria-labelledby="exercises">
+          <div class="cardify" title="Build Table" id="mountains_table">
+            <div id="mountains_table"></div>
+          </div>
+        </div>
+
+      </div>  <!-- End: Card Two -->
+
+    </div>  <!-- End: Accordian -->
+
+
+  </div>
+
+  <!-- Script for beautification. -->
+  <script src="{{ url_for('static', filename='js/note_taker.js') }}"></script>
+  <!-- muh table -->
+  <script src="{{ url_for('static', filename='js/build_table.js') }}"></script>
+
+{%  endblock content %}
