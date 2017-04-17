@@ -37,26 +37,40 @@ def input_practice():
                            form=basic_form)
 
 
-@app.route('/add', methods=['POST'])
-def add_user():
-    u = User.query.filter_by(nickname=request.form['nickname']).first()
-    if u is None:
-        u = User(nickname=request.form['nickname'])
-    p = Post(body=request.form['post-body'],
-             timestamp=datetime.utcnow(),
-             author=u)
-    db.session.add(u)
-    db.session.add(p)
-    db.session.commit()
-    flash('New user entry was successfully added to db.')
-    return redirect(url_for('input_practice'))
-
-
 @app.route('/bootstrap_reference')
 def bootstrap_reference():
     return render_template('bootstrap_reference.html')
 
 
-@app.route('/coursera')
-def coursera():
-    return render_template('coursera.html')
+@app.route('/jquery_reference')
+def jquery_reference():
+    return render_template('jquery_reference.html')
+
+
+@app.route('/eloquent_javascript')
+def eloquent_javascript():
+    return render_template('eloquent_javascript.html')
+
+
+@app.route('/add', methods=['POST'])
+def add_user():
+    # Get or create the user.
+    u = User.query.filter_by(nickname=request.form['nickname']).first()
+    if u is None:
+        u = User(nickname=request.form['nickname'])
+
+    # Associate user and their post.
+    p = Post(body=request.form['post-body'],
+             timestamp=datetime.utcnow(),
+             author=u)
+
+    # Add and commit to database.
+    db.session.add(u)
+    db.session.add(p)
+    db.session.commit()
+
+    # Route back to the html page.
+    flash('New user entry was successfully added to db.')
+    return redirect(url_for('input_practice'))
+
+

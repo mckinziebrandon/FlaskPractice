@@ -17,10 +17,12 @@
  */
 function cardify() {
 
-    var cards = document.getElementsByClassName("cardify");
-    console.log(cards);
+    // Get (jQuery element containing) all elements with class="cardify".
+    var cards = $(".cardify");
     for (var i = cards.length - 1; i >= 0; i--) {
+
         var card = cards[i];
+
         // Replace the div with <h4>titleString</h4>.
         if (card.getAttribute("title")) {
 
@@ -34,16 +36,16 @@ function cardify() {
 
             var cardBlock = document.createElement("div");
             cardBlock.setAttribute("class", "card-block row");
-            console.log(innerHTML);
-            cardBlock.innerHTML =
+            // Set the innerHTML of cardBlock (using jQuery).
+            $(cardBlock).html(
                 "<div class='col-sm-10'>"
                 + innerHTML
-                + "</div>";
-            console.log(cardBlock);
+                + "</div>");
 
             // Replace the div with the new styled node.
             card.parentNode.replaceChild(titleNode, card);
-            titleNode.parentNode.appendChild(cardBlock);
+            // Place the contents of the card after the <h4> title node.
+            $(titleNode).after(cardBlock);
         }
     }
 

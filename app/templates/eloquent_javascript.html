@@ -1,19 +1,15 @@
 {% extends "base.html" %}
-{% set active_page = "coursera" %}
+{% set active_page = "eloquent_javascript" %}
 
 <head>
   {% block head %}
     {{ super() }}
 
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.10.0/styles/default.min.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.10.0/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
-
     <style type="text/css">
-      pre > code {
-        /* TAKE THAT */
-        margin-left: -6em;
-      }
+      /* Defines a cleaner look for tables */
+      table  { border-collapse: collapse; }
+      td, th { border: 1px solid black; padding: 3px 8px; }
+      th     { text-align: left; }
     </style>
   {% endblock head %}
 </head>
@@ -58,7 +54,7 @@
 
               </ul>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-7">
           <pre><code class="js">
             function talksAbout(node, string) {
               if (node.nodeType == document.ELEMENT_NODE) {
@@ -86,7 +82,7 @@
 
               </ul>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-7">
             <pre><code class="js">
             var paragraphs = document.body.getElementsByTagName("p");
             document.body.insertBefore(paragraphs[2], paragraphs[0]);
@@ -94,33 +90,66 @@
             </div>
           </div>
 
-          <div class="cardify" title="Heckin Title">
-            <ul>
-              <li>goodboye?</li>
-              <li>yes!?</li>
-            </ul>
-          </div>
-
         </div>  <!-- End: Card Content -->
       </div>  <!-- End: Card One -->
 
-      <!-- Begin: Card Two -->
+      <!-- Begin: Card Two-->
+      <div class="card">
+
+        <!-- Card Header -->
+        <div class="card-header" role="tab" id="course-two">
+          <h2 class="mb-0">
+            <a data-toggle="collapse" data-parent="#accordian" href="#course-two-content"
+               aria-expanded="true" aria-controls="#course-two-content">
+              Handling Events
+            </a></h2>
+        </div>
+
+        <!-- Card Content -->
+        <div id="course-two-content" class="collapse" role="tabpanel" aria-labelledby="course-two">
+
+          <div class="cardify" title="Event Handlers">
+            <p>Click this do</p>
+          </div>
+
+
+        </div>  <!-- End: Card Content -->
+      </div>  <!-- End: Card Two -->
+
+      <!-- Begin: Card Three -->
       <div class="card">
 
         <!-- Card Header -->
         <div class="card-header" role="tab" id="exercises">
           <h2 class="mb-0">
-            <a data-toggle="collapse" data-parent="#accordian" href="#exercises-content"
+            <a class="collapsed" data-toggle="collapse" data-parent="#accordian"
+               href="#exercises-content"
                aria-expanded="true" aria-controls="#exercises-content">
               Exercises
             </a></h2>
         </div>
 
+        <!-- Exercises from EloquentJavaScript.net -->
         <div id="exercises-content" class="collapse" role="tabpanel" aria-labelledby="exercises">
+
+          <!-- Build a Table -->
           <div class="cardify" title="Build Table" id="mountains_table">
+            <!-- Injects code from build_table.js -->
             <div id="mountains_table"></div>
           </div>
+
+          <hr>
+          <!-- Censored Keyboard -->
+          <div class="cardify" title="Censored Keyboard" id="censored_keyboard">
+            <p> You cannot type Q, W, or X here.  </p>
+            <!-- Injects code from censored_keyboard.js -->
+            <div class="input-group">
+              <input id="censored_keyboard" type="text" class="form-control">
+            </div>
+          </div>
+
         </div>
+
 
       </div>  <!-- End: Card Two -->
 
@@ -133,5 +162,7 @@
   <script src="{{ url_for('static', filename='js/note_taker.js') }}"></script>
   <!-- muh table -->
   <script src="{{ url_for('static', filename='js/build_table.js') }}"></script>
+  <!-- muh censoring -->
+  <script src="{{ url_for('static', filename='js/censored_keyboard.js') }}"></script>
 
 {%  endblock content %}

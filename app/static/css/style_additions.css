@@ -1,3 +1,8 @@
 .nickname {
   text-transform: capitalize;
 }
+
+/* Fix code snippet indentation issue. */
+pre > code {
+  margin-left: -4em;
+}
