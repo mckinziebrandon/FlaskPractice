@@ -24,17 +24,11 @@ from .models import User, Post
 @app.route('/')
 @app.route('/index')
 def index():
+    # Load all User objects from db database.
     users = User.query.all()
     return render_template('index.html',
                            title='Home',
                            users=users)
-
-
-@app.route('/input_practice', methods=['GET', 'POST'])
-def input_practice():
-    basic_form = BasicForm(request.form)
-    return render_template('input_practice.html',
-                           form=basic_form)
 
 
 @app.route('/bootstrap_reference')
@@ -52,8 +46,16 @@ def eloquent_javascript():
     return render_template('eloquent_javascript.html')
 
 
+@app.route('/input_practice', methods=['GET', 'POST'])
+def input_practice():
+    basic_form = BasicForm(request.form)
+    return render_template('input_practice.html',
+                           form=basic_form)
+
+
 @app.route('/add', methods=['POST'])
 def add_user():
+
     # Get or create the user.
     u = User.query.filter_by(nickname=request.form['nickname']).first()
     if u is None:

@@ -101,17 +101,100 @@
           <h2 class="mb-0">
             <a data-toggle="collapse" data-parent="#accordian" href="#course-two-content"
                aria-expanded="true" aria-controls="#course-two-content">
-              Handling Events
+              HTTP and Forms
             </a></h2>
         </div>
 
         <!-- Card Content -->
         <div id="course-two-content" class="collapse" role="tabpanel" aria-labelledby="course-two">
 
-          <div class="cardify" title="Event Handlers">
-            <p>Click this do</p>
+          <!-- Browsers and HTTP -->
+          <div class="cardify" cols="8" title="Browsers and HTTP">
+            <p>HTML pages may include <i>forms</i>, which allow the user to
+            fill out info and send it to server. For example:
+            </p>
+
+            <pre><code class="html">
+            &lt;form method=&quot;GET&quot; action=&quot;example/message.html&quot;&gt;
+            &lt;p&gt;Name: &lt;input type=&quot;text&quot; name=&quot;name&quot;&gt;&lt;/p&gt;
+            &lt;p&gt;Message:&lt;br&gt;&lt;textarea name=&quot;message&quot;&gt;&lt;/textarea&gt;&lt;/p&gt;
+            &lt;p&gt;&lt;button type=&quot;submit&quot;&gt;Send&lt;/button&gt;&lt;/p&gt;
+            &lt;/form&gt;
+            </code></pre>
+
+            <br>
+            <p>
+              Upon clicking Send, the information is encoded into a <i>query string</i>.
+              If method=GET (or ommitted), the browser makes a GET request to:
+            </p>
+
+            <pre><code>
+              GET /example/message.html?name=Jean&message=Yes%4F HTTP/1.1
+            </code></pre>
+
+            <p>
+              where the actual message is "Yes?" but the question mark has been
+              turned into browser-speak (URL encoding). JavaScript provides the
+              encodeURIComponent and decodeURIComponent functions to encode and
+              decode this format.
+            </p>
+
+            <pre><code class="js">
+            console.log(encodeURIComponent("Hello & goodbye"));
+            // → Hello%20%26%20goodbye
+            </code></pre>
+
+            <p>
+              whereas POST will instead place the query string (name=Jean&message=Yes%3F)
+            in the body of the request, rather than adding it to the URL.
+            </p>
+
+          </code>
+          </div> <!-- End: Browsers and HTTP cardify -->
+
+
+          <hr>
+          <!-- XMLHTTPREQUEST -->
+          <div class="cardify" cols="8" title="XMLHttpRequest">
+            <p>
+              The interface through which browser JavaScript can make HTTP
+              requests is called XMLHttpRequest. Basically, the name is stupid
+              and it's for stupid historical reasons. To make a simple request:
+            </p>
+
+            <pre><code class="js">
+              var request = new XMLHttpRequest();
+              // Args: open(method, url, async=true)
+              // If async=false, doesn't return until response is received.
+              request.open("GET", "example/data.txt", false);
+              // Arg to send is the request body; for GET, we can pass null.
+              request.send(null);
+              console.log(request.responseText);
+            </code></pre>
           </div>
 
+          <hr>
+          <!-- Asynch. Requests -->
+          <div class="cardify" cols="8" title="Asynchronous Requests">
+
+            <p>
+              If, for the previous request, we set asynch=true (the default),
+              our program could continue w/out needing to wait. But as long as
+              the request is running, we won’t be able to access the response.
+              We need a mechanism that will notify us when the data is available.
+            </p>
+
+            <pre><code class="js">
+              var request = new XMLHttpRequest();
+              request.open("GET", "example/data.txt", true);
+              request.addEventListener("load", function() {
+                console.log("Done:", request.status);
+              });
+              request.send(null);
+            </code></pre>
+
+
+          </div>
 
         </div>  <!-- End: Card Content -->
       </div>  <!-- End: Card Two -->

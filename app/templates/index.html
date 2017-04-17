@@ -6,30 +6,43 @@
 
 {% block content %}
 
-    <div class="container">
+  <div class="container">
 
     <div class="jumbotron">
-        <h1>Look, I know Flask</h1>
-        <p>Hi, I am a human being capable of making a webpage.</p>
+      <h1>Look, I know Flask</h1>
+      <p>I can do things with computers. This is good for me.</p>
     </div>
 
     <div class="row">
-        <div class="col-sm-10">
+      <div class="col-sm-10">
+      <h2>Users</h2>
+      <p>Below is a list of all users stored in the database. Click a user's name
+        to see all of their logged posts.</p>
         {% for user in users %}
-            <!-- Greet user -->
-            <div class="panel panel-primary">
-                <div class="panel-heading nickname">
-                    {{ user.nickname }}
-                </div>
-                <div class="panel-body">
-                {%  for post in user.posts %}
-                    <p>{{ post.body }}</p>
-                {%  endfor %}
-                </div>
+          <!-- Greet user -->
+          <div class="panel panel-primary">
+
+            <div class="panel-heading nickname" data-toggle="collapse"
+                 href="#{{ user.nickname }}-posts" aria-expanded="false">
+              {{ user.nickname }}
             </div>
+
+            <!-- Post list for the given user. -->
+            <div id="{{ user.nickname }}-posts" class="panel-body collapse">
+            <ul class="list-group">
+              {%  for post in user.posts %}
+                <li class="list-group-item justify-content-between">
+                  {{ post.body }}
+                <span class="badge badge-default badge-pill">{{ post.timestamp }}</span>
+                </li>
+              {%  endfor %}
+            </ul>
+            </div>
+
+          </div>
         {% endfor %}
-        </div>
+      </div>
     </div>
-    </div>
+  </div>
 {%  endblock content %}
 

@@ -23,7 +23,6 @@ class User(db.Model):
     Fields:
         id: (db.Integer) primary_key for identifying a user in the table.
         nickname: (str)
-        email: (str)
         posts: (db.relationship)
 
     All properties were defined in Tutorial V for compatibility with Flask-Login.
@@ -39,7 +38,7 @@ class User(db.Model):
     # They are typically on the 'one' side of a 'one-to-many' relationship.
     # - backref: *defines* a field that will be added to the instances of
     #             Posts that point back to this user.
-    posts       = db.relationship('Post', backref='author', lazy='dynamic')
+    posts = db.relationship('Post', backref='author', lazy='dynamic')
 
     def __repr__(self):
         return '<User %r>' % self.nickname

@@ -35,10 +35,17 @@ function cardify() {
             titleNode.appendChild(document.createTextNode(titleString));
 
             var cardBlock = document.createElement("div");
+            if (card.getAttribute("cols")) {
+                var numCols = parseInt(card.getAttribute("cols"));
+                console.log("cols found = " + numCols);
+            } else {
+                var numCols = 10;
+                console.log("cols not found = " + numCols);
+            }
             cardBlock.setAttribute("class", "card-block row");
             // Set the innerHTML of cardBlock (using jQuery).
             $(cardBlock).html(
-                "<div class='col-sm-10'>"
+                "<div class='col-sm-" + numCols + "'>"
                 + innerHTML
                 + "</div>");
 
