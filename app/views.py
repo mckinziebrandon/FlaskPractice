@@ -40,6 +40,10 @@ def bootstrap_reference():
 def jquery_reference():
     return render_template('jquery_reference.html')
 
+@app.route('/flask_reference')
+def flask_reference():
+    return render_template('flask_reference.html')
+
 
 @app.route('/eloquent_javascript')
 def eloquent_javascript():
@@ -49,6 +53,7 @@ def eloquent_javascript():
 @app.route('/input_practice', methods=['GET', 'POST'])
 def input_practice():
     basic_form = BasicForm(request.form)
+    flash("basic_form.message.label: {}".format(basic_form.message.label))
     return render_template('input_practice.html',
                            form=basic_form)
 
@@ -75,4 +80,8 @@ def add_user():
     flash('New user entry was successfully added to db.')
     return redirect(url_for('input_practice'))
 
+
+@app.route('/delete_post', methods=['POST'])
+def delete_post():
+    p = request.form
 

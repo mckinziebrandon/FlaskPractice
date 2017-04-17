@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% set active_page = "flask_reference" %}
+
+<head>
+  {% block head %}
+    {{ super() }}
+  {% endblock head %}
+</head>
+
+{% block content %}
+
+  <div class="container">
+
+  <div class="jumbotron">
+    <h1>Flask Reference</h1>
+  </div>
+
+  <div id="accordian" role="tablist" aria-multiselectable="true">
+
+    <div class="new-card" id="forms-card" title="Forms">
+      <div class="cardify" cols="8" title="Forms">
+        <p>
+          YEAHhh
+        </p>
+      </div>
+    </div>
+
+  </div> <!-- End: Container -->
+
+
+  <!-- Script for beautification. -->
+  <script src="{{ url_for('static', filename='js/note_taker.js') }}"></script>
+{% endblock content %}

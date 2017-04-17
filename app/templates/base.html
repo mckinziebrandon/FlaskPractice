@@ -45,6 +45,9 @@ Misc. Notes:
     <!-- My own styles. -->
     <link rel="stylesheet" type="text/css"
           href="{{ url_for('static', filename='css/style_additions.css') }}">
+
+    <!-- Bootstrap glyphicon support -->
+    <!-- <span class="glyphicon glyphicon-search" aria-hidden="true"></span>-->
   {% endblock head %}
 </head>
 
@@ -53,8 +56,6 @@ Misc. Notes:
 
 {%  set navigation_bar = [
         ('/', 'index', 'Index'),
-        ('/bootstrap_reference', 'bootstrap_reference', 'Bootstrap Reference'),
-        ('/jquery_reference', 'jquery_reference', 'JQuery Reference'),
         ('/input_practice', 'input_practice', 'Input Practice'),
         ('/eloquent_javascript', 'eloquent_javascript', 'Eloquent JavaScript')
     ] -%}
@@ -64,7 +65,9 @@ Misc. Notes:
 <nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+      <button type="button" class="navbar-toggle collapsed"
+              data-toggle="collapse" data-target="#navbar"
+              aria-expanded="false" aria-controls="navbar">
         <span class="sr-only">Toggle navigation</span>
         {% for _ in range(3) %}
           <span class="icon-bar"></span>
@@ -87,17 +90,16 @@ Misc. Notes:
              role="button"
              aria-haspopup="true"
              aria-expanded="false">
-            Dropdown
+            Reference
             <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-
-            <li role="separator" class="divider"></li>
+            <li><a href="{{ url_for('bootstrap_reference') }}">Bootstrap</a></li>
+            <li><a href="{{ url_for('flask_reference') }}">Flask</a></li>
+            <li><a href="{{ url_for('jquery_reference') }}">JQuery</a></li>
+            <!--<li role="separator" class="divider"></li>
             <li class="dropdown-header">Nav header</li>
-
             <li><a href="#">Separated link</a></li>
-            <li><a href="#">One more separated link</a></li>
+            <li><a href="#">One more separated link</a></li>-->
           </ul>
         </li>
       </ul>
@@ -109,9 +111,9 @@ Misc. Notes:
 <!-- Display any flash() message calls from e.g. views.py -->
 {%  with messages = get_flashed_messages() %}
   {%  if messages %}
-    <ul>
+    <ul class="list-group">
       {% for message in messages %}
-        <li>{{ message }}</li>
+        <li class="list-group-item-info">{{ message }}</li>
       {% endfor %}
     </ul>
   {% endif %}
