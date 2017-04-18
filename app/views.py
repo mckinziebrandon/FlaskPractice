@@ -17,7 +17,7 @@ from flask import render_template
 from flask import flash, redirect
 from flask import session, url_for, request, g
 from datetime import datetime
-from .forms import BasicForm
+from .forms import BasicForm, UserForm
 from .models import User, Post
 
 
@@ -66,28 +66,43 @@ def input_practice():
 @app.route('/add_user', methods=['POST'])
 def add_user():
 
+    # This will get filled with form info via request.
+    user_form = UserForm()
+    flash(user_form.nickname.data)
+    flash(user_form.post.data)
+
+    # TODO: Can't validate because form needs:
+    # {{ form.csrf_token }}
+    # inside it, but it does not have access to the form
+    # (we create it here, not upon rendering 'input_practice')
+    #if user_form.validate_on_submit():
+
     # Get or create the user.
-    u = User.query.filter_by(nickname=request.form['nickname']).first()
-    if u is None:
-        u = User(nickname=request.form['nickname'])
+    user = User.query.filter_by(nickname=user_form.nickname.data).first()
+    if user is None:
+        user = User(nickname=user_form.nickname.data)
 
     # Associate user and their post.
-    p = Post(body=request.form['post-body'],
-             timestamp=datetime.utcnow(),
-             author=u)
+    post = Post(body=user_form.post.data,
+                timestamp=datetime.utcnow(),
+                author=user)
 
     # Add and commit to database.
-    db.session.add(u)
-    db.session.add(p)
+    db.session.add(user)
+    db.session.add(post)
     db.session.commit()
+    flash('Database successfully updated.')
+    #else:
+    #    flash('Error: form submission not validated.')
+    #    flash(user_form.errors)
 
     # Route back to the html page.
-    flash('New user entry was successfully added to db.')
     return redirect(url_for('input_practice'))
 
 
 @app.route('/delete/<post_id>', methods=['POST'])
 def delete_post(post_id):
+    # TODO: make this via ajax so full page doesn't need to re-render.
     db.session.delete(Post.query.get_or_404(post_id))
     db.session.commit()
     return redirect(url_for('index'))
