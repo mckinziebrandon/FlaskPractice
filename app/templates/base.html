@@ -34,6 +34,11 @@
           href="{{ url_for('static', filename='css/style_additions.css') }}">
   {% endblock styles %}
 
+  <!-- Required here if you want stuff to work. Idk why. -->
+  {% block scripts %}
+    {{ super() }}
+  {% endblock scripts %}
+
   <!-- Syntax Highlighting -->
   <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.10.0/highlight.min.js"></script>
   <script>hljs.initHighlightingOnLoad();</script>
@@ -41,8 +46,6 @@
 
 <!-- The body -->
 {% block body %}
-
-
 
 {% block navbar %}
 {%  set navigation_bar = [
