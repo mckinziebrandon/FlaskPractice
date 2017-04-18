@@ -16,7 +16,7 @@
       <h2>Users</h2>
       <p>Below is a list of all users stored in the database. Click a user's name
         to see all of their logged posts.</p>
-      {% for user in users %}
+      {% for user in users if user.posts.count() %}
         <!-- Greet user -->
         <div class="panel panel-primary">
 

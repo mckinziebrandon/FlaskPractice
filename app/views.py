@@ -102,7 +102,9 @@ def add_user():
 @app.route('/delete/<post_id>', methods=['POST'])
 def delete_post(post_id):
     # TODO: make this via ajax so full page doesn't need to re-render.
-    db.session.delete(Post.query.get_or_404(post_id))
+    post = Post.query.get_or_404(post_id)
+    user = post.author
+    db.session.delete(post)
     db.session.commit()
     return redirect(url_for('index'))
 

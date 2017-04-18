@@ -16,16 +16,19 @@ from flask_sqlalchemy import SQLAlchemy
 class User(db.Model):
     """A model that represents our users.
 
-    Jargon:
+    Jargon/Parameters:
         - primary key: unique id given to each user.
         - varchar: a string.
+        - db.Column parameter info:
+            - index=True: allows for faster queries by associating a given column
+                          with its own index. Use for values frequently looked up.
+            - unique=True: don't allow duplicate values in this column.
 
     Fields:
         id: (db.Integer) primary_key for identifying a user in the table.
         nickname: (str)
         posts: (db.relationship)
 
-    All properties were defined in Tutorial V for compatibility with Flask-Login.
     """
 
     # Fields are defined as class variables, but are used by super() in init.
