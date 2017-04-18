@@ -1,0 +1,20 @@
+<form id="user-form" action="{{ url_for('add_user') }}" method="post">
+
+  <!-- User Name -->
+  <div class="formgroup">
+    <label for="user-name">User Name:</label>
+    <!-- In views.py, we access inputs via request.[name attr] -->
+    <input name="nickname" id="user-name" type="text" class="form-control">
+  </div>
+
+  <!-- Blog Post -->
+  <div class="form-group">
+    <label for="post-body">Blog Post:</label>
+    <textarea name="post-body" class="form-control"
+              id="post-body" rows="3"></textarea>
+  </div>
+
+  <button id="user-submit" type="submit" class="btn btn-primary">
+    Submit
+  </button>
+</form>

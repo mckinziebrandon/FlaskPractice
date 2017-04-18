@@ -54,22 +54,16 @@ def eloquent_javascript():
 @app.route('/input_practice', methods=['GET', 'POST'])
 def input_practice():
 
-    # Create the forms used for this endpoint.
-    basic_form = BasicForm(prefix="basic_form")
+    # Create the form(s) used for this endpoint.
     flask_form = BasicForm(prefix="flask_form")
-
-    if basic_form.validate_on_submit() and basic_form.submit.data:
-        flash('basic_form validated. Message: {}'.format(
-            basic_form.message.data))
     if flask_form.validate_on_submit() and flask_form.submit.data:
         flash('flask_form validated. Message: {}'.format(
             flask_form.message.data))
     return render_template('input_practice.html',
-                           basic_form=basic_form,
                            flask_form=flask_form)
 
 
-@app.route('/add', methods=['POST'])
+@app.route('/add_user', methods=['POST'])
 def add_user():
 
     # Get or create the user.

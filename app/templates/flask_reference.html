@@ -62,6 +62,35 @@
         </div>
       </div>  <!-- End: Forms Card -->
 
+      <!-- Templates -->
+      <div class="new-card" id="templates-card" title="Templates">
+        <!-- Key Concepts -->
+        <div class="cardify" cols="12" title="Sub-Templates">
+          <p>Good for reusability. We can include any snippet of html code by
+            doing the following:
+          </p>
+
+          <div class="row">
+            <div class="col-sm-6">
+            <pre><code>
+            <!-- Some code in some_code.html -->
+            &lt;td&gt;&lt;img src="&#123;&#123; post.author &#125;&#125;"></td>
+            </code></pre>
+            </div>
+
+            <div class="col-sm-6">
+              <pre><code>
+                &lt;!--Code in, e.g., index.html--&gt;
+                {&#37;  for post in posts &#37;}
+                &lt;!-- Inject some_code.html. --&gt;
+                {&#37; include 'some_code.html' &#37;}
+                {&#37; endfor &#37;}
+              </code></pre>
+            </div>
+          </div>  <!-- end: row -->
+        </div>  <!-- end: cardify -->
+      </div>  <!-- end: templates-card -->
+
     </div>  <!-- End: Accordian -->
   </div> <!-- End: Container -->
 
