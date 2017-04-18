@@ -92,7 +92,10 @@ def add_user():
     return redirect(url_for('input_practice'))
 
 
+#@app.route('/delete/<postID>', methods=['POST'])
 @app.route('/delete_post', methods=['POST'])
 def delete_post():
-    p = request.form
+    db.session.delete(Post.query.get(request.form['postID']))
+    db.session.commit()
+    return redirect(url_for('index'))
 
