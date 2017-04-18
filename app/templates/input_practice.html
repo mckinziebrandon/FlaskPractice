@@ -70,15 +70,15 @@
       <div class="col-sm-6">
         <h2>Inputs with Flask</h2>
         <form action="" method="POST" name="flask-input">
-          <div class="input-group">
+          <div class="form-group">
             <!-- For CSRF reasons. -->
             {{ flask_form.hidden_tag() }}
             <!-- Labeled input(s) -->
-            {{ flask_form.message.label }}<br>
-            {{ flask_form.message() }}
-            <!-- Submit -->
-            {{ flask_form.submit() }}
+            {{ flask_form.message.label(style="text-transform: capitalize;") }}
+            {{ flask_form.message(class="form-control") }}
           </div>
+          <!-- Submit -->
+          {{ flask_form.submit(class="btn btn-primary") }}
         </form>
       </div>
     </div>

@@ -28,8 +28,7 @@ class User(db.Model):
     All properties were defined in Tutorial V for compatibility with Flask-Login.
     """
 
-    # Fields are defined as class variables for some reason.
-    # (Yes, this is terrible design but we have no choice).
+    # Fields are defined as class variables, but are used by super() in init.
     # Pass boolean args to indicate which fields are unique/indexed.
     # Note: 'unique' here means [a given user] 'has only one'.
     id = db.Column(db.Integer, primary_key=True)
@@ -38,6 +37,8 @@ class User(db.Model):
     # They are typically on the 'one' side of a 'one-to-many' relationship.
     # - backref: *defines* a field that will be added to the instances of
     #             Posts that point back to this user.
+    # - lazy='dynamic': "Instead of loading the items, return another query
+    #                    object which we can refine before loading items.
     posts = db.relationship('Post', backref='author', lazy='dynamic')
 
     def __repr__(self):
