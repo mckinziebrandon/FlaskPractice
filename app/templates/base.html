@@ -10,7 +10,7 @@
 
   <title>
     {% block title %}
-      {% if active_page %}{{ active_page }}{% else %}FlaskPractice{%  endif %}
+      {% if active_page %}{{ active_page }}{% else %}FlaskPractice{% endif %}
     {% endblock title %}
   </title>
 
@@ -37,6 +37,8 @@
   <!-- Required here if you want stuff to work. Idk why. -->
   {% block scripts %}
     {{ super() }}
+    <!-- Imports moment.js for date/time stuff. -->
+    {{ moment.include_moment() }}
   {% endblock scripts %}
 
   <!-- Syntax Highlighting -->
@@ -47,77 +49,81 @@
 <!-- The body -->
 {% block body %}
 
-{% block navbar %}
-{%  set navigation_bar = [
+  {% block navbar %}
+    {%  set navigation_bar = [
         ('/', 'index', 'Index'),
         ('/input_practice', 'input_practice', 'Input Practice'),
         ('/eloquent_javascript', 'eloquent_javascript', 'Eloquent JavaScript')
     ] -%}
-{%  set active_page = active_page|default('index') -%}
+    {%  set active_page = active_page|default('index') -%}
 
-<!-- Fixed navbar -->
-  <nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed"
-                data-toggle="collapse" data-target="#navbar"
-                aria-expanded="false" aria-controls="navbar">
-          <span class="sr-only">Toggle navigation</span>
-          {% for _ in range(3) %}
-            <span class="icon-bar"></span>
-          {% endfor %}
-        </button>
-        <a class="navbar-brand" href="/">FlaskPractice</a>
-      </div>
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed"
+                  data-toggle="collapse" data-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            {% for _ in range(3) %}
+              <span class="icon-bar"></span>
+            {% endfor %}
+          </button>
+          <a class="navbar-brand" href="/">FlaskPractice</a>
+        </div>
 
-      <div id="navbar" class="navbar-collapse collapse">
-        <ul class="nav navbar-nav">
-          {%  for href, id, caption in navigation_bar %}
-            <li {% if id == active_page %} class="active" {% endif %}>
-              <a href="{{ href|e }}">{{ caption|e }}</a>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            {%  for href, id, caption in navigation_bar %}
+              <li {% if id == active_page %} class="active" {% endif %}>
+                <a href="{{ href|e }}">{{ caption|e }}</a>
+              </li>
+            {% endfor %}
+
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle"
+                 data-toggle="dropdown"
+                 role="button"
+                 aria-haspopup="true"
+                 aria-expanded="false">
+                Reference
+                <span class="caret"></span></a>
+
+              <ul class="dropdown-menu">
+                <li><a href="{{ url_for('bootstrap_reference') }}">Bootstrap</a></li>
+                <li><a href="{{ url_for('flask_reference') }}">Flask</a></li>
+                <li><a href="{{ url_for('jquery_reference') }}">JQuery</a></li>
+                <!--<li role="separator" class="divider"></li>
+                <li class="dropdown-header">Nav header</li>
+                <li><a href="#">Separated link</a></li> -->
+              </ul>
+
             </li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+  {% endblock navbar %}
+
+  <div class="container">
+    <!-- Display any flash() message calls from e.g. views.py -->
+    {%  with messages = get_flashed_messages() %}
+      {%  if messages %}
+        <ul class="list-group">
+          {% for message in messages %}
+            <li class="list-group-item-info">{{ message }}</li>
           {% endfor %}
-
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle"
-               data-toggle="dropdown"
-               role="button"
-               aria-haspopup="true"
-               aria-expanded="false">
-              Reference
-              <span class="caret"></span></a>
-
-            <ul class="dropdown-menu">
-              <li><a href="{{ url_for('bootstrap_reference') }}">Bootstrap</a></li>
-              <li><a href="{{ url_for('flask_reference') }}">Flask</a></li>
-              <li><a href="{{ url_for('jquery_reference') }}">JQuery</a></li>
-              <!--<li role="separator" class="divider"></li>
-              <li class="dropdown-header">Nav header</li>
-              <li><a href="#">Separated link</a></li> -->
-            </ul>
-
-          </li>
         </ul>
-      </div><!--/.nav-collapse -->
+      {% endif %}
+    {% endwith %}
+  </div>
+
+  <!-- Declare a block with name 'content' for derived templates. -->
+  {% block content %}
+    <div class="container">
+    {% block page_content %}{% endblock page_content %}
     </div>
-  </nav>
-{% endblock navbar %}
-
-<div class="container">
-  <!-- Display any flash() message calls from e.g. views.py -->
-  {%  with messages = get_flashed_messages() %}
-    {%  if messages %}
-      <ul class="list-group">
-        {% for message in messages %}
-          <li class="list-group-item-info">{{ message }}</li>
-        {% endfor %}
-      </ul>
-    {% endif %}
-  {% endwith %}
-</div>
-
-<!-- Declare a block with name 'content' for derived templates. -->
-{% block content %}{%  endblock content %}
+  {%  endblock content %}
 
 {% endblock body %}
 

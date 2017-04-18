@@ -1,59 +1,55 @@
 {% extends "base.html" %}
 {% set active_page = "jquery_reference" %}
 
-<head>
-  {% block head %}
-    {{ super() }}
+{% block head %}
+  {{ super() }}
 
-    <script>
-        $(document).ready(function() {
-            // Example case:
-            $("a.nope").click(function(event) {
-                event.preventDefault();
-                // Link slowly disappears.
-                $(this).hide("slow");
-                if ($(this).getAttribute("alert-meh")) {
-                    alert("YOU CANNOT LEAVE!");
-                }
-            });
-        });
-    </script>
+  <script>
+      $(document).ready(function() {
+          // Example case:
+          $("a.nope").click(function(event) {
+              event.preventDefault();
+              // Link slowly disappears.
+              $(this).hide("slow");
+              if ($(this).getAttribute("alert-meh")) {
+                  alert("YOU CANNOT LEAVE!");
+              }
+          });
+      });
+  </script>
 
-  {% endblock head %}
-</head>
+{% endblock head %}
 
-{% block content %}
+{% block page_content %}
 
-  <div class="container">
-
-    <div class="jumbotron">
-      <h1>JQuery Reference</h1>
-      <p><strong>TL;DR:</strong>
-      <ul>
+  <div class="jumbotron">
+    <h1>JQuery Reference</h1>
+    <p><strong>TL;DR:</strong>
+    <ul>
       <li>$(css selector)</li>
       <li>$.ajax()</li>
       <li>$(selector).css()</li>
       <li>$(something).[event trigger]()</li>
       <li>$(document/window).on('event trigger', selector, function(){})</li>
-      </ul>
+    </ul>
 
+    </p>
+  </div>
+
+
+  <p>Here is a <a class="nope" href="https://www.google.com/">link</a> we can mess with.
+    Here is a <a class="nope" href="https://www.yahoo.com/">another link</a> we can mess with.</p>
+
+
+  <hr>
+  <h2>Basics</h2>
+  <div class="row">
+    <div class="col-sm-5">
+      <p>To run code as soon as the document is ready to be manipulated,
+        do the following:
       </p>
     </div>
-
-
-    <p>Here is a <a class="nope" href="https://www.google.com/">link</a> we can mess with.
-      Here is a <a class="nope" href="https://www.yahoo.com/">another link</a> we can mess with.</p>
-
-
-    <hr>
-    <h2>Basics</h2>
-    <div class="row">
-      <div class="col-sm-5">
-        <p>To run code as soon as the document is ready to be manipulated,
-          do the following:
-        </p>
-      </div>
-      <div class="col-sm-5">
+    <div class="col-sm-5">
       <pre><code>
         $(document).ready(function() {
           // Example case:
@@ -62,17 +58,17 @@
           });
         });
       </code></pre>
-      </div>
     </div>
+  </div>
 
-    <hr>
-    <h2>The jQuery Object</h2>
-    <div class="row">
+  <hr>
+  <h2>The jQuery Object</h2>
+  <div class="row">
 
-      <!-- DOM -->
-      <div class="col-sm-6">
-        <h3>Using DOM</h3>
-        <pre><code class="js">
+    <!-- DOM -->
+    <div class="col-sm-6">
+      <h3>Using DOM</h3>
+      <pre><code class="js">
         // Attempt (fails in IE) to set innerHTML of target.
         var target = document.getElementById("target");
         target.innerHTML = "< td>Hello < b>World< /b>!< /td>";
@@ -82,12 +78,12 @@
         var newElement = document.createElement("div");
         target.parentNode.insertBefore(newElement, target.nextSibling);
       </code></pre>
-      </div>
+    </div>
 
-      <!-- JQUERY -->
-      <div class="col-sm-6">
-        <h3>Using JQuery</h3>
-        <pre><code class="js">
+    <!-- JQUERY -->
+    <div class="col-sm-6">
+      <h3>Using JQuery</h3>
+      <pre><code class="js">
         // Setting the inner HTML with jQuery.
         var target = document.getElementById("target");
         $(target).html("< td>Hello < b>World< /b>!< /td>");
@@ -97,9 +93,6 @@
         var newElement = document.createElement("div");
         $(target).after(newElement);
       </code></pre>
-      </div>
-
-
     </div>
-  </div> <!-- End: Container -->
-{% endblock content %}
+  </div>
+{% endblock page_content %}

@@ -7,34 +7,32 @@
   <script src="{{ url_for('static', filename='js/note_taker.js') }}"></script>
 {% endblock scripts %}
 
-{% block content %}
+{% block page_content %}
 
-  <div class="container">
+  <div class="jumbotron">
+    <h1>Flask Reference</h1>
+  </div>
 
-    <div class="jumbotron">
-      <h1>Flask Reference</h1>
-    </div>
+  <div id="accordian" role="tablist" aria-multiselectable="true">
 
-    <div id="accordian" role="tablist" aria-multiselectable="true">
+    <div class="new-card" id="forms-card" title="Forms">
 
-      <div class="new-card" id="forms-card" title="Forms">
+      <!-- Key Concepts -->
+      <div class="cardify" cols="8" title="Key Concepts">
+        <p>
+          <code>Fields</code> do most of the heavy lifting. Each field has a
+          <code>Widget</code> instance, which renders the HTML representation
+          of the field. <strong>Note</strong>: should check out the
+          <code>TextAreaField.</code>
+        </p>
+      </div>  <!-- End: Key Concepts -->
 
-        <!-- Key Concepts -->
-        <div class="cardify" cols="8" title="Key Concepts">
-          <p>
-            <code>Fields</code> do most of the heavy lifting. Each field has a
-            <code>Widget</code> instance, which renders the HTML representation
-            of the field. <strong>Note</strong>: should check out the
-            <code>TextAreaField.</code>
-          </p>
-        </div>  <!-- End: Key Concepts -->
+      <hr>
+      <!-- Examples -->
+      <div class="cardify" cols="8" title="Examples">
 
-        <hr>
-        <!-- Examples -->
-        <div class="cardify" cols="8" title="Examples">
-
-         <h5>Registration Form</h5>
-          <pre><code class="python">
+        <h5>Registration Form</h5>
+        <pre><code class="python">
             def register(request):
               form = MyRegistrationForm(request.POST)
               if request.method == 'POST' and form.validate():
@@ -44,10 +42,10 @@
                 redirect('register')
               return render_response('register.hmtl', form=form)
           </code></pre>
-          <hr>
+        <hr>
 
-          <h5>Editing Existing Objects</h5>
-          <pre><code class="python">
+        <h5>Editing Existing Objects</h5>
+        <pre><code class="python">
             def edit_profile(request):
               user = request.current_user
               form = MyProfileForm(request.POST, user)
@@ -59,26 +57,26 @@
           </code></pre>
 
 
-        </div>
-      </div>  <!-- End: Forms Card -->
+      </div>
+    </div>  <!-- End: Forms Card -->
 
-      <!-- Templates -->
-      <div class="new-card" id="templates-card" title="Templates">
-        <!-- Key Concepts -->
-        <div class="cardify" cols="12" title="Sub-Templates">
-          <p>Good for reusability. We can include any snippet of html code by
-            doing the following:
-          </p>
+    <!-- Templates -->
+    <div class="new-card" id="templates-card" title="Templates">
+      <!-- Key Concepts -->
+      <div class="cardify" cols="12" title="Sub-Templates">
+        <p>Good for reusability. We can include any snippet of html code by
+          doing the following:
+        </p>
 
-          <div class="row">
-            <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-6">
             <pre><code>
             <!-- Some code in some_code.html -->
             &lt;td&gt;&lt;img src="&#123;&#123; post.author &#125;&#125;"></td>
             </code></pre>
-            </div>
+          </div>
 
-            <div class="col-sm-6">
+          <div class="col-sm-6">
               <pre><code>
                 &lt;!--Code in, e.g., index.html--&gt;
                 {&#37;  for post in posts &#37;}
@@ -86,40 +84,37 @@
                 {&#37; include 'some_code.html' &#37;}
                 {&#37; endfor &#37;}
               </code></pre>
-            </div>
-          </div>  <!-- end: row -->
-        </div>  <!-- end: cardify -->
-      </div>  <!-- end: templates-card -->
+          </div>
+        </div>  <!-- end: row -->
+      </div>  <!-- end: cardify -->
+    </div>  <!-- end: templates-card -->
 
-      <!-- Application Structure -->
-      <div class="new-card" id="app-structure" title="Application Structure">
-        <!-- Request-Response Cycle -->
-        <div class="cardify" cols="12" title="Application and Request Contexts">
+    <!-- Application Structure -->
+    <div class="new-card" id="app-structure" title="Application Structure">
+      <!-- Request-Response Cycle -->
+      <div class="cardify" cols="12" title="Application and Request Contexts">
 
-          <p>I'm just going to list the main points/jargon.</p>
+        <p>I'm just going to list the main points/jargon.</p>
 
-          <ul>
-            <li>
-              There are two contexts in Flask: the application context
-              and the request context.
-            </li>
-            <li>
-              The request context: uses variables <code>request</code>, which
-              encapsulates the HTTP request sent by the client, and <code>session</code>,
-              which is the "user session", a dictionary that the app can use to
-              store values that are "remembered" between requests.
-            </li>
-            <li>
-              The application context: consists of the <code>current_app</code>,
-              and <code>g</code>, an object that the application can use for
-              temporary storage during the handling of a request (it's reset
-              with each request).
-            </li>
-          </ul>
-        </div>
+        <ul>
+          <li>
+            There are two contexts in Flask: the application context
+            and the request context.
+          </li>
+          <li>
+            The request context: uses variables <code>request</code>, which
+            encapsulates the HTTP request sent by the client, and <code>session</code>,
+            which is the "user session", a dictionary that the app can use to
+            store values that are "remembered" between requests.
+          </li>
+          <li>
+            The application context: consists of the <code>current_app</code>,
+            and <code>g</code>, an object that the application can use for
+            temporary storage during the handling of a request (it's reset
+            with each request).
+          </li>
+        </ul>
       </div>
-
-    </div>  <!-- End: Accordian -->
-  </div> <!-- End: Container -->
-
-{% endblock content %}
+    </div>
+  </div>  <!-- End: Accordian -->
+{% endblock page_content %}

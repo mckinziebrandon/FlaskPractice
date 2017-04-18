@@ -1,60 +1,56 @@
 {% extends "base.html" %}
 {% set active_page = "eloquent_javascript" %}
 
-<head>
-  {% block head %}
-    {{ super() }}
+{% block head %}
+  {{ super() }}
 
-    <style type="text/css">
-      /* Defines a cleaner look for tables */
-      table  { border-collapse: collapse; }
-      td, th { border: 1px solid black; padding: 3px 8px; }
-      th     { text-align: left; }
-    </style>
-  {% endblock head %}
-</head>
+  <style type="text/css">
+    /* Defines a cleaner look for tables */
+    table  { border-collapse: collapse; }
+    td, th { border: 1px solid black; padding: 3px 8px; }
+    th     { text-align: left; }
+  </style>
+{% endblock head %}
 
 
-{% block content %}
-  <div class="container">
-    <div class="jumbotron">
-      <h1>Eloquent JavaScript</h1>
-      <p>Muh Notes</p>
-    </div>
+{% block page_content %}
+  <div class="jumbotron">
+    <h1>Eloquent JavaScript</h1>
+    <p>Muh Notes</p>
+  </div>
 
+  <!-- Begin: Accordian -->
+  <div id="accordian" role="tablist" aria-multiselectable="true">
 
-    <!-- Begin: Accordian -->
-    <div id="accordian" role="tablist" aria-multiselectable="true">
+    <!-- Begin: Card One -->
+    <div class="card">
 
-      <!-- Begin: Card One -->
-      <div class="card">
+      <!-- Card Header -->
+      <div class="card-header" role="tab" id="course-one">
+        <h2 class="mb-0">
+          <a data-toggle="collapse" data-parent="#accordian" href="#course-one-content"
+             aria-expanded="true" aria-controls="#course-one-content">
+            The Document Object Model
+          </a></h2>
+      </div>
 
-        <!-- Card Header -->
-        <div class="card-header" role="tab" id="course-one">
-          <h2 class="mb-0">
-            <a data-toggle="collapse" data-parent="#accordian" href="#course-one-content"
-               aria-expanded="true" aria-controls="#course-one-content">
-              The Document Object Model
-            </a></h2>
-        </div>
+      <!-- Card Content -->
+      <div id="course-one-content" class="collapse" role="tabpanel" aria-labelledby="course-one">
 
-        <!-- Card Content -->
-        <div id="course-one-content" class="collapse" role="tabpanel" aria-labelledby="course-one">
+        <h4>Moving Through The Tree</h4>
+        <div class="card-block row">
+          <div class="col-sm-5">
+            <ul>
+              <li>The global variable <code>document</code> gives us access
+                to the browser's tree-like data structure. It's root node is
+                <code>document.documentElement</code> which points to the head element.
+              </li>
 
-          <h4>Moving Through The Tree</h4>
-          <div class="card-block row">
-            <div class="col-sm-5">
-              <ul>
-                <li>The global variable <code>document</code> gives us access
-                  to the browser's tree-like data structure. It's root node is
-                  <code>document.documentElement</code> which points to the head element.
-                </li>
+              <li>Each DOM node object has a <code>nodeType</code> property.</li>
 
-                <li>Each DOM node object has a <code>nodeType</code> property.</li>
-
-              </ul>
-            </div>
-            <div class="col-sm-7">
+            </ul>
+          </div>
+          <div class="col-sm-7">
           <pre><code class="js">
             function talksAbout(node, string) {
               if (node.nodeType == document.ELEMENT_NODE) {
@@ -68,53 +64,53 @@
               }
             }
           </code></pre>
-            </div>
           </div>
+        </div>
 
-          <h4>Changing The Document</h4>
-          <div class="card-block row">
-            <div class="col-sm-5">
-              <ul>
-                <li>Element nodes have a lot of methods we can use to change their content, such as
-                  removeChild, appendChild, insertBefore, etc. The snippet on the right shows how to
-                  insert a node (first arg) before another (second arg).
-                </li>
+        <h4>Changing The Document</h4>
+        <div class="card-block row">
+          <div class="col-sm-5">
+            <ul>
+              <li>Element nodes have a lot of methods we can use to change their content, such as
+                removeChild, appendChild, insertBefore, etc. The snippet on the right shows how to
+                insert a node (first arg) before another (second arg).
+              </li>
 
-              </ul>
-            </div>
-            <div class="col-sm-7">
+            </ul>
+          </div>
+          <div class="col-sm-7">
             <pre><code class="js">
             var paragraphs = document.body.getElementsByTagName("p");
             document.body.insertBefore(paragraphs[2], paragraphs[0]);
             </code></pre>
-            </div>
           </div>
-
-        </div>  <!-- End: Card Content -->
-      </div>  <!-- End: Card One -->
-
-      <!-- Begin: Card Two-->
-      <div class="card">
-
-        <!-- Card Header -->
-        <div class="card-header" role="tab" id="course-two">
-          <h2 class="mb-0">
-            <a data-toggle="collapse" data-parent="#accordian" href="#course-two-content"
-               aria-expanded="true" aria-controls="#course-two-content">
-              HTTP and Forms
-            </a></h2>
         </div>
 
-        <!-- Card Content -->
-        <div id="course-two-content" class="collapse" role="tabpanel" aria-labelledby="course-two">
+      </div>  <!-- End: Card Content -->
+    </div>  <!-- End: Card One -->
 
-          <!-- Browsers and HTTP -->
-          <div class="cardify" cols="8" title="Browsers and HTTP">
-            <p>HTML pages may include <i>forms</i>, which allow the user to
-              fill out info and send it to server. For example:
-            </p>
+    <!-- Begin: Card Two-->
+    <div class="card">
 
-            <pre><code class="html">
+      <!-- Card Header -->
+      <div class="card-header" role="tab" id="course-two">
+        <h2 class="mb-0">
+          <a data-toggle="collapse" data-parent="#accordian" href="#course-two-content"
+             aria-expanded="true" aria-controls="#course-two-content">
+            HTTP and Forms
+          </a></h2>
+      </div>
+
+      <!-- Card Content -->
+      <div id="course-two-content" class="collapse" role="tabpanel" aria-labelledby="course-two">
+
+        <!-- Browsers and HTTP -->
+        <div class="cardify" cols="8" title="Browsers and HTTP">
+          <p>HTML pages may include <i>forms</i>, which allow the user to
+            fill out info and send it to server. For example:
+          </p>
+
+          <pre><code class="html">
             &lt;form method=&quot;GET&quot; action=&quot;example/message.html&quot;&gt;
             &lt;p&gt;Name: &lt;input type=&quot;text&quot; name=&quot;name&quot;&gt;&lt;/p&gt;
             &lt;p&gt;Message:&lt;br&gt;&lt;textarea name=&quot;message&quot;&gt;&lt;/textarea&gt;&lt;/p&gt;
@@ -122,47 +118,47 @@
             &lt;/form&gt;
             </code></pre>
 
-            <br>
-            <p>
-              Upon clicking Send, the information is encoded into a <i>query string</i>.
-              If method=GET (or ommitted), the browser makes a GET request to:
-            </p>
+          <br>
+          <p>
+            Upon clicking Send, the information is encoded into a <i>query string</i>.
+            If method=GET (or ommitted), the browser makes a GET request to:
+          </p>
 
-            <pre><code>
+          <pre><code>
               GET /example/message.html?name=Jean&message=Yes%4F HTTP/1.1
             </code></pre>
 
-            <p>
-              where the actual message is "Yes?" but the question mark has been
-              turned into browser-speak (URL encoding). JavaScript provides the
-              encodeURIComponent and decodeURIComponent functions to encode and
-              decode this format.
-            </p>
+          <p>
+            where the actual message is "Yes?" but the question mark has been
+            turned into browser-speak (URL encoding). JavaScript provides the
+            encodeURIComponent and decodeURIComponent functions to encode and
+            decode this format.
+          </p>
 
-            <pre><code class="js">
+          <pre><code class="js">
             console.log(encodeURIComponent("Hello & goodbye"));
             // → Hello%20%26%20goodbye
             </code></pre>
 
-            <p>
-              whereas POST will instead place the query string (name=Jean&message=Yes%3F)
-              in the body of the request, rather than adding it to the URL.
-            </p>
+          <p>
+            whereas POST will instead place the query string (name=Jean&message=Yes%3F)
+            in the body of the request, rather than adding it to the URL.
+          </p>
 
-            </code>
-          </div> <!-- End: Browsers and HTTP cardify -->
+          </code>
+        </div> <!-- End: Browsers and HTTP cardify -->
 
 
-          <hr>
-          <!-- XMLHTTPREQUEST -->
-          <div class="cardify" cols="8" title="XMLHttpRequest">
-            <p>
-              The interface through which browser JavaScript can make HTTP
-              requests is called XMLHttpRequest. Basically, the name is stupid
-              and it's for stupid historical reasons. To make a simple request:
-            </p>
+        <hr>
+        <!-- XMLHTTPREQUEST -->
+        <div class="cardify" cols="8" title="XMLHttpRequest">
+          <p>
+            The interface through which browser JavaScript can make HTTP
+            requests is called XMLHttpRequest. Basically, the name is stupid
+            and it's for stupid historical reasons. To make a simple request:
+          </p>
 
-            <pre><code class="js">
+          <pre><code class="js">
               var request = new XMLHttpRequest();
               // Args: open(method, url, async=true)
               // If async=false, doesn't return until response is received.
@@ -171,20 +167,20 @@
               request.send(null);
               console.log(request.responseText);
             </code></pre>
-          </div>
+        </div>
 
-          <hr>
-          <!-- Asynch. Requests -->
-          <div class="cardify" cols="8" title="Asynchronous Requests">
+        <hr>
+        <!-- Asynch. Requests -->
+        <div class="cardify" cols="8" title="Asynchronous Requests">
 
-            <p>
-              If, for the previous request, we set asynch=true (the default),
-              our program could continue w/out needing to wait. But as long as
-              the request is running, we won’t be able to access the response.
-              We need a mechanism that will notify us when the data is available.
-            </p>
+          <p>
+            If, for the previous request, we set asynch=true (the default),
+            our program could continue w/out needing to wait. But as long as
+            the request is running, we won’t be able to access the response.
+            We need a mechanism that will notify us when the data is available.
+          </p>
 
-            <pre><code class="js">
+          <pre><code class="js">
               var request = new XMLHttpRequest();
               request.open("GET", "example/data.txt", true);
               request.addEventListener("load", function() {
@@ -193,67 +189,67 @@
               request.send(null);
             </code></pre>
 
-          </div>
-
-
-        </div>  <!-- End: Card Content -->
-      </div>  <!-- End: Card Two -->
-
-      <!-- Begin: Card Three -->
-      <div class="card">
-
-        <!-- Card Header -->
-        <div class="card-header" role="tab" id="node-js-card">
-          <h2 class="mb-0">
-
-            <a class="collapsed" data-toggle="collapse" data-parent="#accordian"
-               href="#node-js-content"
-               aria-expanded="true" aria-controls="#node-js-content">
-              Node.js
-            </a></h2>
         </div>
 
-        <!-- Exercises from EloquentJavaScript.net -->
-        <div id="node-js-content" class="collapse" role="tabpanel" aria-labelledby="node-js-card">
-          <!-- NODEJS -->
-          <div class="cardify" cols="11" title="Overview">
-            <p>
-              Node was initially conceived for the purpose of making asynchronous
-              I/O easy and convenient. When installed, it provides a program called
-              <code>node</code>, which is used to run JavaScript files.
-            </p>
 
-            <div class="row">
-              <div class="col-sm-5">
+      </div>  <!-- End: Card Content -->
+    </div>  <!-- End: Card Two -->
+
+    <!-- Begin: Card Three -->
+    <div class="card">
+
+      <!-- Card Header -->
+      <div class="card-header" role="tab" id="node-js-card">
+        <h2 class="mb-0">
+
+          <a class="collapsed" data-toggle="collapse" data-parent="#accordian"
+             href="#node-js-content"
+             aria-expanded="true" aria-controls="#node-js-content">
+            Node.js
+          </a></h2>
+      </div>
+
+      <!-- Exercises from EloquentJavaScript.net -->
+      <div id="node-js-content" class="collapse" role="tabpanel" aria-labelledby="node-js-card">
+        <!-- NODEJS -->
+        <div class="cardify" cols="11" title="Overview">
+          <p>
+            Node was initially conceived for the purpose of making asynchronous
+            I/O easy and convenient. When installed, it provides a program called
+            <code>node</code>, which is used to run JavaScript files.
+          </p>
+
+          <div class="row">
+            <div class="col-sm-5">
               <pre><code class="js">
               var message = "Hello world!";
               console.log(message);
               </code></pre>
-              </div>
+            </div>
 
-              <div class="col-sm-1">
-                <span class="glyphicon glyphicon-arrow-right" aria-hidden="true" style="font-size: 2em; top: 20px"></span>
-              </div>
+            <div class="col-sm-1">
+              <span class="glyphicon glyphicon-arrow-right" aria-hidden="true" style="font-size: 2em; top: 20px"></span>
+            </div>
 
-              <div class="col-sm-5">
+            <div class="col-sm-5">
                 <pre><code>
                $ node hello.js
                > Hello world!
                 </code></pre>
-              </div>
             </div>
+          </div>
 
-            <p>
-              You can also just type JavaScript code directly into the interpreter.
-            </p>
+          <p>
+            You can also just type JavaScript code directly into the interpreter.
+          </p>
 
-            <ul>
-              <li>The <code>process</code> variable is a global variable in Node,
-                and provides various ways to inspect/manipulate the current program.</li>
-              <li>To access cmd-line args passed when running <code>node my_program.js one --and two</code>,
-                use the (string) array <code>process.argv</code>.
-              </li>
-            </ul>
+          <ul>
+            <li>The <code>process</code> variable is a global variable in Node,
+              and provides various ways to inspect/manipulate the current program.</li>
+            <li>To access cmd-line args passed when running <code>node my_program.js one --and two</code>,
+              use the (string) array <code>process.argv</code>.
+            </li>
+          </ul>
         </div>
 
         <!-- Modules -->
@@ -262,10 +258,10 @@
           <p>Let's say we have a file <code>garble.js</code> that defines a module, and would
             like to use it in some other file <code>main.js</code>. To do this, we write (in the other file)</p>
 
-            <div class="row">
-              <div class="col-sm-6">
-                <h5>main.js</h5>
-                <pre><code class="js">
+          <div class="row">
+            <div class="col-sm-6">
+              <h5>main.js</h5>
+              <pre><code class="js">
               var garble = require("./garble");
 
               // Index 2 holds the first actual cmd-line argument.
@@ -273,71 +269,61 @@
 
               console.log(garble(argument));
                 </code></pre>
-              </div>
+            </div>
 
-              <div class="col-sm-6">
-                <h5>garble.js</h5>
-                <pre><code class="js">
+            <div class="col-sm-6">
+              <h5>garble.js</h5>
+              <pre><code class="js">
               module.exports = function(string) {
                 return string.split("").map(function(ch) {
                   return String.fromCharCode(ch.charCodeAt(0) + 5);
                 }).join("");
               };
                 </code></pre>
-              </div>
-            </div>
-
-
-        </div>
-
-
-
-
-
-        </div>  <!-- End: Card Content -->
-      </div>  <!-- End: Card Three -->
-
-      <!-- Begin: Card Four -->
-      <div class="card">
-
-        <!-- Card Header -->
-        <div class="card-header" role="tab" id="exercises">
-          <h2 class="mb-0">
-            <a class="collapsed" data-toggle="collapse" data-parent="#accordian"
-               href="#exercises-content"
-               aria-expanded="true" aria-controls="#exercises-content">
-              Exercises
-            </a></h2>
-        </div>
-
-        <!-- Exercises from EloquentJavaScript.net -->
-        <div id="exercises-content" class="collapse" role="tabpanel" aria-labelledby="exercises">
-
-          <!-- Build a Table -->
-          <div class="cardify" title="Build Table" id="mountains_table">
-            <!-- Injects code from build_table.js -->
-            <div id="mountains_table"></div>
-          </div>
-
-          <hr>
-          <!-- Censored Keyboard -->
-          <div class="cardify" title="Censored Keyboard" id="censored_keyboard">
-            <p> You cannot type Q, W, or X here.  </p>
-            <!-- Injects code from censored_keyboard.js -->
-            <div class="input-group">
-              <input id="censored_keyboard" type="text" class="form-control">
             </div>
           </div>
+        </div>
+      </div>  <!-- End: Card Content -->
+    </div>  <!-- End: Card Three -->
 
+    <!-- Begin: Card Four -->
+    <div class="card">
+
+      <!-- Card Header -->
+      <div class="card-header" role="tab" id="exercises">
+        <h2 class="mb-0">
+          <a class="collapsed" data-toggle="collapse" data-parent="#accordian"
+             href="#exercises-content"
+             aria-expanded="true" aria-controls="#exercises-content">
+            Exercises
+          </a></h2>
+      </div>
+
+      <!-- Exercises from EloquentJavaScript.net -->
+      <div id="exercises-content" class="collapse" role="tabpanel" aria-labelledby="exercises">
+
+        <!-- Build a Table -->
+        <div class="cardify" title="Build Table" id="mountains_table">
+          <!-- Injects code from build_table.js -->
+          <div id="mountains_table"></div>
         </div>
 
+        <hr>
+        <!-- Censored Keyboard -->
+        <div class="cardify" title="Censored Keyboard" id="censored_keyboard">
+          <p> You cannot type Q, W, or X here.  </p>
+          <!-- Injects code from censored_keyboard.js -->
+          <div class="input-group">
+            <input id="censored_keyboard" type="text" class="form-control">
+          </div>
+        </div>
 
-      </div>  <!-- End: Card Two -->
-
-    </div>  <!-- End: Accordian -->
+      </div>
 
 
-  </div>
+    </div>  <!-- End: Card Two -->
+
+  </div>  <!-- End: Accordian -->
 
   <!-- Script for beautification. -->
   <script src="{{ url_for('static', filename='js/note_taker.js') }}"></script>
@@ -346,4 +332,4 @@
   <!-- muh censoring -->
   <script src="{{ url_for('static', filename='js/censored_keyboard.js') }}"></script>
 
-{%  endblock content %}
+{% endblock page_content %}

@@ -7,3 +7,4 @@ SQLAlchemy==1.1.9
 WTForms==2.1
 sqlalchemy_migrate==0.11.0
 gunicorn>=19.4.5
+Flask-Moment==0.5.1

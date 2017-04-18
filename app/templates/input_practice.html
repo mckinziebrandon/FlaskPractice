@@ -2,111 +2,107 @@
 {% set active_page = "input_practice" %}
 
 {% macro with_errors(field) %}
-    <div class="form_field">
+  <div class="form_field">
     {% if field.errors %}
-        {% set css_class = 'has_error ' + kwargs.pop('class', '') %}
-        {{ field(class=css_class, **kwargs) }}
-        <ul class="errors">{% for error in field.errors %}<li>{{ error|e }}</li>{% endfor %}</ul>
+      {% set css_class = 'has_error ' + kwargs.pop('class', '') %}
+      {{ field(class=css_class, **kwargs) }}
+      <ul class="errors">{% for error in field.errors %}<li>{{ error|e }}</li>{% endfor %}</ul>
     {% else %}
-        {{ field(**kwargs) }}
+      {{ field(**kwargs) }}
     {% endif %}
-    </div>
+  </div>
 {% endmacro %}
 
-{% block content %}
+{% block page_content %}
 
-  <div class="container">
-    <div class="jumbotron">
-      <h1>Input Practice</h1>
-      <p>Interacting with the database and forms in general.</p>
-    </div>
-
-    <div class="row">
-      <div class="col-sm-10">
-        <h2>Add to Database</h2>
-        {% include 'add_user.html' %}
-      </div>
-    </div>  <!-- End: Add to Database (row) -->
-
-    <hr>
-    <!-- Being as Flasky as possible -->
-    <div class="row">
-      <div class="col-sm-6">
-        <h2>Inputs with Flask</h2>
-        <form action="" method="POST" name="flask-input">
-          <div class="form-group">
-            <!-- For CSRF reasons. -->
-            {{ flask_form.hidden_tag() }}
-            <!-- Labeled input(s) -->
-            {{ flask_form.message.label(style="text-transform: capitalize;") }}
-            {{ flask_form.message(class="form-control") }}
-          </div>
-          <!-- Submit -->
-          {{ with_errors(flask_form.submit, class="btn btn-primary") }}
-        </form>
-      </div>
-    </div>
-
-
-    <hr>
-    <!-- Misc. Form stuff from Eloquent JS. -->
-    <div class="row">
-      <div class="col-sm-8">
-        <h2>Text Fields (Eloquent JS)</h2>
-        <p>To insert "Brandon is amazing" anywhere in the text area, press F2.</p>
-        <textarea id="amazing" class="form-control" rows="2"></textarea>
-        <script>
-            var F2 = 113;
-            var textarea = $("#amazing").get(0);
-            $(textarea).on("keydown", function(event) {
-                if (event.keyCode == F2) {
-                    replaceSelection(textarea, "Brandon is amazing");
-                    event.preventDefault();
-                }
-
-            });
-
-            function replaceSelection(field, word) {
-                // Get start and end of the selection.
-                var from = field.selectionStart;
-                var to = field.selectionEnd;
-                // Replace the currently selected part of text with word.
-                field.value =
-                        field.value.slice(0, from)
-                        + word
-                        + field.value.slice(to);
-                // Put the cursor after the word.
-                field.selectionStart = field.selectionEnd = from + word.length;
-            }
-        </script>
-      </div>
-    </div>
-
-    <hr>
-    <div class="row">
-      <div class="col-sm-8">
-        <h2>File Fields</h2>
-        <p>How to work with file uploads.</p>
-        <label class="btn btn-default btn-file">
-          Browse <input id="file-input" type="file" style="display: none;">
-        </label>
-        <script>
-            var input = document.querySelector("#file-input");
-            $(input).on("change", function() {
-                if (input.files.length > 0) {
-                    var file = input.files[0];
-                    // Insert a new paragraph element after input node.
-                    $(input.parentNode)
-                            .after($(
-                                    "<p>You chose " + file.name + ". "
-                                    + "It has type " + file.type + ".</p>"));
-                }
-            });
-        </script>
-      </div>
-    </div>
-
-
+  <div class="jumbotron">
+    <h1>Input Practice</h1>
+    <p>Interacting with the database and forms in general.</p>
   </div>
-{%  endblock content %}
+
+  <div class="row">
+    <div class="col-sm-10">
+      <h2>Add to Database</h2>
+      {% include 'add_user.html' %}
+    </div>
+  </div>  <!-- End: Add to Database (row) -->
+
+  <hr>
+  <!-- Being as Flasky as possible -->
+  <div class="row">
+    <div class="col-sm-6">
+      <h2>Inputs with Flask</h2>
+      <form action="" method="POST" name="flask-input">
+        <div class="form-group">
+          <!-- For CSRF reasons. -->
+          {{ flask_form.hidden_tag() }}
+          <!-- Labeled input(s) -->
+          {{ flask_form.message.label(style="text-transform: capitalize;") }}
+          {{ flask_form.message(class="form-control") }}
+        </div>
+        <!-- Submit -->
+        {{ with_errors(flask_form.submit, class="btn btn-primary") }}
+      </form>
+    </div>
+  </div>
+
+
+  <hr>
+  <!-- Misc. Form stuff from Eloquent JS. -->
+  <div class="row">
+    <div class="col-sm-8">
+      <h2>Text Fields (Eloquent JS)</h2>
+      <p>To insert "Brandon is amazing" anywhere in the text area, press F2.</p>
+      <textarea id="amazing" class="form-control" rows="2"></textarea>
+      <script>
+          var F2 = 113;
+          var textarea = $("#amazing").get(0);
+          $(textarea).on("keydown", function(event) {
+              if (event.keyCode == F2) {
+                  replaceSelection(textarea, "Brandon is amazing");
+                  event.preventDefault();
+              }
+
+          });
+
+          function replaceSelection(field, word) {
+              // Get start and end of the selection.
+              var from = field.selectionStart;
+              var to = field.selectionEnd;
+              // Replace the currently selected part of text with word.
+              field.value =
+                      field.value.slice(0, from)
+                      + word
+                      + field.value.slice(to);
+              // Put the cursor after the word.
+              field.selectionStart = field.selectionEnd = from + word.length;
+          }
+      </script>
+    </div>
+  </div>
+
+  <hr>
+  <div class="row">
+    <div class="col-sm-8">
+      <h2>File Fields</h2>
+      <p>How to work with file uploads.</p>
+      <label class="btn btn-default btn-file">
+        Browse <input id="file-input" type="file" style="display: none;">
+      </label>
+      <script>
+          var input = document.querySelector("#file-input");
+          $(input).on("change", function() {
+              if (input.files.length > 0) {
+                  var file = input.files[0];
+                  // Insert a new paragraph element after input node.
+                  $(input.parentNode)
+                          .after($(
+                                  "<p>You chose " + file.name + ". "
+                                  + "It has type " + file.type + ".</p>"));
+              }
+          });
+      </script>
+    </div>
+  </div>
+{%  endblock page_content %}
 
