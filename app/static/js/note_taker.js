@@ -17,7 +17,6 @@
  */
 function cardify() {
 
-    console.log("are you shitting me rn");
     // Get (jQuery element containing) all elements with class="cardify".
     var cards = $(".cardify");
     for (var i = cards.length - 1; i >= 0; i--) {
@@ -61,7 +60,6 @@ function cardify() {
 
 function newCard() {
 
-    console.log("HAY MOTHERFUCKER");
     // Get (jQuery element containing) all elements with class="new-card".
     var cards = $(".new-card");
     console.log("cards", cards);

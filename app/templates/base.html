@@ -108,16 +108,18 @@ Misc. Notes:
 </nav>
 
 
-<!-- Display any flash() message calls from e.g. views.py -->
-{%  with messages = get_flashed_messages() %}
-  {%  if messages %}
-    <ul class="list-group">
-      {% for message in messages %}
-        <li class="list-group-item-info">{{ message }}</li>
-      {% endfor %}
-    </ul>
-  {% endif %}
-{% endwith %}
+<div class="container">
+  <!-- Display any flash() message calls from e.g. views.py -->
+  {%  with messages = get_flashed_messages() %}
+    {%  if messages %}
+      <ul class="list-group">
+        {% for message in messages %}
+          <li class="list-group-item-info">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+</div>
 
 <!-- Declare a block with name 'content' for derived templates. -->
 {% block content %}{%  endblock content %}

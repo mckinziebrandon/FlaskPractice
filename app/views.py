@@ -40,6 +40,7 @@ def bootstrap_reference():
 def jquery_reference():
     return render_template('jquery_reference.html')
 
+
 @app.route('/flask_reference')
 def flask_reference():
     return render_template('flask_reference.html')
@@ -52,10 +53,20 @@ def eloquent_javascript():
 
 @app.route('/input_practice', methods=['GET', 'POST'])
 def input_practice():
-    basic_form = BasicForm(request.form)
-    flash("basic_form.message.label: {}".format(basic_form.message.label))
+
+    # Create the forms used for this endpoint.
+    basic_form = BasicForm(prefix="basic_form")
+    flask_form = BasicForm(prefix="flask_form")
+
+    if basic_form.validate_on_submit() and basic_form.submit.data:
+        flash('basic_form validated. Message: {}'.format(
+            basic_form.message.data))
+    if flask_form.validate_on_submit() and flask_form.submit.data:
+        flash('flask_form validated. Message: {}'.format(
+            flask_form.message.data))
     return render_template('input_practice.html',
-                           form=basic_form)
+                           basic_form=basic_form,
+                           flask_form=flask_form)
 
 
 @app.route('/add', methods=['POST'])

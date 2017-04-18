@@ -11,22 +11,59 @@
 
   <div class="container">
 
-  <div class="jumbotron">
-    <h1>Flask Reference</h1>
-  </div>
-
-  <div id="accordian" role="tablist" aria-multiselectable="true">
-
-    <div class="new-card" id="forms-card" title="Forms">
-      <div class="cardify" cols="8" title="Forms">
-        <p>
-          YEAHhh
-        </p>
-      </div>
+    <div class="jumbotron">
+      <h1>Flask Reference</h1>
     </div>
 
-  </div> <!-- End: Container -->
+    <div id="accordian" role="tablist" aria-multiselectable="true">
 
+      <div class="new-card" id="forms-card" title="Forms">
+
+        <!-- Key Concepts -->
+        <div class="cardify" cols="8" title="Key Concepts">
+          <p>
+            <code>Fields</code> do most of the heavy lifting. Each field has a
+            <code>Widget</code> instance, which renders the HTML representation
+            of the field. <strong>Note</strong>: should check out the
+            <code>TextAreaField.</code>
+          </p>
+        </div>  <!-- End: Key Concepts -->
+
+        <hr>
+        <!-- Examples -->
+        <div class="cardify" cols="8" title="Examples">
+
+         <h5>Registration Form</h5>
+          <pre><code class="python">
+            def register(request):
+              form = MyRegistrationForm(request.POST)
+              if request.method == 'POST' and form.validate():
+                user = MyUser()
+                user.username = form.username.data
+                user.save()
+                redirect('register')
+              return render_response('register.hmtl', form=form)
+          </code></pre>
+          <hr>
+
+          <h5>Editing Existing Objects</h5>
+          <pre><code class="python">
+            def edit_profile(request):
+              user = request.current_user
+              form = MyProfileForm(request.POST, user)
+              if request.method == 'POST' and form.validate():
+                form.populate_obj(user)
+                user.save()
+                redirect('edit_profile')
+              return render_response('edit_profile.html', form=form)
+          </code></pre>
+
+
+        </div>
+      </div>  <!-- End: Forms Card -->
+
+    </div>  <!-- End: Accordian -->
+  </div> <!-- End: Container -->
 
   <!-- Script for beautification. -->
   <script src="{{ url_for('static', filename='js/note_taker.js') }}"></script>
