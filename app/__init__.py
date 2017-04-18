@@ -1,23 +1,9 @@
-"""app/__init__.py
+"""app/__init__.py: Initialize session objects."""
 
-Tutorial I:
-    - Creates the flask application object.
-    - Imports the views module.
-
-Tutorial IV:
-    - Create db, our SQLAlchemy database object.
-    - We interact with db. via our classes in app/models.py.
-
-Tutorial V:
-    - Setup our login manager.
-"""
-
-import os
 from flask import Flask
-from flask_openid import OpenID
-from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
-from config import basedir
+from flask_bootstrap import Bootstrap
+from flask_script import Manager
 
 # Create flask application object.
 app = Flask(__name__)
@@ -25,6 +11,10 @@ app = Flask(__name__)
 app.config.from_object('config')
 # Initialize our database.
 db = SQLAlchemy(app)
+# Add support for quick bootstrappin.
+bootstrap = Bootstrap(app)
+# For better CLI.
+manager = Manager(app)
 
 # Name clash: app package (below) != app object (above).
 from app import views, models

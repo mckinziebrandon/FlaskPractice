@@ -1,59 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<!-- app/templates/base.html: Base template that includes:
-    * navigation bar
-    * title logic
+{% extends "bootstrap/base.html" %}
 
-Misc. Notes:
-    - We assume that templates have been passed certain vars when called.
-    - The 'block' control statement defines the place(s) where the derived
-      templates can insert themselves.
--->
+{% block head %}
 
-<head>
-  {% block head %}
+  {% block metas %}
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% endblock metas %}
 
-    {% if active_page %}
-      <title>{{ active_page }}</title>
-    {% else %}
-      <title>FlaskPractice</title>
-    {%  endif %}
+  <title>
+    {% block title %}
+      {% if active_page %}{{ active_page }}{% else %}FlaskPractice{%  endif %}
+    {% endblock title %}
+  </title>
 
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" type="text/css"
-          href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+  {% block styles %}
+    <!-- Load bootstrap core first. -->
+    {{ super() }}
 
     <!-- Bootstrap theme -->
     <link rel="stylesheet" type="text/css"
           href="{{ url_for('static', filename='css/bootstrap-theme.min.css') }}">
 
-    <!-- Custom styles for this template -->
+    <!-- Custom styles for bootstrap reference page. -->
     <link rel="stylesheet" type="text/css"
           href="{{ url_for('static', filename='css/theme.css') }}">
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-
     <!-- Syntax Highlighting -->
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.10.0/styles/default.min.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.10.0/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
 
     <!-- My own styles. -->
     <link rel="stylesheet" type="text/css"
           href="{{ url_for('static', filename='css/style_additions.css') }}">
+  {% endblock styles %}
 
-    <!-- Bootstrap glyphicon support -->
-    <!-- <span class="glyphicon glyphicon-search" aria-hidden="true"></span>-->
-  {% endblock head %}
-</head>
+  <!-- Syntax Highlighting -->
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.10.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+{% endblock head %}
 
 <!-- The body -->
-<body>
+{% block body %}
 
+
+
+{% block navbar %}
 {%  set navigation_bar = [
         ('/', 'index', 'Index'),
         ('/input_practice', 'input_practice', 'Input Practice'),
@@ -62,50 +53,52 @@ Misc. Notes:
 {%  set active_page = active_page|default('index') -%}
 
 <!-- Fixed navbar -->
-<nav class="navbar navbar-inverse navbar-fixed-top">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed"
-              data-toggle="collapse" data-target="#navbar"
-              aria-expanded="false" aria-controls="navbar">
-        <span class="sr-only">Toggle navigation</span>
-        {% for _ in range(3) %}
-          <span class="icon-bar"></span>
-        {% endfor %}
-      </button>
-      <a class="navbar-brand" href="/">FlaskPractice</a>
-    </div>
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed"
+                data-toggle="collapse" data-target="#navbar"
+                aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          {% for _ in range(3) %}
+            <span class="icon-bar"></span>
+          {% endfor %}
+        </button>
+        <a class="navbar-brand" href="/">FlaskPractice</a>
+      </div>
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-        {%  for href, id, caption in navigation_bar %}
-          <li {% if id == active_page %} class="active" {% endif %}>
-            <a href="{{ href|e }}">{{ caption|e }}</a>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          {%  for href, id, caption in navigation_bar %}
+            <li {% if id == active_page %} class="active" {% endif %}>
+              <a href="{{ href|e }}">{{ caption|e }}</a>
+            </li>
+          {% endfor %}
+
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle"
+               data-toggle="dropdown"
+               role="button"
+               aria-haspopup="true"
+               aria-expanded="false">
+              Reference
+              <span class="caret"></span></a>
+
+            <ul class="dropdown-menu">
+              <li><a href="{{ url_for('bootstrap_reference') }}">Bootstrap</a></li>
+              <li><a href="{{ url_for('flask_reference') }}">Flask</a></li>
+              <li><a href="{{ url_for('jquery_reference') }}">JQuery</a></li>
+              <!--<li role="separator" class="divider"></li>
+              <li class="dropdown-header">Nav header</li>
+              <li><a href="#">Separated link</a></li> -->
+            </ul>
+
           </li>
-        {% endfor %}
-
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle"
-             data-toggle="dropdown"
-             role="button"
-             aria-haspopup="true"
-             aria-expanded="false">
-            Reference
-            <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="{{ url_for('bootstrap_reference') }}">Bootstrap</a></li>
-            <li><a href="{{ url_for('flask_reference') }}">Flask</a></li>
-            <li><a href="{{ url_for('jquery_reference') }}">JQuery</a></li>
-            <!--<li role="separator" class="divider"></li>
-            <li class="dropdown-header">Nav header</li>
-            <li><a href="#">Separated link</a></li> -->
-          </ul>
-        </li>
-      </ul>
-    </div><!--/.nav-collapse -->
-  </div>
-</nav>
-
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+{% endblock navbar %}
 
 <div class="container">
   <!-- Display any flash() message calls from e.g. views.py -->
@@ -123,9 +116,6 @@ Misc. Notes:
 <!-- Declare a block with name 'content' for derived templates. -->
 {% block content %}{%  endblock content %}
 
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-</body>
+{% endblock body %}
 
-</html>
 

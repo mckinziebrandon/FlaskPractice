@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% set active_page = "flask_reference" %}
 
-<head>
-  {% block head %}
-    {{ super() }}
-  {% endblock head %}
-</head>
+{% block scripts %}
+  {{ super() }}
+  <!-- Script for beautification. -->
+  <script src="{{ url_for('static', filename='js/note_taker.js') }}"></script>
+{% endblock scripts %}
 
 {% block content %}
 
@@ -91,9 +91,35 @@
         </div>  <!-- end: cardify -->
       </div>  <!-- end: templates-card -->
 
+      <!-- Application Structure -->
+      <div class="new-card" id="app-structure" title="Application Structure">
+        <!-- Request-Response Cycle -->
+        <div class="cardify" cols="12" title="Application and Request Contexts">
+
+          <p>I'm just going to list the main points/jargon.</p>
+
+          <ul>
+            <li>
+              There are two contexts in Flask: the application context
+              and the request context.
+            </li>
+            <li>
+              The request context: uses variables <code>request</code>, which
+              encapsulates the HTTP request sent by the client, and <code>session</code>,
+              which is the "user session", a dictionary that the app can use to
+              store values that are "remembered" between requests.
+            </li>
+            <li>
+              The application context: consists of the <code>current_app</code>,
+              and <code>g</code>, an object that the application can use for
+              temporary storage during the handling of a request (it's reset
+              with each request).
+            </li>
+          </ul>
+        </div>
+      </div>
+
     </div>  <!-- End: Accordian -->
   </div> <!-- End: Container -->
 
-  <!-- Script for beautification. -->
-  <script src="{{ url_for('static', filename='js/note_taker.js') }}"></script>
 {% endblock content %}

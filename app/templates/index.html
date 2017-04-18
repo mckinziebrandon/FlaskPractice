@@ -22,13 +22,13 @@
           <!-- Greet user -->
           <div class="panel panel-primary">
 
-            <div class="panel-heading nickname" data-toggle="collapse"
-                 href="#{{ user.nickname }}-posts" aria-expanded="false">
-              {{ user.nickname }}
+            <div class="panel-heading" data-toggle="collapse"
+                 href="#{{ user.nickname|capitalize }}-posts" aria-expanded="false">
+              {{ user.nickname|capitalize }}
             </div>
 
             <!-- Post list for the given user. -->
-            <div id="{{ user.nickname }}-posts" class="panel-body collapse">
+            <div id="{{ user.nickname|capitalize }}-posts" class="panel-body collapse">
               <ul class="list-group">
                 {%  for post in user.posts %}
                   <div class="row">
@@ -47,7 +47,6 @@
                       </form>
                     </div>
                   </div>
-                  </li>
                 {%  endfor %}
               </ul>
             </div>

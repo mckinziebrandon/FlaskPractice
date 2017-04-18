@@ -9,7 +9,6 @@
 
 Misc Notes:
     - We can access the config.py variables via app.config dictionary.
-
 """
 
 from app import app, db
