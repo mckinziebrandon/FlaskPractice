@@ -1,6 +1,11 @@
 import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 
+SQLALCHEMY_TRACK_MODIFICATIONS = False  # Suppress error from package itself.
+# Path of our db file. Required by Flask-SQLAlchemy extension.
+SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db')
+# Folder where we'll store SQLAlchemy-migrate data files.
+SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
 
 class Config:
 

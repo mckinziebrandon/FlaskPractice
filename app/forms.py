@@ -3,15 +3,16 @@
 from flask_wtf import FlaskForm
 from wtforms import Form
 from wtforms import StringField, SubmitField, TextAreaField
-from wtforms.validators import DataRequired, InputRequired, Length, NoneOf, \
-    ValidationError
+from flask_pagedown.fields import PageDownField
+from wtforms.validators import DataRequired, InputRequired
+from wtforms.validators import Length, NoneOf
+from wtforms.validators import ValidationError
 
 
 def bad_chars(form, string_field):
     for c in r";'`":
         if c in string_field.data:
             raise ValidationError('DONT TYPE DAT')
-
 
 
 class BasicForm(FlaskForm):
@@ -25,7 +26,8 @@ class UserForm(FlaskForm):
     nickname = StringField(
         'nickname',
         validators=[DataRequired(), bad_chars])
-    post = TextAreaField('post', validators=[Length(min=0, max=140)])
+    #post = TextAreaField('post', validators=[DataRequired()])
+    post = PageDownField('post', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
 

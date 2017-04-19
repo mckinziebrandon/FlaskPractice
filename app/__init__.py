@@ -4,6 +4,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_script import Manager, Shell
 from flask_moment import Moment
+from flask_pagedown import PageDown
 from config import config
 
 # Create flask application object.
@@ -16,6 +17,8 @@ db = SQLAlchemy(app)
 manager = Manager(app)
 # Nice thingy for displaying dates/times.
 moment = Moment(app)
+# Client-sdie Markdown-to-HTML converter implemented in JS.
+pagedown = PageDown(app)
 
 
 def make_shell_context():
