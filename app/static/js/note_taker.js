@@ -15,7 +15,9 @@
  *          </div>
  *      </div>
  */
-function cardify() {
+$(document).ready(function() {
+
+(function cardify() {
 
     // Get (jQuery element containing) all elements with class="cardify".
     var cards = $(".cardify");
@@ -56,9 +58,9 @@ function cardify() {
         }
     }
 
-};
+})();
 
-function newCard() {
+(function newCard() {
 
     // Get (jQuery element containing) all elements with class="new-card".
     var cards = $(".new-card");
@@ -105,9 +107,6 @@ function newCard() {
         // Replace the div with the new styled node.
         $(card).replaceWith(cardRoot);
     }
-}
+})();
 
-// TODO: stop being such a js noob.
-newCard();
-cardify();
-
+});

@@ -3,7 +3,7 @@
 from flask_wtf import FlaskForm
 from wtforms import Form
 from wtforms import StringField, SubmitField, TextAreaField
-from wtforms.validators import DataRequired, InputRequired, Length
+from wtforms.validators import DataRequired, InputRequired, Length, NoneOf
 
 
 class BasicForm(FlaskForm):
@@ -14,6 +14,8 @@ class BasicForm(FlaskForm):
 
 class UserForm(FlaskForm):
     """Form for creating/editing a user."""
-    nickname = StringField('nickname', validators=[DataRequired()])
+    nickname = StringField(
+        'nickname',
+        validators=[DataRequired(), NoneOf("".split(r"`;'"))])
     post = TextAreaField('post', validators=[Length(min=0, max=140)])
 

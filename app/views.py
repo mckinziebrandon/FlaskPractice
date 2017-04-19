@@ -64,7 +64,6 @@ def input_practice():
 
 @app.route('/add_user', methods=['POST'])
 def add_user():
-
     # This will get filled with form info via request.
     user_form = UserForm()
     flash(user_form.nickname.data)
@@ -87,26 +86,24 @@ def add_user():
                 author=user)
 
     # Add and commit to database.
-    db.session.add(user)
-    db.session.add(post)
+    db.session.add_all([user, post])
     db.session.commit()
     flash('Database successfully updated.')
     #else:
     #    flash('Error: form submission not validated.')
     #    flash(user_form.errors)
 
-    # Route back to the html page.
-    return redirect(url_for('input_practice'))
+    # Go back to where ya came from!
+    return redirect(request.referrer)
 
 
 @app.route('/delete/<post_id>', methods=['POST'])
 def delete_post(post_id):
     # TODO: make this via ajax so full page doesn't need to re-render.
     post = Post.query.get_or_404(post_id)
-    user = post.author
     db.session.delete(post)
     db.session.commit()
-    return redirect(url_for('index'))
+    return redirect(request.referrer)
 
 
 @app.errorhandler(404)

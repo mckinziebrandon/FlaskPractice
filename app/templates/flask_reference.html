@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% set active_page = "flask_reference" %}
 
-{% block scripts %}
+{% block head %}
   {{ super() }}
   <!-- Script for beautification. -->
   <script src="{{ url_for('static', filename='js/note_taker.js') }}"></script>
-{% endblock scripts %}
+{% endblock head %}
 
 {% block page_content %}
 

@@ -45,7 +45,8 @@ class User(db.Model):
     posts = db.relationship('Post', backref='author', lazy='dynamic')
 
     def __repr__(self):
-        return '<User %r>' % self.nickname
+        return '<User {0} with {1} posts>'.format(
+            self.nickname, self.posts.count())
 
 
 class Post(db.Model):
