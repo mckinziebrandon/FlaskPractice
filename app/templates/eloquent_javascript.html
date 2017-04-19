@@ -12,6 +12,15 @@
   </style>
 {% endblock head %}
 
+{% block scripts_end %}
+  <!-- Script for beautification. -->
+  <script src="{{ url_for('static', filename='js/note_taker.js') }}"></script>
+  <!-- muh table -->
+  <script src="{{ url_for('static', filename='js/build_table.js') }}"></script>
+  <!-- muh censoring -->
+  <script src="{{ url_for('static', filename='js/censored_keyboard.js') }}"></script>
+{% endblock scripts_end %}
+
 
 {% block page_content %}
   <div class="jumbotron">
@@ -325,11 +334,5 @@
 
   </div>  <!-- End: Accordian -->
 
-  <!-- Script for beautification. -->
-  <script src="{{ url_for('static', filename='js/note_taker.js') }}"></script>
-  <!-- muh table -->
-  <script src="{{ url_for('static', filename='js/build_table.js') }}"></script>
-  <!-- muh censoring -->
-  <script src="{{ url_for('static', filename='js/censored_keyboard.js') }}"></script>
 
 {% endblock page_content %}

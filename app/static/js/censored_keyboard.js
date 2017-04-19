@@ -1,3 +1,5 @@
+$(document).ready(function() {
+
 /**
  * Program a text field (an <input type="text"> tag) that Q, W, and X
  * cannot be typed into.
@@ -11,7 +13,9 @@ var forbiddenKeys = {
 
 // Get the target input element by id.
 var inputElement = $("#censored_keyboard"); //.get(0);
+console.log(inputElement);
 $(inputElement).on("keydown", function(event) {
+    console.log("Key event");
     var key = event.which;
     if ($.inArray(key, Object.values(forbiddenKeys)) != -1) {
         console.log("Censoring " + key);
@@ -22,3 +26,4 @@ $(inputElement).on("keydown", function(event) {
     }
 });
 
+});

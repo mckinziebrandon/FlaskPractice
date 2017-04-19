@@ -39,10 +39,10 @@ $(document).ready(function() {
             var cardBlock = document.createElement("div");
             if (card.getAttribute("cols")) {
                 var numCols = parseInt(card.getAttribute("cols"));
-                console.log("cols found = " + numCols);
+                console.log("Using numCols = " + numCols);
             } else {
                 var numCols = 10;
-                console.log("cols not found = " + numCols);
+                console.log("cols not found, defaulting to " + numCols);
             }
             cardBlock.setAttribute("class", "card-block row");
             // Set the innerHTML of cardBlock (using jQuery).
