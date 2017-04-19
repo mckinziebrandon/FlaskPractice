@@ -19,15 +19,95 @@ from datetime import datetime
 from .forms import BasicForm, UserForm
 from .models import User, Post
 
+HTTP_CODES = {
+    'REDIRECT': 307
+}
 
-@app.route('/')
-@app.route('/index')
+
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/index', methods=['GET', 'POST'])
 def index():
     # Load all User objects from db database.
     users = User.query.all()
+    forms = {'user_form': UserForm()}
+    form = forms['user_form']
+    if form.validate_on_submit() and form.submit.data:
+        flash('user_form valid')
+        session['nickname'] = forms['user_form'].nickname.data
+        return redirect(url_for('add_user'), code=HTTP_CODES['REDIRECT'])
     return render_template('index.html',
                            title='Home',
-                           users=users)
+                           users=users,
+                           forms=forms)
+
+
+@app.route('/input_practice', methods=['GET', 'POST'])
+def input_practice():
+    # Create the form(s) used for this endpoint.
+    forms = {'basic_form': BasicForm(),
+             'user_form': UserForm()}
+    app.logger.info('sup faggot')
+
+    form = forms['basic_form']
+    if form.validate_on_submit() and form.submit.data:
+        flash('basic_form validated. Message: {}'.format(
+            forms['basic_form'].message.data))
+        return redirect(url_for('input_practice'))
+
+    form = forms['user_form']
+    if form.validate_on_submit() and form.submit.data:
+        flash('user_form valid')
+        session['nickname'] = forms['user_form'].nickname.data
+        return redirect(url_for('add_user'), code=HTTP_CODES['REDIRECT'])
+    return render_template('input_practice.html', forms=forms)
+
+
+@app.route('/add_user', methods=['POST'])
+def add_user():
+    # This will get filled with form info via request.
+    user_form = UserForm(nickname=session.get('nickname'))
+    if not user_form:
+        flash("Couldn't find user_form in Session. Creating a new one.")
+        user_form = UserForm()
+    flash(user_form.nickname.data)
+    flash(user_form.post.data)
+
+    if user_form.validate_on_submit():
+
+        # Get or create the user.
+        user = User.query.filter_by(nickname=user_form.nickname.data).first()
+        if user is None:
+            user = User(nickname=user_form.nickname.data)
+
+        # Associate user and their post.
+        post = Post(body=user_form.post.data,
+                    timestamp=datetime.utcnow(),
+                    author=user)
+
+        # Add and commit to database.
+        db.session.add_all([user, post])
+        db.session.commit()
+        flash('Database successfully updated.')
+    else:
+        flash('Error: form submission not validated.')
+        flash(user_form.errors)
+
+    # Go back to where ya came from!
+    return redirect(request.referrer)
+
+
+@app.route('/delete/<post_id>', methods=['POST'])
+def delete_post(post_id):
+    # TODO: make this via ajax so full page doesn't need to re-render.
+    post = Post.query.get_or_404(post_id)
+    db.session.delete(post)
+    db.session.commit()
+    return redirect(request.referrer)
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
 
 
 @app.route('/bootstrap_reference')
@@ -48,65 +128,4 @@ def flask_reference():
 @app.route('/eloquent_javascript')
 def eloquent_javascript():
     return render_template('eloquent_javascript.html')
-
-
-@app.route('/input_practice', methods=['GET', 'POST'])
-def input_practice():
-
-    # Create the form(s) used for this endpoint.
-    flask_form = BasicForm(prefix="flask_form")
-    if flask_form.validate_on_submit() and flask_form.submit.data:
-        flash('flask_form validated. Message: {}'.format(
-            flask_form.message.data))
-    return render_template('input_practice.html',
-                           flask_form=flask_form)
-
-
-@app.route('/add_user', methods=['POST'])
-def add_user():
-    # This will get filled with form info via request.
-    user_form = UserForm()
-    flash(user_form.nickname.data)
-    flash(user_form.post.data)
-
-    # TODO: Can't validate because form needs:
-    # {{ form.csrf_token }}
-    # inside it, but it does not have access to the form
-    # (we create it here, not upon rendering 'input_practice')
-    #if user_form.validate_on_submit():
-
-    # Get or create the user.
-    user = User.query.filter_by(nickname=user_form.nickname.data).first()
-    if user is None:
-        user = User(nickname=user_form.nickname.data)
-
-    # Associate user and their post.
-    post = Post(body=user_form.post.data,
-                timestamp=datetime.utcnow(),
-                author=user)
-
-    # Add and commit to database.
-    db.session.add_all([user, post])
-    db.session.commit()
-    flash('Database successfully updated.')
-    #else:
-    #    flash('Error: form submission not validated.')
-    #    flash(user_form.errors)
-
-    # Go back to where ya came from!
-    return redirect(request.referrer)
-
-
-@app.route('/delete/<post_id>', methods=['POST'])
-def delete_post(post_id):
-    # TODO: make this via ajax so full page doesn't need to re-render.
-    post = Post.query.get_or_404(post_id)
-    db.session.delete(post)
-    db.session.commit()
-    return redirect(request.referrer)
-
-
-@app.errorhandler(404)
-def page_not_found(e):
-    return render_template('404.html'), 404
 

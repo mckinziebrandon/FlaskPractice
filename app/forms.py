@@ -18,4 +18,5 @@ class UserForm(FlaskForm):
         'nickname',
         validators=[DataRequired(), NoneOf("".split(r"`;'"))])
     post = TextAreaField('post', validators=[Length(min=0, max=140)])
+    submit = SubmitField('Submit')
 
