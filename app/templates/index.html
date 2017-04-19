@@ -14,66 +14,6 @@
     <p>I can do things with computers. This is good for me.</p>
   </div>
 
-  <div class="row">
-    <div class="col-sm-12">
-
-      <h2>Users</h2>
-      <p>Below is a list of all users stored in the database. Click a user's name
-        to see all of their logged posts.</p>
-      {% for user in users if user.posts.count() %}
-
-        <div class="row">
-          <div class="col-sm-10">
-            <div class="panel panel-primary">
-
-              <!-- Greet user -->
-              <div class="panel-heading clearfix" data-toggle="collapse"
-                   href="#{{ user.nickname|capitalize }}-posts" aria-expanded="false">
-                {{ user.nickname|capitalize }}
-              </div>
-
-
-              <!-- Post list for the given user. -->
-              <div id="{{ user.nickname|capitalize }}-posts" class="panel-body collapse">
-                <ul class="list-group">
-                  {%  for post in user.posts %}
-                    <div class="row">
-                      <div class="col-sm-10">
-                        <!-- Post body -->
-                        <li class="list-group-item justify-content-between">
-                          {{ post.body }}
-                          <!-- Timestamp on the right. -->
-                          <span class="badge badge-default badge-pill">
-                        {{ moment(post.timestamp).fromNow(refresh=True) }}
-                      </span>
-                      </div>
-
-                      <div class="col-sm-2">
-                        {{ delete_model('post', post.id) }}
-                      </div>
-                    </div>
-                  {%  endfor %}
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-2">
-            <!-- Button -->
-            {{ delete_model('user', user.id) }}
-          </div>
-
-        </div>
-      {% endfor %}
-    </div>
-  </div>
-
-  <!-- Form for adding new users/posts. -->
-  <div class="row">
-    <div class="col-sm-10">
-      <h2>Add to Database</h2>
-      {% include 'add_user.html' %}
-    </div>
-  </div>  <!-- End: Add to Database (row) -->
 
 {%  endblock page_content %}
 

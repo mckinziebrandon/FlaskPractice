@@ -41,12 +41,26 @@ def index():
                            forms=forms)
 
 
+@app.route('/databases', methods=['GET', 'POST'])
+def databases():
+    # Load all User objects from db database.
+    users = User.query.all()
+    forms = {'user_form': UserForm()}
+    form = forms['user_form']
+    if form.validate_on_submit() and form.submit.data:
+        flash('user_form valid')
+        session['nickname'] = forms['user_form'].nickname.data
+        return redirect(url_for('add_user'), code=HTTP_CODES['REDIRECT'])
+    return render_template('databases.html',
+                           users=users,
+                           forms=forms)
+
+
 @app.route('/input_practice', methods=['GET', 'POST'])
 def input_practice():
     # Create the form(s) used for this endpoint.
     forms = {'basic_form': BasicForm(),
              'user_form': UserForm()}
-    app.logger.info('sup faggot')
 
     form = forms['basic_form']
     if form.validate_on_submit() and form.submit.data:
