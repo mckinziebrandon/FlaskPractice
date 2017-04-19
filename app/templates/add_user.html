@@ -1,3 +1,15 @@
+{% macro with_errors(field) %}
+  <div class="form_field">
+    {% if field.errors %}
+      {% set css_class = 'has_error ' + kwargs.pop('class', '') %}
+      {{ field(class=css_class, **kwargs) }}
+      <ul class="errors">{% for error in field.errors %}<li>{{ error|e }}</li>{% endfor %}</ul>
+    {% else %}
+      {{ field(**kwargs) }}
+    {% endif %}
+  </div>
+{% endmacro %}
+
 <form id="user-form" action="" method="POST">
   <!-- For CSRF reasons. -->
   {{ forms['user_form'].hidden_tag() }}
@@ -17,5 +29,5 @@
   </div>
 
   <!-- Submit -->
-  {{ forms['user_form'].submit(class="btn btn-primary") }}
+  {{ with_errors(forms['user_form'].submit, class="btn btn-primary") }}
 </form>

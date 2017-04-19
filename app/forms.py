@@ -3,7 +3,15 @@
 from flask_wtf import FlaskForm
 from wtforms import Form
 from wtforms import StringField, SubmitField, TextAreaField
-from wtforms.validators import DataRequired, InputRequired, Length, NoneOf
+from wtforms.validators import DataRequired, InputRequired, Length, NoneOf, \
+    ValidationError
+
+
+def bad_chars(form, string_field):
+    for c in r";'`":
+        if c in string_field.data:
+            raise ValidationError('DONT TYPE DAT')
+
 
 
 class BasicForm(FlaskForm):
@@ -16,7 +24,8 @@ class UserForm(FlaskForm):
     """Form for creating/editing a user."""
     nickname = StringField(
         'nickname',
-        validators=[DataRequired(), NoneOf("".split(r"`;'"))])
+        validators=[DataRequired(), bad_chars])
     post = TextAreaField('post', validators=[Length(min=0, max=140)])
     submit = SubmitField('Submit')
+
 

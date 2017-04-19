@@ -1,8 +1,11 @@
 {% extends "base.html" %}
-<!-- app/templates/index.html:
-    * Inherits from base.html.
--->
-<!-- Inserts this within the block named 'content' in base.html. -->
+
+{% macro delete_model(class_name, id) %}
+  <!-- Delete button -->
+  <form action="{{ url_for('delete_' + class_name|lower, id=id) }}" method="POST">
+    <button type="submit" class="btn btn-med btn-danger pull-right">Delete</button>
+  </form>
+{% endmacro %}
 
 {% block page_content %}
 
@@ -18,37 +21,45 @@
       <p>Below is a list of all users stored in the database. Click a user's name
         to see all of their logged posts.</p>
       {% for user in users if user.posts.count() %}
-        <div class="panel panel-primary">
-          <!-- Greet user -->
-          <div class="panel-heading" data-toggle="collapse"
-               href="#{{ user.nickname|capitalize }}-posts" aria-expanded="false">
-            {{ user.nickname|capitalize }}
-          </div>
 
-          <!-- Post list for the given user. -->
-          <div id="{{ user.nickname|capitalize }}-posts" class="panel-body collapse">
-            <ul class="list-group">
-              {%  for post in user.posts %}
-                <div class="row">
-                  <div class="col-sm-9">
-                    <!-- Post body -->
-                    <li class="list-group-item justify-content-between">
-                      {{ post.body }}
-                      <!-- Timestamp on the right. -->
-                      <span class="badge badge-default badge-pill">
+        <div class="row">
+          <div class="col-sm-10">
+            <div class="panel panel-primary">
+
+              <!-- Greet user -->
+              <div class="panel-heading clearfix" data-toggle="collapse"
+                   href="#{{ user.nickname|capitalize }}-posts" aria-expanded="false">
+                {{ user.nickname|capitalize }}
+              </div>
+
+
+              <!-- Post list for the given user. -->
+              <div id="{{ user.nickname|capitalize }}-posts" class="panel-body collapse">
+                <ul class="list-group">
+                  {%  for post in user.posts %}
+                    <div class="row">
+                      <div class="col-sm-10">
+                        <!-- Post body -->
+                        <li class="list-group-item justify-content-between">
+                          {{ post.body }}
+                          <!-- Timestamp on the right. -->
+                          <span class="badge badge-default badge-pill">
                         {{ moment(post.timestamp).fromNow(refresh=True) }}
                       </span>
-                  </div>
+                      </div>
 
-                  <div class="col-sm-1">
-                    <!-- Delete button -->
-                    <form action="{{ url_for('delete_post', post_id=post.id) }}" method="POST">
-                      <button type="submit" class="btn btn-danger">Delete</button>
-                    </form>
-                  </div>
-                </div>
-              {%  endfor %}
-            </ul>
+                      <div class="col-sm-2">
+                        {{ delete_model('post', post.id) }}
+                      </div>
+                    </div>
+                  {%  endfor %}
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <!-- Button -->
+            {{ delete_model('user', user.id) }}
           </div>
 
         </div>
