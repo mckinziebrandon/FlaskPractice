@@ -83,8 +83,6 @@ def add_user():
     if not user_form:
         flash("Couldn't find user_form in Session. Creating a new one.")
         user_form = UserForm()
-    flash(user_form.nickname.data)
-    flash(user_form.post.data)
 
     if user_form.validate_on_submit():
 

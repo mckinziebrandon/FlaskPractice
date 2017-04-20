@@ -42,16 +42,17 @@
                       <div class="col-sm-10">
                         <!-- Post body -->
                         <li class="list-group-item justify-content-between">
+                                                  <!-- Timestamp on the right. -->
+                          <span class="badge badge-default badge-pill">
+                            {{ moment(post.timestamp).fromNow(refresh=True) }}
+                          </span>
                           {% if post.body_html %}
                             <!-- safe: tell Jinja2 not to escape the HTML elements. -->
                             {{ post.body_html | safe }}
                           {% else %}
                             {{ post.body }}
                           {% endif %}
-                          <!-- Timestamp on the right. -->
-                          <span class="badge badge-default badge-pill">
-                        {{ moment(post.timestamp).fromNow(refresh=True) }}
-                      </span>
+
                       </div>
 
                       <div class="col-sm-2">

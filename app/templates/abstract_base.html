@@ -66,11 +66,11 @@ Misc. Notes:
     <!-- Display any flash() message calls from e.g. views.py -->
     {%  with messages = get_flashed_messages() %}
       {%  if messages %}
-        <ul class="list-group">
+        <div class="alert alert-info">
           {% for message in messages %}
-            <li class="list-group-item-info">{{ message }}</li>
+            <p>{{ message }}</p>
           {% endfor %}
-        </ul>
+        </div>
       {% endif %}
     {% endwith %}
   </div>  <!-- end: container -->
