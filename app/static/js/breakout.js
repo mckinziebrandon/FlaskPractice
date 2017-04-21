@@ -133,6 +133,7 @@ $(window).load(function() {
     var RIGHT_ARROW_KEY = 39;
     var rightPressed = false;
     var leftPressed = false;
+    var shouldAnimate = false;
     $(document).on('keydown', keyDownHandler);
     $(document).on('keyup', keyUpHandler);
 
@@ -173,9 +174,15 @@ $(window).load(function() {
         // Update position(s).
         ball.move();
 
-        requestAnimationFrame(draw);
+        if (shouldAnimate) {
+            requestAnimationFrame(draw);
+        }
     }
 
-    requestAnimationFrame(draw);
+    $(canvas).on('mouseover', function() {
+        shouldAnimate=true;
+        requestAnimationFrame(draw);
+    });
+    $(canvas).on('mouseout', function() {shouldAnimate=false;});
 
 });

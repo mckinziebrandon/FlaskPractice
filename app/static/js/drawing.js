@@ -25,8 +25,8 @@ $(window).load(function() {
         var bool = false;
         var followMouse = function(event) {
             $(div).css({
-                left: event.pageX - 3 * imgSize/2,
-                top: event.pageY - 3 * imgSize / 2});
+                left: event.pageX - imgSize/2,
+                top: event.pageY - imgSize / 2});
         };
 
         $(div).on("click", function() {

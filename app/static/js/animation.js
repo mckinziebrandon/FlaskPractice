@@ -14,7 +14,7 @@ $(window).load(function() {
 
         // "New shapes are drawn behind the existing canvas content."
         ctx.globalCompositeOperation = 'destination-over';
-        ctx.clearRect(0, 0, 300, 300); // clear canvas
+        ctx.clearRect(0, 0, 300, 320); // clear canvas
 
         ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
         // Saves the entire state of the canvas.
