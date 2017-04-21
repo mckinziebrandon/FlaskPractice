@@ -52,9 +52,10 @@
               <span class="caret"></span></a>
 
             <ul class="dropdown-menu">
-              <li><a href="{{ url_for('bootstrap_reference') }}">Bootstrap</a></li>
-              <li><a href="{{ url_for('flask_reference') }}">Flask</a></li>
-              <li><a href="{{ url_for('jquery_reference') }}">JQuery</a></li>
+              <li><a href="{{ url_for('reference', prefix="bootstrap") }}">Bootstrap</a></li>
+              <li><a href="{{ url_for('reference', prefix="flask") }}">Flask</a></li>
+              <li><a href="{{ url_for('reference', prefix="jquery") }}">JQuery</a></li>
+              <li><a href="{{ url_for('reference', prefix="canvas") }}">Canvas</a></li>
             </ul>  <!-- end: dropdown-menu -->
           </li>  <!-- end: dropdown -->
         </ul>  <!-- end: navbar-nav -->

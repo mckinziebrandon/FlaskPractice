@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% set active_page = "canvas_practice" %}
+
+
+{% block head %}
+  {{ super() }}
+
+  <style type="text/css">
+    canvas {
+      border: 2px solid black;
+    }
+    hr {
+      border: none;
+      height: 2px;
+      background-color: #5e5e5e;
+    }
+  </style>
+
+  <!-- Script that uses all elements that follow. -->
+  <script src="{{ url_for('static', filename='js/drawing.js') }}"></script>
+{% endblock head %}
+
+{% block page_content %}
+
+  <div class="row">
+    <!-- Postion and image for trump on load. -->
+    <div id="trump-home">
+      <p class="text-danger">Here comes America</p>
+    </div>
+    <div id="trump-image" style="height: 100px;"
+         src="{{ url_for('static', filename="data/trump.jpg") }}">
+    </div>
+  </div>
+
+  <hr>
+  <div class="row">
+    <!-- Used for drawing two partially overlapping squares. -->
+    <canvas id="tutorial" width="150" height="150"></canvas>
+  </div>
+
+  <hr>
+  <div class="row">
+    <!-- Button column -->
+    <div class="btn-column col-sm-2">
+      <!-- Buttons -->
+      <div class="btn-group-vertical" role="group">
+
+        <h4>Canvas One</h4>
+        <!-- Triangle -->
+        <button id="triangle-btn" type="button" class="btn btn-primary btn-block">Draw Triangle</button>
+        <!-- Grid -->
+        <button id="grid-btn" type="button" class="btn btn-primary btn-block">Draw Grid</button>
+
+        <h4>Canvas Two</h4>
+        <!-- Arcs -->
+        <button id="arcs-btn" type="button" class="btn btn-success btn-block">Draw Arcs</button>
+
+      </div>
+    </div>  <!-- End: button column -->
+
+    <!-- For canvas(es). -->
+    <div class="canvas-column col-sm-10">
+     <!-- Canvases generated inside this space. -->
+    </div>
+
+  </div>
+
+{% endblock page_content %}
