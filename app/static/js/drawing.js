@@ -34,9 +34,19 @@ $(window).load(function() {
             }
         };
 
+        var followMouse = function(event) {
+            $(div).css({
+                left: event.pageX - imgSize/2,
+                top: event.pageY - 3 * imgSize / 2});
+        };
+
         $(div).on("click", function() {
             bool = !bool;
-            $(document).on("mousemove", toggleFollowMouse);
+            if (bool == true) {
+                $(document).on("mousemove", followMouse);
+            } else {
+                $(document).off("mousemove", followMouse);
+            }
         });
     }
 
