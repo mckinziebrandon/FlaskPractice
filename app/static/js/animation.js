@@ -4,6 +4,7 @@ $(window).load(function() {
     var trump = new Image();
     var width = 100;
     var height = 100;
+    var shouldAnimate = false;
 
     function draw() {
         var ctx = document.getElementById('trump-animation').getContext('2d');
@@ -35,14 +36,18 @@ $(window).load(function() {
 
         // Restores the most recently saved canvas state.
         ctx.restore();
-        window.requestAnimationFrame(draw);
+        if (shouldAnimate == true) {
+            window.requestAnimationFrame(draw);
+        }
     }
 
     function init() {
         trump.src = 'http://inthesetimes.com/images/articles/trump_flicker_face_yess.jpg'
         trump.className = "img-responsive img-circle"
+        shouldAnimate = true;
         window.requestAnimationFrame(draw);
     }
 
-    init();
+    $("#trump-animation").on('mouseover', init);
+    $("#trump-animation").on('mouseout', function() {shouldAnimate = false;});
 });

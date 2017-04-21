@@ -19,6 +19,7 @@
   <!-- Script that uses all elements that follow. -->
   <script src="{{ url_for('static', filename='js/drawing.js') }}"></script>
   <script src="{{ url_for('static', filename='js/animation.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/breakout.js') }}"></script>
 {% endblock head %}
 
 {% block page_content %}
@@ -122,4 +123,15 @@
   </div>  <!-- End: Applying Styles and Colors -->
   <hr>
 
+
+  <hr>
+  <div class="row">
+    <h2>Breakout</h2>
+    <canvas id="breakout-canvas" width="480" height="320"></canvas>
+  </div>
+
 {% endblock page_content %}
+
+
+
+

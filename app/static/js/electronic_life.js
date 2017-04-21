@@ -138,12 +138,12 @@ function elementFromChar(legend, ch) {
  */
 function World(map, legend) {
     // Create the grid as a normal local var so it can be accessed
-    // inside the forEach loop below.
+    // inside the assignForEach loop below.
     var grid = new Grid(map[0].length, map.length);
     this.grid = grid;
     this.legend = legend;
 
-    map.forEach(function(line, y) {
+    map.assignForEach(function(line, y) {
         for(var x = 0; x < line.length; x++) {
             grid.set(new Vector(x, y), elementFromChar(legend, line[x]));
         }
@@ -176,7 +176,7 @@ World.prototype.toString = function() {
  */
 World.prototype.turn = function() {
     var acted = [];
-    this.grid.forEach(function(critter, vector) {
+    this.grid.assignForEach(function(critter, vector) {
         if (critter.act && acted.indexOf(critter) != -1) {
             acted.push(critter);
             this.letAct(critter, vector);
