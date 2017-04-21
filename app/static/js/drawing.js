@@ -23,20 +23,9 @@ $(window).load(function() {
         $(trumpCanvas).append(div);
 
         var bool = false;
-        var toggleFollowMouse = function(event) {
-            if (bool == true) {
-                $(div).css({
-                    left: event.pageX - 3 * imgSize/2,
-                    top: event.pageY - 3 * imgSize / 2
-                });
-            } else {
-                $(trumpCanvas).append(div);
-            }
-        };
-
         var followMouse = function(event) {
             $(div).css({
-                left: event.pageX - imgSize/2,
+                left: event.pageX - 3 * imgSize/2,
                 top: event.pageY - 3 * imgSize / 2});
         };
 
