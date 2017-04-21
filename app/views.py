@@ -130,24 +130,9 @@ def page_not_found(e):
     return render_template('404.html'), 404
 
 
-@app.route('/bootstrap_reference')
-def bootstrap_reference():
-    return render_template('reference/bootstrap_reference.html')
-
-
-@app.route('/jquery_reference')
-def jquery_reference():
-    return render_template('reference/jquery_reference.html')
-
-
-@app.route('/flask_reference')
-def flask_reference():
-    return render_template('reference/flask_reference.html')
-
-@app.route('/scraping_reference')
-def scraping_reference():
-    return render_template('reference/scraping.html')
-
+@app.route('/reference/<prefix>')
+def reference(prefix):
+    return render_template('reference/{}_reference.html'.format(prefix))
 
 @app.route('/eloquent_javascript')
 def eloquent_javascript():
