@@ -139,3 +139,8 @@ def reference(prefix):
 def eloquent_javascript():
     return render_template('eloquent_javascript.html')
 
+
+@app.route('/games')
+def games():
+    return render_template('games.html')
+

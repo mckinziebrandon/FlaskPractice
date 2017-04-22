@@ -19,14 +19,12 @@
   <!-- Script that uses all elements that follow. -->
   <script src="{{ url_for('static', filename='js/drawing.js') }}"></script>
   <script src="{{ url_for('static', filename='js/animation.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/breakout.js') }}"></script>
 {% endblock head %}
 
 {% block page_content %}
 
   <div class="row">
     <h2>Tiny Trump</h2>
-
       <!-- Postion and image for trump on load. -->
       <div id="trump-home">
         <p class="text-danger">Here comes America</p>
@@ -43,23 +41,13 @@
       </p>
     </div>
 
-  </div>
-
-
-  <hr>
-  <div class="row">
-
-    <div class="col-sm-6">
-    <h3>Breakout</h3>
-    <p>Mouse-over to play.</p>
-    <canvas id="breakout-canvas" width="480" height="320"></canvas>
-    </div>
 
     <div class="col-sm-pull-5">
       <h3>Trump in Orbit</h3>
       <p>Mouse-over to watch trump orbit nothing.</p>
       <canvas id="trump-animation" width="300" height="320"></canvas>
     </div>
+
   </div>
 
   <hr>

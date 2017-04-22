@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% set active_page = "games" %}
+
+{% block head %}
+  {{ super() }}
+  <style type="text/css">
+    canvas {
+      border: 2px solid black;
+    }
+    hr {
+      border: none;
+      height: 2px;
+      background-color: #5e5e5e;
+    }
+  </style>
+
+  <!-- Script that uses all elements that follow. -->
+  <script src="{{ url_for('static', filename='js/games/breakout.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/games/snake.js') }}"></script>
+{% endblock head %}
+
+
+
+{% block page_content %}
+
+  <div class="jumbotron">
+    <h1>Games in JavaScript</h1>
+    <p>Using the canvas element for making games.</p>
+  </div>
+
+
+  <div class="row">
+
+    <div class="col-sm-6">
+      <h3>Breakout</h3>
+      <p>Mouse-over to play.</p>
+      <canvas id="breakout-canvas" width="480" height="320"></canvas>
+    </div>
+
+    <!-- snek -->
+    <div class="col-sm-6">
+      <canvas id="snake-canvas" width="400" height="400"></canvas>
+    </div>
+  </div>
+
+{% endblock page_content %}
+
