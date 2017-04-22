@@ -1,5 +1,8 @@
 /* Fix code snippet indentation issue. */
 
+.jumbotron {
+  background-color: whitesmoke;
+}
 
 pre > code {
   margin-left: -7em;

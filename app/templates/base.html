@@ -16,7 +16,6 @@
         ('/input_practice', 'input_practice', 'Input Practice'),
         ('/databases', 'databases', 'Databases'),
         ('/games', 'games', 'Games'),
-        ('/eloquent_javascript', 'eloquent_javascript', 'Eloquent JavaScript')
     ] -%}
   {%  set active_page = active_page|default('index') -%}
 
@@ -55,6 +54,7 @@
             <ul class="dropdown-menu">
               <li><a href="{{ url_for('reference', prefix="bootstrap") }}">Bootstrap</a></li>
               <li><a href="{{ url_for('reference', prefix="flask") }}">Flask</a></li>
+              <li><a href="{{ url_for('reference', prefix="javascript") }}">Javascript</a></li>
               <li><a href="{{ url_for('reference', prefix="jquery") }}">JQuery</a></li>
               <li><a href="{{ url_for('reference', prefix="canvas") }}">Canvas</a></li>
             </ul>  <!-- end: dropdown-menu -->
