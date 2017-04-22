@@ -134,12 +134,6 @@ def page_not_found(e):
 def reference(prefix):
     return render_template('reference/{}_reference.html'.format(prefix))
 
-
-@app.route('/eloquent_javascript')
-def eloquent_javascript():
-    return render_template('eloquent_javascript.html')
-
-
 @app.route('/games')
 def games():
     return render_template('games.html')
