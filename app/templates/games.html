@@ -4,40 +4,44 @@
 {% block head %}
   {{ super() }}
   <style type="text/css">
-    canvas {
-      border: 2px solid black;
-    }
+
+
     hr {
       border: none;
       height: 2px;
       background-color: #5e5e5e;
     }
+
+    .row {
+      padding-bottom: 1.5em;
+    }
+
+    canvas {
+      border: 2px solid black;
+      border-radius: 5px;
+    }
+
     .slider-selection {
       background: #BABABA;
     }
 
-    #clockdiv{
-      font-family: sans-serif;
-      color: #fff;
-      display: inline-block;
-      font-weight: 100;
-      text-align: center;
-      font-size: 30px;
+    #clockdiv > div{
+      padding: 5px;
+      position: absolute;
+      left: -5em;
+      border-radius: 3px;
+      /*background: lightseagreen;
+      display: inline-block;*/
     }
 
-    #clockdiv > div{
+    /*
+    #clockdiv div > span{
       padding: 10px;
       border-radius: 3px;
-      background: #00BF96;
+      background: lightseagreen;
       display: inline-block;
     }
-
-    #clockdiv div > span{
-      padding: 15px;
-      border-radius: 3px;
-      background: #00816A;
-      display: inline-block;
-    }
+    */
 
     .smalltext{
       padding-top: 5px;
@@ -61,15 +65,15 @@
 
 
   <div class="row">
-    <h3>Breakout</h3>
+    <h2>Breakout</h2>
     <p>Mouse-over to play.</p>
     <canvas id="breakout-canvas" width="480" height="320"></canvas>
   </div>
 
+  <hr>
   <!-- snek -->
   <div id='snake-row' class="row">
-    <h3>Snek</h3>
-    <p>Play with the snek.</p>
+    <h2>Snake</h2>
 
     <div class="col-sm-3">
       <label for="interval" class="label-group">Interval:</label>
@@ -78,8 +82,8 @@
              data-slider-id='interval-slider'
              type="text"
              data-slider-min="0"
-             data-slider-max="200"
-             data-slider-step="5"
+             data-slider-max="500"
+             data-slider-step="10"
              data-slider-value="100"/>
 
       <br><br>
@@ -87,11 +91,12 @@
       <input id="unit-size"
              data-slider-id='unit-size-slider'
              type="text"
-             data-slider-min="10"
-             data-slider-max="50"
+             data-slider-min="0"
+             data-slider-max="40"
              data-slider-step="10"
              data-slider-value="20"/>
 
+      <br><br>
       <button id='restart-btn' type="button" class="btn btn-primary">
         Restart Game
       </button>
@@ -110,15 +115,7 @@
     </div>
 
     <div class="col-sm-7">
-      <canvas id="snake-canvas" width="600" height="600"></canvas>
-    </div>
-
-
-    <div id="clockdiv" class="col-sm-2" style="display: none">
-      <div>
-        <div class="smalltext">Countdown</div>
-        <span class="seconds"></span>
-      </div>
+      <canvas id="snake-canvas" width="400" height="400"></canvas>
     </div>
 
   </div>
