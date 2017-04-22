@@ -24,14 +24,14 @@
 {% block page_content %}
 
   <div class="row">
+      <!--
     <h2>Tiny Trump</h2>
-      <!-- Postion and image for trump on load. -->
       <div id="trump-home">
         <p class="text-danger">Here comes America</p>
       </div>
 
       <div id="trump-image" style="height: 100px;"
-           src="{{ url_for('static', filename="data/trump.jpg") }}">
+           src="\{ \{ url_for('static', filename="data/trump.jpg") }}">
       </div>
 
     <div class="col-sm-4 col-sm-offset-2">
@@ -40,9 +40,9 @@
         back onto the page.
       </p>
     </div>
+      -->
 
-
-    <div class="col-sm-pull-5">
+    <div class="col-sm-5">
       <h3>Trump in Orbit</h3>
       <p>Mouse-over to watch trump orbit nothing.</p>
       <canvas id="trump-animation" width="300" height="320"></canvas>
