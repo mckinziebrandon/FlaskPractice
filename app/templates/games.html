@@ -12,6 +12,37 @@
       height: 2px;
       background-color: #5e5e5e;
     }
+    .slider-selection {
+      background: #BABABA;
+    }
+
+    #clockdiv{
+      font-family: sans-serif;
+      color: #fff;
+      display: inline-block;
+      font-weight: 100;
+      text-align: center;
+      font-size: 30px;
+    }
+
+    #clockdiv > div{
+      padding: 10px;
+      border-radius: 3px;
+      background: #00BF96;
+      display: inline-block;
+    }
+
+    #clockdiv div > span{
+      padding: 15px;
+      border-radius: 3px;
+      background: #00816A;
+      display: inline-block;
+    }
+
+    .smalltext{
+      padding-top: 5px;
+      font-size: 16px;
+    }
   </style>
 
   <!-- Script that uses all elements that follow. -->
@@ -30,17 +61,66 @@
 
 
   <div class="row">
+    <h3>Breakout</h3>
+    <p>Mouse-over to play.</p>
+    <canvas id="breakout-canvas" width="480" height="320"></canvas>
+  </div>
 
-    <div class="col-sm-6">
-      <h3>Breakout</h3>
-      <p>Mouse-over to play.</p>
-      <canvas id="breakout-canvas" width="480" height="320"></canvas>
+  <!-- snek -->
+  <div id='snake-row' class="row">
+    <h3>Snek</h3>
+    <p>Play with the snek.</p>
+
+    <div class="col-sm-3">
+      <label for="interval" class="label-group">Interval:</label>
+      <input id="interval"
+             class="slider-selection"
+             data-slider-id='interval-slider'
+             type="text"
+             data-slider-min="0"
+             data-slider-max="200"
+             data-slider-step="5"
+             data-slider-value="100"/>
+
+      <br><br>
+      <label for="unit-size" class="label-group">Unit Size:</label>
+      <input id="unit-size"
+             data-slider-id='unit-size-slider'
+             type="text"
+             data-slider-min="10"
+             data-slider-max="50"
+             data-slider-step="10"
+             data-slider-value="20"/>
+
+      <button id='restart-btn' type="button" class="btn btn-primary">
+        Restart Game
+      </button>
+
+      <script>
+          $('#interval').slider({formatter: function(value) {
+              return 'Current value: ' + value;
+          }
+          });
+
+          $('#unit-size').slider({formatter: function(value) {
+              return 'Current value: ' + value;
+          }
+          });
+      </script>
     </div>
 
-    <!-- snek -->
-    <div class="col-sm-6">
-      <canvas id="snake-canvas" width="400" height="400"></canvas>
+    <div class="col-sm-7">
+      <canvas id="snake-canvas" width="600" height="600"></canvas>
     </div>
+
+
+    <div id="clockdiv" class="col-sm-2" style="display: none">
+      <div>
+        <div class="smalltext">Countdown</div>
+        <span class="seconds"></span>
+      </div>
+    </div>
+
   </div>
 
 {% endblock page_content %}
