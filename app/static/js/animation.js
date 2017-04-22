@@ -6,6 +6,8 @@ $(window).load(function() {
     var height = 100;
     var shouldAnimate = false;
 
+
+
     function draw() {
         var ctx = document.getElementById('trump-animation').getContext('2d');
         var idkSize = 150;

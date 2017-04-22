@@ -57,20 +57,46 @@ $(window).load(function() {
     }
 
     Square.prototype.draw = function() {
-        ctx.beginPath();
-
-        ctx.rect(this.getX(), this.getY(), this.size, this.size);
         ctx.fillStyle = this.color;
-        ctx.fill();
+        this.roundedRect();
 
         if (this.number != undefined) {
             ctx.fillStyle = 'white';
             ctx.font = unit_size / 2 + 'px serif';
             ctx.textBaseline = 'middle';
-            ctx.fillText(this.number.toString(), this.getX() + unit_size / 2, this.getY() + unit_size / 2);
+            ctx.textAlign = 'center';
+            if (this.number != 0) {
+                ctx.fillText(this.number.toString(), this.getX() + unit_size / 2, this.getY() + unit_size / 2);
+            } else {
+                ctx.font = unit_size / 3 + 'px serif';
+                ctx.fillText("SNEK", this.getX() + unit_size / 2, this.getY() + unit_size / 2);
+            }
         }
         ctx.closePath();
     };
+
+
+    /** A utility function to draw a rectangle with rounded corners. */
+    Square.prototype.roundedRect = function() {
+        var x = this.getX();
+        var y = this.getY();
+        var width = parseInt(this.size);
+        var height = parseInt(this.size);
+        var radius = width / 10;
+
+        ctx.beginPath();
+        ctx.moveTo(x, y + radius);
+        ctx.lineTo(x, y + height - radius);
+        ctx.arcTo(x, y + height, x + radius, y + height, radius);
+        ctx.lineTo(x + width - radius, y + height);
+        ctx.arcTo(x + width, y + height, x + width, y + height-radius, radius);
+        ctx.lineTo(x + width, y + radius);
+        ctx.arcTo(x + width, y, x + width - radius, y, radius);
+        ctx.lineTo(x + radius, y);
+        ctx.arcTo(x, y, x, y + radius, radius);
+        ctx.fill();
+    }
+
 
     Square.prototype.getPos = function() {
         return this.pos;
@@ -166,7 +192,7 @@ $(window).load(function() {
      * @constructor
      */
     function Grid() {
-        this.snake = new Snake('darkgreen');
+        this.snake = new Snake('lightseagreen');
         this.foodSquare = new Square(4*unit_size, 4*unit_size);
         this.width = canvas.width / unit_size;
         this.height = canvas.height / unit_size;
@@ -179,7 +205,7 @@ $(window).load(function() {
         if (nextPos.x < 0 || nextPos.y < 0 || nextPos.x > canvas.width - unit_size
                 || nextPos.y > canvas.height - unit_size) {
             // just hit the wall for now.
-            this.snake.dx = this.snake.dy = 0;
+            this.snake.speed = this.snake.dx = this.snake.dy = 0;
         }
 
         // food quare check.
@@ -192,10 +218,7 @@ $(window).load(function() {
     Grid.prototype.touchesSnake = function(pos) {
         for (var i = 0; i < this.snake.squares.length; i++) {
             var squarePos = this.snake.squares[i].getPos();
-            if (squarePos.x <= pos.x
-                    && pos.x <= squarePos.x + unit_size
-                    && squarePos.y <= pos.y
-                    && pos.y <= squarePos.y + unit_size) {
+            if (squarePos.equals(pos)) {
                 return true;
             }
         }
@@ -223,7 +246,7 @@ $(window).load(function() {
 
     Grid.prototype.lostGame = function() {
         return this.snake.dx == 0 && this.snake.dy == 0;
-    }
+    };
 
     var grid = new Grid();
 
@@ -259,13 +282,10 @@ $(window).load(function() {
         grid = new Grid();
     });
 
-    var start = null;
+    var n = 3;  // num seconds to wait between restarts.
+    var start = null;  // requestAnimationFrame will set this to timestamp.
+    var waiting = false;  // whether we're waiting between a game restart.
     var snakeLength = grid.snake.getLength();
-
-    var date = new Date();
-    var startTime = null;
-    var waiting = false;
-    var n = 3;
 
     /** draw */
     function draw(timestamp) {
@@ -274,51 +294,58 @@ $(window).load(function() {
         var progress = timestamp - start;
 
         if (progress >= INTERVAL()) {
-            start = timestamp;
-            // clear canvas
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            // Re-draw the updated game.
-            grid.draw();
-            // Update vectors if collisions.
-            grid.handleCollisions();
-            // Update position(s).
-            grid.update();
-            if (snakeLength != grid.snake.getLength()) {
-                snakeLength = grid.snake.getLength();
+
+            // lost game
+            if (grid.lostGame() && waiting == false) {
+                waiting = true;
+                showRestartMessage();
+            } else if (grid.lostGame() == false) {
+                start = timestamp;
+                // clear canvas
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                // Re-draw the updated game.
+                grid.draw();
+                // Update vectors if collisions.
+                grid.handleCollisions();
+                // Update position(s).
+                grid.update();
+                if (snakeLength != grid.snake.getLength()) {
+                    snakeLength = grid.snake.getLength();
+                }
             }
         }
-
-        // lost game
-        if (grid.lostGame() && waiting == false) {
-            waiting = true;
-            var clockDiv = $('#clockdiv');
-            clockDiv.css({display: 'inline'});
-            var tickTime = 0;
-            $('#clockdiv .seconds').html(n - tickTime);
-            var countInt = setInterval(function() {
-                tickTime += 1
-                var html = (n - tickTime > 0) ? n - tickTime : 'GO!';
-                $('#clockdiv .seconds').html(html);
-                if (tickTime > n) {
-                    clearInterval(countInt);
-                    waiting = false;
-                    $('#restart-btn').click();
-                    clockDiv.css({display: 'none'});
-                }
-            }, 1000);
-
-
-            /*
-            setTimeout(function() {
-                console.log('sup')
-                waiting = false;
-                $('#restart-btn').click();
-            }, n * 1000 );
-            */
-        }
-
         requestAnimationFrame(draw);
     }
     requestAnimationFrame(draw);
+
+    function showRestartMessage() {
+        var clockDiv = $('#clockdiv');
+        clockDiv.css({display: 'inline'});
+        var tickTime = 0;
+        ctx.font = 'small-caps bold 200% sans-serif';
+        ctx.fillStyle = "#5e5e5e";
+        ctx.textBaseline = 'middle';
+        ctx.textAlign = 'center';
+        ctx.fillText("HA! YOU SUCK!", canvas.width / 2, canvas.height / 2);
+        ctx.fillText("Restarting in " + (n - tickTime),
+                canvas.width / 2,
+                canvas.height / 2 + 50);
+
+        var countInt = setInterval(function () {
+            tickTime += 1;
+            var message = "Restarting in ";
+            var html = (n - tickTime > 0) ? message + (n - tickTime) : 'GO!';
+            ctx.clearRect(canvas.width / 4, canvas.height / 2 + 20, canvas.width / 2, canvas.height / 4);
+            ctx.fillText(html, canvas.width / 2, canvas.height / 2 + 50);
+
+            if (tickTime > n) {
+                clearInterval(countInt);
+                waiting = false;
+                $('#restart-btn').click();
+                clockDiv.css({display: 'none'});
+            }
+        }, 1000);
+    }
+
 
 });
