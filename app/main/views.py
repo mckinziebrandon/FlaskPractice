@@ -34,8 +34,11 @@ from app.models import User, Post
 def index():
     # Load all User objects from db database.
     users = User.query.all()
+    print('users:', users)
     forms = {'user_form': UserForm()}
+    print('forms:', forms)
     form = forms['user_form']
+    print('form:', form)
     if form.validate_on_submit() and form.submit.data:
         flash('user_form valid')
         session['nickname'] = forms['user_form'].nickname.data

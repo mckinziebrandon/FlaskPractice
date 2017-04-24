@@ -1,17 +1,6 @@
 {% extends "base.html" %}
 {% set active_page = "input_practice" %}
-
-{% macro with_errors(field) %}
-  <div class="form_field">
-    {% if field.errors %}
-      {% set css_class = 'has_error ' + kwargs.pop('class', '') %}
-      {{ field(class=css_class, **kwargs) }}
-      <ul class="errors">{% for error in field.errors %}<li>{{ error|e }}</li>{% endfor %}</ul>
-    {% else %}
-      {{ field(**kwargs) }}
-    {% endif %}
-  </div>
-{% endmacro %}
+{% from "macros/forms.html" import render_basic_form, render_user_form %}
 
 {% block page_content %}
 
@@ -23,7 +12,7 @@
   <div class="row">
     <div class="col-sm-10">
       <h2>Add to Database</h2>
-      {% include 'macros/add_user.html' with context %}
+      {{ render_user_form(forms['user_form']) }}
     </div>
   </div>  <!-- End: Add to Database (row) -->
 
@@ -32,20 +21,9 @@
   <div class="row">
     <div class="col-sm-6">
       <h2>Inputs with Flask</h2>
-      <form action="" method="POST" name="flask-input">
-        <div class="form-group">
-          <!-- For CSRF reasons. -->
-          {{ forms['basic_form'].hidden_tag() }}
-          <!-- Labeled input(s) -->
-          {{ forms['basic_form'].message.label(style="text-transform: capitalize;") }}
-          {{ forms['basic_form'].message(class="form-control") }}
-        </div>
-        <!-- Submit -->
-        {{ with_errors(forms['basic_form'].submit, class="btn btn-primary") }}
-      </form>
+      {{ render_basic_form(forms['basic_form']) }}
     </div>
   </div>
-
 
   <hr>
   <!-- Misc. Form stuff from Eloquent JS. -->

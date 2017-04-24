@@ -26,6 +26,7 @@ def create_app(config_name):
             handled by blueprints.
     """
 
+    print(config_name)
     # Create flask application object, and
     # read/use info in config.py.
     app = Flask(__name__)

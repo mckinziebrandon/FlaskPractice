@@ -1,0 +1,65 @@
+<!-- Render a form field and handle/catch any thrown errors. -->
+{% macro with_errors(field) %}
+  <div class="form_field">
+    {% if field.errors %}
+      {% set css_class = 'has_error ' + kwargs.pop('class', '') %}
+      {{ field(class=css_class, **kwargs) }}
+      <ul class="errors">{% for error in field.errors %}<li>{{ error|e }}</li>{% endfor %}</ul>
+    {% else %}
+      {{ field(**kwargs) }}
+    {% endif %}
+  </div>
+{% endmacro %}
+
+<!-- Render a field label. -->
+{% macro render_label(label) %}
+  {{ label(style="text-transform: capitalize;", **kwargs) }}
+{% endmacro %}
+
+<!-- Render a submit button. -->
+{% macro render_submit(submit) %}
+  {{ with_errors(submit, class="btn btn-primary", **kwargs) }}
+{% endmacro %}
+
+<!-- Render an instance of app.forms.BasicForm. -->
+{% macro render_basic_form(form) %}
+  <form action="" method="POST"
+        name={% if kwargs.get('name') %}{{ kwargs['name'] }}
+          {% else %}"flask-input"{% endif %}>
+
+    <div class="form-group">
+      <!-- For CSRF reasons. -->
+      {{ form.hidden_tag() }}
+      <!-- Labeled input(s) -->
+      {{ render_label(form.message.label) }}
+      {{ form.message(class="form-control") }}
+    </div>
+
+    <!-- Submit -->
+    {{ render_submit(form.submit) }}
+  </form>
+{% endmacro %}
+
+<!-- Render an instance of app.forms.UserForm. -->
+{% macro render_user_form(form) %}
+  <form action="" method="POST">
+    <!-- For CSRF reasons. -->
+    {{ form.hidden_tag() }}
+
+    <!-- User Name -->
+    <div class="formgroup">
+      <!-- Labeled input(s) -->
+      {{ render_label(form.nickname.label) }}
+      {{ form.nickname(class="form-control", autocomplete="off") }}
+    </div>
+
+    <!-- Blog Post -->
+    <div class="formgroup">
+      {{ render_label(form.post.label) }}
+      {{ form.post(class="form-control", rows="3", autocomplete="off") }}
+    </div>
+
+    <!-- Submit -->
+    {{ render_submit(form.submit) }}
+  </form>
+{% endmacro %}

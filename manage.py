@@ -28,6 +28,8 @@ def make_shell_context():
     """Automatic imports when we want to play in the shell."""
     return dict(app=app, db=db, User=User, Post=Post)
 manager.add_command("shell", Shell(make_context=make_shell_context))
+# Give manager 'db' command.
+# Now, 'manage.py db [options]' runs the flask_migrate.Migrate method.
 manager.add_command('db', MigrateCommand)
 
 
