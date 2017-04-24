@@ -9,7 +9,7 @@ objects created from these classes into rows in the proper database table.
 """
 
 import bleach
-from app import db, app
+from app import db
 from flask import session, url_for, request, g
 from flask_sqlalchemy import SQLAlchemy
 from markdown import markdown
