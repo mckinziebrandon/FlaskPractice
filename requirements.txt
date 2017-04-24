@@ -10,3 +10,4 @@ Markdown==2.6.8
 SQLAlchemy==1.1.9
 WTForms==2.1
 sqlalchemy_migrate==0.11.0
+Flask-Migrate==2.0.3
