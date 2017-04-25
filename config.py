@@ -38,8 +38,7 @@ class TestingConfig(Config):
 
 class ProductionConfig(Config):
     # Path of our db file. Required by Flask-SQLAlchemy extension.
-    SQLALCHEMY_DATABASE_URI = (os.environ.get('DATABASE_URL') or
-                               'sqlite:///' + os.path.join(basedir, 'data.db'))
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data.db')
 
 
 config = {
