@@ -1,14 +1,5 @@
 /* Macro for using Bootswatch API (theme-changing). */
 
-var NAME_TO_INDEX = {
-    flatly: 4,
-    yeti: 16,
-    lumen: 6
-}
-
-var CDN_ROOT = "https://maxcdn.bootstrapcdn.com/bootswatch/latest/"
-var LUMEN_CSS = CDN_ROOT + "lumen/bootstrap.min.css"
-
 /** Load JSON-encoded data from api server (using ajax GET HTTP request). */
 $.getJSON("https://bootswatch.com/api/3.json", function (data) {
 

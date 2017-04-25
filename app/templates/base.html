@@ -64,7 +64,9 @@
 
         <!-- Theme selector dropdown -->
         <ul class="nav navbar-nav navbar-right">
-          <li class="dropdown">
+          <li class="dropdown tooltip-custom" page="{{ active_page }}"
+              data-placement="left" title=""
+              data-original-title="Pick a theme!">
             <a id='theme-header' href="#" class="dropdown-toggle">
               Theme: {{ session['theme'] }}
             </a>

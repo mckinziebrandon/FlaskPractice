@@ -18,5 +18,15 @@ $(document).ready(function() {
     $('ul.custom').addClass('list-group');
     $('ul.custom li').addClass('list-group-item');
 
+    // Muh tooltips.
+    var tooltip = $('.tooltip-custom');
+    if (tooltip.attr('page') == 'index') {
+        tooltip.tooltip('show');
+        setTimeout(function() {
+            tooltip.tooltip('hide');
+        }, 3000);
+
+    }
+
 
 });
