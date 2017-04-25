@@ -66,6 +66,7 @@ def databases():
 
 @main.route('/input_practice', methods=['GET', 'POST'])
 def input_practice():
+
     # Create the form(s) used for this endpoint.
     forms = {'basic_form': BasicForm(),
              'user_form': UserForm()}
@@ -135,7 +136,10 @@ def delete_user(id):
 
 @main.route('/reference/<prefix>')
 def reference(prefix):
-    return render_template('reference/{}_reference.html'.format(prefix))
+    return render_template(
+        'reference/{}_reference.html'.format(prefix),
+        headers=request.headers)
+
 
 @main.route('/games')
 def games():

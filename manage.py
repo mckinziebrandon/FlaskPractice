@@ -1,14 +1,6 @@
 #!/usr/bin/env python3
 
-"""run.py: Starts up the development web server with our application. 
-
-Command-line interface (pg 18 of flask reference):
-    1. Launch the usual way (app.run(debug=True)):
-    --> python3 run.py runserver
-    
-    2. Start a Python shell session in the context of the applciation.
-    --> python3 run.py shell
-"""
+"""manage.py: Start up the web server and the application."""
 
 import os
 from app import create_app, db
@@ -28,10 +20,10 @@ def make_shell_context():
     """Automatic imports when we want to play in the shell."""
     return dict(app=app, db=db, User=User, Post=Post)
 manager.add_command("shell", Shell(make_context=make_shell_context))
+
 # Give manager 'db' command.
 # Now, 'manage.py db [options]' runs the flask_migrate.Migrate method.
 manager.add_command('db', MigrateCommand)
-
 
 @manager.command
 def test():
@@ -40,7 +32,7 @@ def test():
     This can be run from the cmd line via 'python3 manage.py test'.
     
     Note: the decorator above allows us to define this as a custom method
-    for our manager opbject.
+    for our manager object.
     """
     import unittest
     tests = unittest.TestLoader().discover('tests')

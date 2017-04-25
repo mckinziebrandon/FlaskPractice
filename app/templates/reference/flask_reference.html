@@ -117,4 +117,30 @@
       </div>
     </div>
   </div>  <!-- End: Accordian -->
+
+
+  <div class="row">
+    <h2>The request object</h2>
+
+    <div class="col-sm-10">
+    <table>
+      <thead>
+      <tr>
+        <th>Header Key</th>
+        <th>Header Value</th>
+      </tr>
+      </thead>
+
+      <tbody>
+      {% for key, value in headers %}
+        <tr>
+          <td class="success">{{ key }}</td>
+          <td class="info">{{ value }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    </div>
+
+  </div>
 {% endblock page_content %}

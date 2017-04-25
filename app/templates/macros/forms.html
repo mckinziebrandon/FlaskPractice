@@ -32,7 +32,7 @@
       {{ form.hidden_tag() }}
       <!-- Labeled input(s) -->
       {{ render_label(form.message.label) }}
-      {{ form.message(class="form-control") }}
+      {{ form.message(class="form-control", autocomplete="off") }}
     </div>
 
     <!-- Submit -->
