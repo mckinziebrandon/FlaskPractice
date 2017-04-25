@@ -27,7 +27,7 @@ Misc. Notes:
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" type="text/css" id="theme-link"
-          href="{{ url_for('static', filename='css/flatly-bootstrap.min.css') }}">
+          href="https://maxcdn.bootstrapcdn.com/bootswatch/latest/{{ session['theme'] }}/bootstrap.min.css">
 
     <!-- Bootstrap theme -->
     <!--<link rel="stylesheet" type="text/css"
@@ -51,15 +51,6 @@ Misc. Notes:
 
     <!-- Load the Flask-PageDown template macro from CDN -->
     {{ pagedown.include_pagedown() }}
-
-    <!-- Syntax Highlighting -->
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.10.0/styles/default.min.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.10.0/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
-
-
-    <!-- Slider js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.7.3/bootstrap-slider.min.js"></script>
 
   {% endblock head %}
 </head>
@@ -88,20 +79,15 @@ Misc. Notes:
 {%  endblock content %}
 
 {% block scripts_end %}
-{% endblock scripts_end %}
 <!-- It appears that bootstrap js must be placed here. -->
 <script src="{{ url_for('static', filename='js/vendor/bootstrap.min.js') }}"></script>
-
-
-<!--
-<div class="container">
-  <hr>
-<footer>
-      <p style="color:#4b4b4b; font-size:0.9em; text-align: center; bottom: 0;">I am a footer.
-      </p>
-</footer>
-</div>
--->
+<!-- Syntax Highlighting -->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.10.0/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.10.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<!-- Slider js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.7.3/bootstrap-slider.min.js"></script>
+{% endblock scripts_end %}
 
 </body>
 </html>

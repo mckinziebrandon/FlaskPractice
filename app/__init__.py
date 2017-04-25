@@ -2,9 +2,9 @@
 
 from flask import Flask
 from flask_moment import Moment
+from flask_restful import Resource, Api
 from flask_pagedown import PageDown
 from flask_sqlalchemy import SQLAlchemy
-
 from config import config
 
 # Initialize our database.
@@ -13,6 +13,8 @@ db = SQLAlchemy()
 moment = Moment()
 # Client-sdie Markdown-to-HTML converter implemented in JS.
 pagedown = PageDown()
+# Flask-restful api interface.
+api = Api()
 
 
 def create_app(config_name):
@@ -38,7 +40,9 @@ def create_app(config_name):
     moment.init_app(app)
     # Client-sdie Markdown-to-HTML converter implemented in JS.
     pagedown.init_app(app)
-    
+    # Restful.
+    api.init_app(app)
+
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 

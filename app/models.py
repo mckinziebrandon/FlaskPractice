@@ -82,6 +82,5 @@ class Post(db.Model):
 
     def __repr__(self):
         return '<Post %r>' % self.body
-
 db.event.listen(Post.body, 'set', Post.on_changed_body)
 

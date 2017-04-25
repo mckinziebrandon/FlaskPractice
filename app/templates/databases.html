@@ -28,22 +28,25 @@
           <div class="col-sm-10">
             <div class="panel panel-primary">
 
-              <!-- Greet user -->
+              <!-- so i don't have to keep typing this. -->
+              {% set user_name = user.nickname|capitalize %}
+
+              <!-- Panel headings are names of users. -->
               <div class="panel-heading clearfix" data-toggle="collapse"
-                   href="#{{ user.nickname|capitalize }}-posts" aria-expanded="false">
-                {{ user.nickname|capitalize }}
+                   href="#{{ user_name }}-posts" aria-expanded="false">
+                {{ user_name }}
               </div>
 
 
               <!-- Post list for the given user. -->
-              <div id="{{ user.nickname|capitalize }}-posts" class="panel-body collapse">
-                <ul class="list-group">
+              <div id="{{ user_name }}-posts" class="panel-body collapse">
+                <ul class="custom">
                   {%  for post in user.posts %}
                     <div class="row">
                       <div class="col-sm-10">
                         <!-- Post body -->
-                        <li class="list-group-item justify-content-between">
-                                                  <!-- Timestamp on the right. -->
+                        <li class="justify-content-between">
+                          <!-- Timestamp on the right. -->
                           <span class="badge badge-default badge-pill">
                             {{ moment(post.timestamp).fromNow(refresh=True) }}
                           </span>
@@ -53,7 +56,6 @@
                           {% else %}
                             {{ post.body }}
                           {% endif %}
-
                       </div>
 
                       <div class="col-sm-2">

@@ -4,6 +4,8 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config:
 
+    DEFAULT_THEME = 'lumen'
+
     FLASK_PRACTICE_ADMIN = os.environ.get('FLASK_PRACTICE_ADMIN')
     # Activates the cross-site request forgery prevention.
     WTF_CSRF_ENABLED = True

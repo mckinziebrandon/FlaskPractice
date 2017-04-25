@@ -1,4 +1,4 @@
-"""app/views.py: the handlers that respond to requests from browsers/other clients.
+"""app/main/views.py: the handlers that respond to requests from browsers/other clients.
     - In Flask handlers are written as Python functions.
     - Each view function is mapped to one or more request URLs.
 
@@ -21,7 +21,8 @@ except ImportError:
 from datetime import datetime
 from flask import flash, redirect
 from flask import render_template
-from flask import session, url_for, request
+from flask import session, url_for, request, current_app
+from flask.views import View
 
 from app import db
 from app.main import main
@@ -29,18 +30,25 @@ from app.main.forms import BasicForm, UserForm
 from app.models import User, Post
 
 
+@main.before_app_first_request
+def inject_theme():
+    session['theme'] = current_app.config['DEFAULT_THEME']
+
+
+@main.route('/new_theme', methods=['POST'])
+def new_theme():
+    session['theme'] = request.form['new_theme'].lower()
+    return redirect(request.referrer)
+
+
 @main.route('/', methods=['GET', 'POST'])
 @main.route('/index', methods=['GET', 'POST'])
 def index():
     # Load all User objects from db database.
     users = User.query.all()
-    print('users:', users)
     forms = {'user_form': UserForm()}
-    print('forms:', forms)
     form = forms['user_form']
-    print('form:', form)
     if form.validate_on_submit() and form.submit.data:
-        flash('user_form valid')
         session['nickname'] = forms['user_form'].nickname.data
         return redirect(url_for('.add_user'), code=TEMPORARY_REDIRECT)
     return render_template('index.html',
@@ -117,19 +125,19 @@ def add_user():
     return redirect(request.referrer)
 
 
+@main.route('/delete_user/<id>', methods=['POST'])
+def delete_user(id):
+    user = User.query.get_or_404(id)
+    db.session.delete(user)
+    db.session.commit()
+    return redirect(request.referrer)
+
+
 @main.route('/delete_post/<id>', methods=['POST'])
 def delete_post(id):
     # TODO: make this via ajax so full page doesn't need to re-render.
     post = Post.query.get_or_404(id)
     db.session.delete(post)
-    db.session.commit()
-    return redirect(request.referrer)
-
-
-@main.route('/delete_user/<id>', methods=['POST'])
-def delete_user(id):
-    user = User.query.get_or_404(id)
-    db.session.delete(user)
     db.session.commit()
     return redirect(request.referrer)
 

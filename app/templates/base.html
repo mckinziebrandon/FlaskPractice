@@ -65,7 +65,9 @@
         <!-- Theme selector dropdown -->
         <ul class="nav navbar-nav navbar-right">
           <li class="dropdown">
-            <a id='theme-header' href="#" class="dropdown-toggle"></a>
+            <a id='theme-header' href="#" class="dropdown-toggle">
+              Theme: {{ session['theme'] }}
+            </a>
             <ul id='theme-options' class="dropdown-menu"></ul>
           </li>
         </ul>  <!-- End: theme selector dropdown. -->

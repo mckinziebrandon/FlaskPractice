@@ -14,4 +14,9 @@ $(document).ready(function() {
         'aria-has-expanded': 'false'
     }).append('<span class="caret"></span>');
 
+    // Lists.
+    $('ul.custom').addClass('list-group');
+    $('ul.custom li').addClass('list-group-item');
+
+
 });

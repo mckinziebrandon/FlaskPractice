@@ -25,6 +25,7 @@ manager.add_command("shell", Shell(make_context=make_shell_context))
 # Now, 'manage.py db [options]' runs the flask_migrate.Migrate method.
 manager.add_command('db', MigrateCommand)
 
+
 @manager.command
 def test():
     """Run the unit tests (see the tests package).
