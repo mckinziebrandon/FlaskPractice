@@ -47,5 +47,12 @@ def test():
     unittest.TextTestRunner(verbosity=2).run(tests)
 
 
+@manager.command
+def deploy():
+    from flask_migrate import upgrade
+    # Migrate db to latest revision.
+    upgrade()
+
+
 if __name__ == '__main__':
     manager.run()
