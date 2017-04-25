@@ -8,3 +8,4 @@ sqlalchemy_migrate==0.11.0
 gunicorn>=19.4.5
 Flask-Moment==0.5.1
 Flask-PageDown==0.2.2
+psycopg2==2.5.1
