@@ -35,7 +35,6 @@ $.getJSON("https://bootswatch.com/api/3.json", function (data) {
     select.on('change', function(){
         var theme = themes[$(this).val()];
         $("link#theme-link").attr("href", theme.css);
-        $("h1").text(theme.name);
     });
 
     // Set default value.

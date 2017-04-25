@@ -23,10 +23,7 @@ class BasicForm(FlaskForm):
 
 class UserForm(FlaskForm):
     """Form for creating/editing a user."""
-    nickname = StringField(
-        'nickname',
-        validators=[DataRequired(), bad_chars])
-    #post = TextAreaField('post', validators=[DataRequired()])
+    nickname = StringField('nickname', validators=[DataRequired(), bad_chars])
     post = PageDownField('post', validators=[DataRequired()])
     submit = SubmitField('Submit')
 

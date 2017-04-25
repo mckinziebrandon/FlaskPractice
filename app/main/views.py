@@ -2,7 +2,7 @@
     - In Flask handlers are written as Python functions.
     - Each view function is mapped to one or more request URLs.
 
-@app.route(path):
+@main.route(path):
     - Create mappings from URL path to the attached function.
     - path is relative to the site/hostname, e.g. '/index' maps to
     --> mysite.com/index
@@ -11,37 +11,45 @@ Misc Notes:
     - We can access the config.py variables via app.config dictionary.
 """
 
-from app import app, db
-from flask import render_template
-from flask import flash, redirect
-from flask import session, url_for, request, g
+try:
+    # Python3
+    from http.client import TEMPORARY_REDIRECT
+except ImportError:
+    # Python2
+    from httplib import TEMPORARY_REDIRECT
+
 from datetime import datetime
-from .forms import BasicForm, UserForm
-from .models import User, Post
+from flask import flash, redirect
+from flask import render_template
+from flask import session, url_for, request
 
-HTTP_CODES = {
-    'REDIRECT': 307
-}
+from app import db
+from app.main import main
+from app.main.forms import BasicForm, UserForm
+from app.models import User, Post
 
 
-@app.route('/', methods=['GET', 'POST'])
-@app.route('/index', methods=['GET', 'POST'])
+@main.route('/', methods=['GET', 'POST'])
+@main.route('/index', methods=['GET', 'POST'])
 def index():
     # Load all User objects from db database.
     users = User.query.all()
+    print('users:', users)
     forms = {'user_form': UserForm()}
+    print('forms:', forms)
     form = forms['user_form']
+    print('form:', form)
     if form.validate_on_submit() and form.submit.data:
         flash('user_form valid')
         session['nickname'] = forms['user_form'].nickname.data
-        return redirect(url_for('add_user'), code=HTTP_CODES['REDIRECT'])
+        return redirect(url_for('.add_user'), code=TEMPORARY_REDIRECT)
     return render_template('index.html',
                            title='Home',
                            users=users,
                            forms=forms)
 
 
-@app.route('/databases', methods=['GET', 'POST'])
+@main.route('/databases', methods=['GET', 'POST'])
 def databases():
     # Load all User objects from db database.
     users = User.query.all()
@@ -50,13 +58,13 @@ def databases():
     if form.validate_on_submit() and form.submit.data:
         flash('user_form valid')
         session['nickname'] = forms['user_form'].nickname.data
-        return redirect(url_for('add_user'), code=HTTP_CODES['REDIRECT'])
+        return redirect(url_for('.add_user'), code=TEMPORARY_REDIRECT)
     return render_template('databases.html',
                            users=users,
                            forms=forms)
 
 
-@app.route('/input_practice', methods=['GET', 'POST'])
+@main.route('/input_practice', methods=['GET', 'POST'])
 def input_practice():
     # Create the form(s) used for this endpoint.
     forms = {'basic_form': BasicForm(),
@@ -66,17 +74,17 @@ def input_practice():
     if form.validate_on_submit() and form.submit.data:
         flash('basic_form validated. Message: {}'.format(
             forms['basic_form'].message.data))
-        return redirect(url_for('input_practice'))
+        return redirect(url_for('.input_practice'))
 
     form = forms['user_form']
     if form.validate_on_submit() and form.submit.data:
         flash('user_form valid')
         session['nickname'] = forms['user_form'].nickname.data
-        return redirect(url_for('add_user'), code=HTTP_CODES['REDIRECT'])
+        return redirect(url_for('.add_user'), code=TEMPORARY_REDIRECT)
     return render_template('input_practice.html', forms=forms)
 
 
-@app.route('/add_user', methods=['POST'])
+@main.route('/add_user', methods=['POST'])
 def add_user():
     # This will get filled with form info via request.
     user_form = UserForm(nickname=session.get('nickname'))
@@ -108,7 +116,7 @@ def add_user():
     return redirect(request.referrer)
 
 
-@app.route('/delete_post/<id>', methods=['POST'])
+@main.route('/delete_post/<id>', methods=['POST'])
 def delete_post(id):
     # TODO: make this via ajax so full page doesn't need to re-render.
     post = Post.query.get_or_404(id)
@@ -117,7 +125,7 @@ def delete_post(id):
     return redirect(request.referrer)
 
 
-@app.route('/delete_user/<id>', methods=['POST'])
+@main.route('/delete_user/<id>', methods=['POST'])
 def delete_user(id):
     user = User.query.get_or_404(id)
     db.session.delete(user)
@@ -125,16 +133,11 @@ def delete_user(id):
     return redirect(request.referrer)
 
 
-@app.errorhandler(404)
-def page_not_found(e):
-    return render_template('404.html'), 404
-
-
-@app.route('/reference/<prefix>')
+@main.route('/reference/<prefix>')
 def reference(prefix):
     return render_template('reference/{}_reference.html'.format(prefix))
 
-@app.route('/games')
+@main.route('/games')
 def games():
     return render_template('games.html')
 

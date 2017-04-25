@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 {% set active_page = "databases" %}
+{% from "macros/forms.html" import render_user_form %}
 
 {% macro delete_model(class_name, id) %}
   <!-- Delete button -->
-  <form action="{{ url_for('delete_' + class_name|lower, id=id) }}" method="POST">
+  <form action="{{ url_for('.delete_' + class_name|lower, id=id) }}" method="POST">
     <button type="submit" class="btn btn-med btn-danger pull-right">Delete</button>
   </form>
 {% endmacro %}
@@ -78,7 +79,7 @@
   <div class="row">
     <div class="col-sm-10">
       <h2>Add to Database</h2>
-      {% include 'macros/add_user.html' %}
+      {{ render_user_form(forms['user_form']) }}
     </div>
   </div>  <!-- End: Add to Database (row) -->
 

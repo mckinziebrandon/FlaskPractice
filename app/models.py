@@ -9,7 +9,7 @@ objects created from these classes into rows in the proper database table.
 """
 
 import bleach
-from app import db, app
+from app import db
 from flask import session, url_for, request, g
 from flask_sqlalchemy import SQLAlchemy
 from markdown import markdown
@@ -33,6 +33,7 @@ class User(db.Model):
 
     """
 
+    #__tablename__ = 'users'
     # Fields are defined as class variables, but are used by super() in init.
     # Pass boolean args to indicate which fields are unique/indexed.
     # Note: 'unique' here means [a given user] 'has only one'.
@@ -61,6 +62,7 @@ class Post(db.Model):
         user_id: (db.Integer)
     """
 
+    #__tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.Text)
     # Cache the HTML code for the rendered (markdown) blog post.
