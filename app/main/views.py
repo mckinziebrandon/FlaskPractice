@@ -32,6 +32,7 @@ from app.models import User, Post
 
 from flask_restful import Resource
 
+
 @main.before_app_first_request
 def inject_theme():
     session['theme'] = current_app.config['DEFAULT_THEME']
