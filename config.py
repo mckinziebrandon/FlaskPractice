@@ -39,6 +39,7 @@ class TestingConfig(Config):
 
 
 class ProductionConfig(Config):
+    DEFAULT_THEME = 'slate'
     # Path of our db file. Required by Flask-SQLAlchemy extension.
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data.db')
 

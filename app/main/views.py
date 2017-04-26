@@ -46,6 +46,8 @@ def new_theme():
 @main.route('/')
 @main.route('/index')
 def index():
+    if session.get('theme') is None:
+        session['theme'] = current_app.config['DEFAULT_THEME']
     # Load all User objects from db database.
     users = User.query.all()
     return render_template('index.html',
