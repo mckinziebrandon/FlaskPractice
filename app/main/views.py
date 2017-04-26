@@ -57,7 +57,7 @@ def index():
                            forms={'user_form': UserForm()})
 
 
-@main.route('/databases')
+@main.route('/databases', methods=['GET'])
 def databases():
     # Load all User objects from db database.
     users = User.query.all()
