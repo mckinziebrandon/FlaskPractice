@@ -26,7 +26,6 @@ $(document).ready(function() {
         setTimeout(function() {
             tooltip.tooltip('hide');
         }, 3000);
-
     }
 
 

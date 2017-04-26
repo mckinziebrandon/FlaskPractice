@@ -2,14 +2,18 @@
 {% set active_page = "databases" %}
 {% from "macros/forms.html" import render_user_form %}
 
-{% macro delete_model(class_name, id) %}
+{% macro delete_model(endpoint) %}
+
   <!-- Delete button -->
-  <form action="{{ url_for('.delete_' + class_name|lower, id=id) }}" method="POST">
-    <button type="submit" class="btn btn-med btn-danger pull-right">Delete</button>
-  </form>
+  <div class="delete-model">
+    <button type="submit"
+            url="{{ url_for(endpoint, **kwargs) }}"
+            class="btn btn-med btn-danger pull-right">Delete</button>
+  </div>
 {% endmacro %}
 
 {% block page_content %}
+
 
   <div class="jumbotron">
     <h1>Databases</h1>
@@ -24,12 +28,13 @@
         to see all of their logged posts.</p>
       {% for user in users if user.posts.count() %}
 
-        <div class="row">
+        <!-- so i don't have to keep typing this. -->
+        {% set user_name = user.nickname|capitalize %}
+
+        <div class="row user-row-{{ user_name }}">
           <div class="col-sm-10">
             <div class="panel panel-primary">
 
-              <!-- so i don't have to keep typing this. -->
-              {% set user_name = user.nickname|capitalize %}
 
               <!-- Panel headings are names of users. -->
               <div class="panel-heading clearfix" data-toggle="collapse"
@@ -42,7 +47,7 @@
               <div id="{{ user_name }}-posts" class="panel-body collapse">
                 <ul class="custom">
                   {%  for post in user.posts %}
-                    <div class="row">
+                    <div class="row post-row-{{ post.id }}">
                       <div class="col-sm-10">
                         <!-- Post body -->
                         <li class="justify-content-between">
@@ -59,7 +64,7 @@
                       </div>
 
                       <div class="col-sm-2">
-                        {{ delete_model('post', post.id) }}
+                        {{ delete_model('user_post', post_id=post.id) }}
                       </div>
                     </div>
                   {%  endfor %}
@@ -67,12 +72,14 @@
               </div>
             </div>
           </div>
+
           <div class="col-sm-2">
             <!-- Button -->
-            {{ delete_model('user', user.id) }}
+            {{ delete_model('user', nickname=user.nickname) }}
           </div>
 
         </div>
+
       {% endfor %}
     </div>
   </div>

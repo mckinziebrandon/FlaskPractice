@@ -18,15 +18,12 @@
 
 <!-- Render a submit button. -->
 {% macro render_submit(submit) %}
-  {{ with_errors(submit, class="btn btn-primary", **kwargs) }}
+  {{ with_errors(submit, class="btn btn-primary submit-btn", **kwargs) }}
 {% endmacro %}
 
 <!-- Render an instance of app.forms.BasicForm. -->
 {% macro render_basic_form(form) %}
-  <form action="" method="POST"
-        name={% if kwargs.get('name') %}{{ kwargs['name'] }}
-          {% else %}"flask-input"{% endif %}>
-
+  <form class="basic-form" action="" method="POST">
     <div class="form-group">
       <!-- For CSRF reasons. -->
       {{ form.hidden_tag() }}
@@ -42,19 +39,19 @@
 
 <!-- Render an instance of app.forms.UserForm. -->
 {% macro render_user_form(form) %}
-  <form action="" method="POST">
+  <form class="user-form" action="" method="POST">
     <!-- For CSRF reasons. -->
     {{ form.hidden_tag() }}
 
     <!-- User Name -->
-    <div class="formgroup">
+    <div class="form-group">
       <!-- Labeled input(s) -->
       {{ render_label(form.nickname.label) }}
       {{ form.nickname(class="form-control", autocomplete="off") }}
     </div>
 
     <!-- Blog Post -->
-    <div class="formgroup">
+    <div class="form-group">
       {{ render_label(form.post.label) }}
       {{ form.post(class="form-control", rows="3", autocomplete="off") }}
     </div>

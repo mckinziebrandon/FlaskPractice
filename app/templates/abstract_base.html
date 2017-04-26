@@ -79,6 +79,8 @@ Misc. Notes:
 {%  endblock content %}
 
 {% block scripts_end %}
+<!-- Recommended by flask docs. -->
+<script>$SCRIPT_ROOT = {{ request.script_root|tojson|safe }}</script>
 <!-- It appears that bootstrap js must be placed here. -->
 <script src="{{ url_for('static', filename='js/vendor/bootstrap.min.js') }}"></script>
 <!-- Syntax Highlighting -->
@@ -87,6 +89,9 @@ Misc. Notes:
 <script>hljs.initHighlightingOnLoad();</script>
 <!-- Slider js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.7.3/bootstrap-slider.min.js"></script>
+
+
+<script src="{{ url_for('static', filename='js/delete.js') }}"></script>
 {% endblock scripts_end %}
 
 </body>

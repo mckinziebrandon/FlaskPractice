@@ -43,35 +43,24 @@ def new_theme():
     return redirect(request.referrer)
 
 
-@main.route('/', methods=['GET', 'POST'])
-@main.route('/index', methods=['GET', 'POST'])
+@main.route('/')
+@main.route('/index')
 def index():
     # Load all User objects from db database.
     users = User.query.all()
-    forms = {'user_form': UserForm()}
-    form = forms['user_form']
-    if form.validate_on_submit() and form.submit.data:
-        session['nickname'] = forms['user_form'].nickname.data
-        return redirect(url_for('.add_user'), code=TEMPORARY_REDIRECT)
     return render_template('index.html',
                            title='Home',
                            users=users,
-                           forms=forms)
+                           forms={'user_form': UserForm()})
 
 
-@main.route('/databases', methods=['GET', 'POST'])
+@main.route('/databases')
 def databases():
     # Load all User objects from db database.
     users = User.query.all()
-    forms = {'user_form': UserForm()}
-    form = forms['user_form']
-    if form.validate_on_submit() and form.submit.data:
-        flash('user_form valid')
-        session['nickname'] = forms['user_form'].nickname.data
-        return redirect(url_for('.add_user'), code=TEMPORARY_REDIRECT)
     return render_template('databases.html',
                            users=users,
-                           forms=forms)
+                           forms={'user_form': UserForm()})
 
 
 @main.route('/input_practice', methods=['GET', 'POST'])
@@ -82,7 +71,7 @@ def input_practice():
              'user_form': UserForm()}
 
     form = forms['basic_form']
-    if form.validate_on_submit() and form.submit.data:
+    if form.validate_on_submit():
         flash('basic_form validated. Message: {}'.format(
             forms['basic_form'].message.data))
         return redirect(url_for('.input_practice'))
@@ -91,7 +80,6 @@ def input_practice():
     if form.validate_on_submit() and form.submit.data:
         flash('user_form valid')
         session['nickname'] = forms['user_form'].nickname.data
-        return redirect(url_for('.add_user'), code=TEMPORARY_REDIRECT)
     return render_template('input_practice.html', forms=forms)
 
 
@@ -126,23 +114,6 @@ def add_user():
     return redirect(request.referrer)
 
 
-@main.route('/delete_user/<id>', methods=['POST'])
-def delete_user(id):
-    user = User.query.get_or_404(id)
-    db.session.delete(user)
-    db.session.commit()
-    return redirect(request.referrer)
-
-
-@main.route('/delete_post/<id>', methods=['POST'])
-def delete_post(id):
-    # TODO: make this via ajax so full page doesn't need to re-render.
-    post = Post.query.get_or_404(id)
-    db.session.delete(post)
-    db.session.commit()
-    return redirect(request.referrer)
-
-
 @main.route('/reference/<prefix>')
 def reference(prefix):
     return render_template(
@@ -166,15 +137,20 @@ class UserAPI(Resource):
         if nickname is None:
             # Return list of all users
             users = User.query.all()
-            return [{'user_id': u.id, 'nickname': u.nickname} for u in users]
+            if users is not None:
+                return [{'user_id': u.id, 'nickname': u.nickname} for u in users]
         else:
             # Return first user matching nickname or 404.
             user = User.query.filter_by(nickname=nickname).first_or_404()
-            return {'user_id': user.id, 'nickname': user.nickname}
+            if user is not None:
+                return {'user_id': user.id, 'nickname': user.nickname}
+        return None
 
-    def post(self, nickname=None):
+    def post(self):
+        print('UserAPI.post called.')
         """Create a new user."""
-        user = self._get_or_create(nickname)
+        user = self._get_or_create(request.form.get('nickname'))
+        session['nickname'] = user.nickname
         # Add and commit to database.
         db.session.add(user)
         db.session.commit()
@@ -188,6 +164,8 @@ class UserAPI(Resource):
         return '', 204
 
     def _get_or_create(self, nickname):
+        if nickname is None:
+            raise ValueError('nickname is ' + nickname)
         nickname = nickname.capitalize()
         user = User.query.filter_by(nickname=nickname).first()
         if user is None:
@@ -198,28 +176,33 @@ class UserAPI(Resource):
 class PostAPI(Resource):
 
     def get(self, post_id=None):
-        print("PostAPI.get called: post_id=", post_id)
         if post_id is None:
             # Return list of all users
             posts = Post.query.all()
-            posts = [self._to_dict(p) for p in posts]
-            return posts
+            if posts is not None:
+                posts = [self._to_dict(p) for p in posts]
         else:
-            post = Post.query.get_or_404(post_id)
-            return self._to_dict(post)
+            post = Post.query.get(post_id)
+            if post is not None:
+                return self._to_dict(post)
+        return None
 
     def post(self, post_id=None):
+        print('PostAPI.post called.')
         # Associate user and their post.
-        if session.get('user') is None:
-            redirect(url_for('404.html'))
-        post = Post(
-            body=request.form.get('post'), # TODO: rename to 'post_body'
-            timestamp=datetime.utcnow(),
-            author=User.get_or_404(session.get('user')))
-        return self._to_json(post)
+        nickname = request.form.get('nickname')
+        user_post = request.form.get('post')
+        print('nick:', nickname)
+        print('post:', user_post)
+        post = Post(body=user_post, timestamp=datetime.utcnow(),
+            author=User.query.filter_by(nickname=nickname).first())
+        print('adding post:', post)
+        db.session.add(post)
+        db.session.commit()
+        return self._to_dict(post)
 
     def delete(self, post_id=None):
-        post = Post.get_or_404(post_id)
+        post = Post.query.get_or_404(post_id)
         db.session.delete(post)
         db.session.commit()
         return '', 204
@@ -237,7 +220,6 @@ class PostAPI(Resource):
             body=post.body,
             timestamp=json.dumps(post.timestamp),
             user_id=post.user_id)
-
 
 
 api.add_resource(UserAPI, '/user', '/user/<string:nickname>', endpoint='user')
