@@ -18,17 +18,19 @@ except ImportError:
     # Python2
     from httplib import TEMPORARY_REDIRECT
 
+import json
 from datetime import datetime
+from flask import jsonify
 from flask import flash, redirect
 from flask import render_template
 from flask import session, url_for, request, current_app
-from flask.views import View
 
-from app import db
+from app import db, api
 from app.main import main
 from app.main.forms import BasicForm, UserForm
 from app.models import User, Post
 
+from flask_restful import Resource
 
 @main.before_app_first_request
 def inject_theme():
@@ -102,7 +104,6 @@ def add_user():
         user_form = UserForm()
 
     if user_form.validate_on_submit():
-
         # Get or create the user.
         user = User.query.filter_by(nickname=user_form.nickname.data).first()
         if user is None:
@@ -152,4 +153,94 @@ def reference(prefix):
 @main.route('/games')
 def games():
     return render_template('games.html')
+
+
+class UserAPI(Resource):
+    """Notes: 
+     - Whenver the request is dispatched, a new instance of UserView is created and
+      the dispatch_request() method is called with the params from url rule.
+      - The class itself is instantiated with the params passed as_view().
+    """
+
+    def get(self, nickname=None):
+        if nickname is None:
+            # Return list of all users
+            users = User.query.all()
+            return [{'user_id': u.id, 'nickname': u.nickname} for u in users]
+        else:
+            # Return first user matching nickname or 404.
+            user = User.query.filter_by(nickname=nickname).first_or_404()
+            return {'user_id': user.id, 'nickname': user.nickname}
+
+    def post(self, nickname=None):
+        """Create a new user."""
+        user = self._get_or_create(nickname)
+        # Add and commit to database.
+        db.session.add(user)
+        db.session.commit()
+        return {'user_id': user.id, 'nickname': user.nickname}
+
+    def delete(self, nickname=None):
+        """Delete user from db."""
+        user = User.query.filter_by(nickname=nickname).first_or_404()
+        db.session.delete(user)
+        db.session.commit()
+        return '', 204
+
+    def _get_or_create(self, nickname):
+        nickname = nickname.capitalize()
+        user = User.query.filter_by(nickname=nickname).first()
+        if user is None:
+            user = User(nickname=nickname)
+        return user
+
+
+class PostAPI(Resource):
+
+    def get(self, post_id=None):
+        print("PostAPI.get called: post_id=", post_id)
+        if post_id is None:
+            # Return list of all users
+            posts = Post.query.all()
+            posts = [self._to_dict(p) for p in posts]
+            return posts
+        else:
+            post = Post.query.get_or_404(post_id)
+            return self._to_dict(post)
+
+    def post(self, post_id=None):
+        # Associate user and their post.
+        if session.get('user') is None:
+            redirect(url_for('404.html'))
+        post = Post(
+            body=request.form.get('post'), # TODO: rename to 'post_body'
+            timestamp=datetime.utcnow(),
+            author=User.get_or_404(session.get('user')))
+        return self._to_json(post)
+
+    def delete(self, post_id=None):
+        post = Post.get_or_404(post_id)
+        db.session.delete(post)
+        db.session.commit()
+        return '', 204
+
+    def _to_dict(self, post):
+        return {
+            'id': post.id,
+            'body': post.body,
+            'timestamp': str(post.timestamp),
+            'user_id': post.user_id}
+
+    def _to_json(self, post):
+        return jsonify(
+            id=post.id,
+            body=post.body,
+            timestamp=json.dumps(post.timestamp),
+            user_id=post.user_id)
+
+
+
+api.add_resource(UserAPI, '/user', '/user/<string:nickname>', endpoint='user')
+api.add_resource(PostAPI, '/user_post', '/user_post/<int:post_id>', endpoint='user_post')
+
 

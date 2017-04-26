@@ -28,6 +28,8 @@ def create_app(config_name):
             handled by blueprints.
     """
 
+    from .main import main as main_blueprint
+
     # Create flask application object, and
     # read/use info in config.py.
     app = Flask(__name__)
@@ -40,11 +42,10 @@ def create_app(config_name):
     moment.init_app(app)
     # Client-sdie Markdown-to-HTML converter implemented in JS.
     pagedown.init_app(app)
-    # Restful.
+    # uh?
+    # api.init_app(main_blueprint)
     api.init_app(app)
 
-    from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
-
     return app
 

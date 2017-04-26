@@ -20,6 +20,7 @@ $(document).ready(function() {
 
     // Muh tooltips.
     var tooltip = $('.tooltip-custom');
+    // Only auto-show (for 3 sec) if on homepage.
     if (tooltip.attr('page') == 'index') {
         tooltip.tooltip('show');
         setTimeout(function() {

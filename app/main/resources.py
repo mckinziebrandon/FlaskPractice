@@ -19,8 +19,7 @@ Notes:
 
 from flask import request
 from flask_restful import Resource
-from app import db
-# from app.main import main
+from app import db, api
 from app.models import User, Post
 from datetime import datetime
 
@@ -56,6 +55,6 @@ class UserAPI(Resource):
         db.session.commit()
         return '', 204
 
+# api.add_resource(UserAPI, '/user/<user_id>', '/user/<nickname>')
 
-# main.add_url_rule('/add_user', view_func=UserView.as_view('add_user'))
 
