@@ -34,24 +34,12 @@
       display: inline-block;*/
     }
 
-    /*
-    #clockdiv div > span{
-      padding: 10px;
-      border-radius: 3px;
-      background: lightseagreen;
-      display: inline-block;
-    }
-    */
-
     .smalltext{
       padding-top: 5px;
       font-size: 16px;
     }
   </style>
 
-  <!-- Script that uses all elements that follow. -->
-  <script src="{{ url_for('static', filename='js/games/breakout.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/games/snake.js') }}"></script>
 {% endblock head %}
 
 
@@ -120,5 +108,16 @@
 
   </div>
 
+
 {% endblock page_content %}
+
+
+{% block scripts_end %}
+{{ super() }}
+<!-- Script that uses all elements that follow. -->
+<script src="{{ url_for('static', filename='js/games/breakout.js') }}"></script>
+<script src="{{ url_for('static', filename='js/games/snake.js') }}"></script>
+{% endblock %}
+
+
 

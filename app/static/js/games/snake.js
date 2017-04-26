@@ -326,7 +326,6 @@ $(window).load(function() {
         ctx.fillStyle = "#5e5e5e";
         ctx.textBaseline = 'middle';
         ctx.textAlign = 'center';
-        ctx.fillText("HA! YOU SUCK!", canvas.width / 2, canvas.height / 2);
         ctx.fillText("Restarting in " + (n - tickTime),
                 canvas.width / 2,
                 canvas.height / 2 + 50);
@@ -335,7 +334,7 @@ $(window).load(function() {
             tickTime += 1;
             var message = "Restarting in ";
             var html = (n - tickTime > 0) ? message + (n - tickTime) : 'GO!';
-            ctx.clearRect(canvas.width / 4, canvas.height / 2 + 20, canvas.width / 2, canvas.height / 4);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.fillText(html, canvas.width / 2, canvas.height / 2 + 50);
 
             if (tickTime > n) {

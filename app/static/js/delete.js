@@ -32,8 +32,8 @@ $(document).ready(function() {
     console.log('userForm.find', userForm.find('.submit-btn'));
     userForm.find('.submit-btn').on('click', function(e) {
 
-        e.preventDefault();
-        e.stopPropagation();
+        //e.preventDefault();
+        //e.stopPropagation();
 
         console.log("submit triggered");
 
