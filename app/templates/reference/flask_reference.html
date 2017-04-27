@@ -132,7 +132,7 @@
       </thead>
 
       <tbody>
-      {% for key, value in headers %}
+      {% for key, value in request.headers %}
         <tr>
           <td class="success">{{ key }}</td>
           <td class="info">{{ value }}</td>

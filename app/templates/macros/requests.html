@@ -1,0 +1,37 @@
+<!-- Macros that interact with REST stuff. -->
+{% from "macros/forms.html" import render_label, render_submit %}
+
+{% macro delete_request(endpoint) %}
+  <!-- Delete button -->
+  <div class="delete-request">
+    <button type="button" url="{{ url_for(endpoint, **kwargs) }}"
+            class="btn btn-med btn-danger pull-right">Delete</button>
+  </div>
+{% endmacro %}
+
+
+<!-- Render an instance of app.forms.UserForm. -->
+{% macro post_request(form) %}
+  <div class="user-form">
+
+    <!-- For CSRF reasons. -->
+    {{ form.hidden_tag() }}
+
+    <!-- User Name -->
+    <div class="form-group">
+      <!-- Labeled input(s) -->
+      {{ render_label(form.nickname.label) }}
+      {{ form.nickname(class="form-control", autocomplete="off") }}
+    </div>
+
+    <!-- Blog Post -->
+    <div class="form-group">
+      {{ render_label(form.post.label) }}
+      {{ form.post(class="form-control", rows="3", autocomplete="off") }}
+    </div>
+
+    <!-- Submit -->
+    {{ render_submit(form.submit) }}
+  </div>
+
+{% endmacro %}

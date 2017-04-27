@@ -1,19 +1,11 @@
 {% extends "base.html" %}
 {% set active_page = "databases" %}
+
+<!-- Import macros. -->
 {% from "macros/forms.html" import render_user_form %}
-
-{% macro delete_model(endpoint) %}
-
-  <!-- Delete button -->
-  <div class="delete-model">
-    <button type="submit"
-            url="{{ url_for(endpoint, **kwargs) }}"
-            class="btn btn-med btn-danger pull-right">Delete</button>
-  </div>
-{% endmacro %}
+{% from "macros/requests.html" import delete_request, post_request %}
 
 {% block page_content %}
-
 
   <div class="jumbotron">
     <h1>Databases</h1>
@@ -26,6 +18,8 @@
       <h2>Users</h2>
       <p>Below is a list of all users stored in the database. Click a user's name
         to see all of their logged posts.</p>
+
+      <!-- Loop over all users -->
       {% for user in users if user.posts.count() %}
 
         <!-- so i don't have to keep typing this. -->
@@ -35,13 +29,11 @@
           <div class="col-sm-10">
             <div class="panel panel-primary">
 
-
               <!-- Panel headings are names of users. -->
               <div class="panel-heading clearfix" data-toggle="collapse"
                    href="#{{ user_name }}-posts" aria-expanded="false">
                 {{ user_name }}
               </div>
-
 
               <!-- Post list for the given user. -->
               <div id="{{ user_name }}-posts" class="panel-body collapse">
@@ -62,9 +54,9 @@
                             {{ post.body }}
                           {% endif %}
                       </div>
-
+                      <!-- Delete a single post for this user. -->
                       <div class="col-sm-2">
-                        {{ delete_model('user_post', post_id=post.id) }}
+                        {{ delete_request('user_post', post_id=post.id) }}
                       </div>
                     </div>
                   {%  endfor %}
@@ -72,14 +64,11 @@
               </div>
             </div>
           </div>
-
+          <!-- Delete the user (and thus all their posts. -->
           <div class="col-sm-2">
-            <!-- Button -->
-            {{ delete_model('user', nickname=user.nickname) }}
+            {{ delete_request('user', nickname=user.nickname) }}
           </div>
-
         </div>
-
       {% endfor %}
     </div>
   </div>
@@ -88,7 +77,7 @@
   <div class="row">
     <div class="col-sm-10">
       <h2>Add to Database</h2>
-      {{ render_user_form(forms['user_form']) }}
+      {{ post_request(forms['user_form']) }}
     </div>
   </div>  <!-- End: Add to Database (row) -->
 

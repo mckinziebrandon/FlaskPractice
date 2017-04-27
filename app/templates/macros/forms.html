@@ -23,7 +23,7 @@
 
 <!-- Render an instance of app.forms.BasicForm. -->
 {% macro render_basic_form(form) %}
-  <form class="basic-form" action="" method="POST">
+  <div class="basic-form">
     <div class="form-group">
       <!-- For CSRF reasons. -->
       {{ form.hidden_tag() }}
@@ -34,29 +34,6 @@
 
     <!-- Submit -->
     {{ render_submit(form.submit) }}
-  </form>
+  </div>
 {% endmacro %}
 
-<!-- Render an instance of app.forms.UserForm. -->
-{% macro render_user_form(form) %}
-  <form class="user-form" action="" method="POST">
-    <!-- For CSRF reasons. -->
-    {{ form.hidden_tag() }}
-
-    <!-- User Name -->
-    <div class="form-group">
-      <!-- Labeled input(s) -->
-      {{ render_label(form.nickname.label) }}
-      {{ form.nickname(class="form-control", autocomplete="off") }}
-    </div>
-
-    <!-- Blog Post -->
-    <div class="form-group">
-      {{ render_label(form.post.label) }}
-      {{ form.post(class="form-control", rows="3", autocomplete="off") }}
-    </div>
-
-    <!-- Submit -->
-    {{ render_submit(form.submit) }}
-  </form>
-{% endmacro %}

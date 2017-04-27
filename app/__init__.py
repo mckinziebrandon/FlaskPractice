@@ -42,10 +42,9 @@ def create_app(config_name):
     moment.init_app(app)
     # Client-sdie Markdown-to-HTML converter implemented in JS.
     pagedown.init_app(app)
-    # uh?
-    # api.init_app(main_blueprint)
-    api.init_app(app)
 
+    api.init_app(app)
     app.register_blueprint(main_blueprint)
+
     return app
 

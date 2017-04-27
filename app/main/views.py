@@ -9,6 +9,20 @@
 
 Misc Notes:
     - We can access the config.py variables via app.config dictionary.
+    - crud: 
+        - create, read, update, and delte. 
+        - the four basic functions of persistent storage.
+        - the basic operations to be done in a data repository.
+    - rest:
+        - representational state transfer.
+        - a style of architecture based on a set of principles that describe how
+          networked resources are defined and addressed.
+        - operates on resoure representations. typically not data objects, but complex
+          data abstractions.
+        - an app/architecture considered restful:
+            - state and functionality are divided into distributed resources.
+            - every resource is uniquely addressable using a minimal set of commands.
+            - protocol is client/server, stateless, layered, and supports caching.
 """
 
 try:
@@ -20,17 +34,16 @@ except ImportError:
 
 import json
 from datetime import datetime
-from flask import jsonify
-from flask import flash, redirect
-from flask import render_template
-from flask import session, url_for, request, current_app
+from flask_restful import Resource, fields, marshal_with
+from marshmallow import Schema, fields, post_load, pprint
+from flask.views import View
+from flask import session, url_for, request, current_app, render_template, \
+        flash, redirect
 
 from app import db, api
 from app.main import main
 from app.main.forms import BasicForm, UserForm
 from app.models import User, Post
-
-from flask_restful import Resource
 
 
 @main.before_app_first_request
@@ -44,188 +57,184 @@ def new_theme():
     return redirect(request.referrer)
 
 
-@main.route('/')
-@main.route('/index')
-def index():
-    if session.get('theme') is None:
-        session['theme'] = current_app.config['DEFAULT_THEME']
-    # Load all User objects from db database.
-    users = User.query.all()
-    return render_template('index.html',
-                           title='Home',
-                           users=users,
-                           forms={'user_form': UserForm()})
+class UserSchema(Schema):
+    """UserSchema"""
+    # id = fields.Integer()
+    nickname = fields.String()
+    posts = fields.Nested('PostSchema', many=True, exclude=('author', ))
+    class Meta:
+        fields = ('nickname', 'posts')
+
+    @post_load
+    def make_user(self, data):
+        return User(**data)
 
 
-@main.route('/databases', methods=['GET'])
-def databases():
-    # Load all User objects from db database.
-    users = User.query.all()
-    return render_template('databases.html',
-                           users=users,
-                           forms={'user_form': UserForm()})
+class PostSchema(Schema):
+    """PostSchema"""
+    # id = fields.Integer()
+    post = fields.String()
+    timestamp = fields.DateTime()
+    author = fields.Nested(UserSchema, only=['nickname'])
+    class Meta:
+        fields = ('body', 'timestamp', 'author')
+
+    @post_load
+    def make_post(self, data):
+        return Post(**data)
 
 
-@main.route('/input_practice', methods=['GET', 'POST'])
-def input_practice():
+class UserListAPI(Resource):
+    """Accessing all User objects in the database."""
 
-    # Create the form(s) used for this endpoint.
-    forms = {'basic_form': BasicForm(),
-             'user_form': UserForm()}
+    def __init__(self):
+        self.schema = UserSchema(many=True)
 
-    form = forms['basic_form']
-    if form.validate_on_submit():
-        flash('basic_form validated. Message: {}'.format(
-            forms['basic_form'].message.data))
-        return redirect(url_for('.input_practice'))
-
-    form = forms['user_form']
-    if form.validate_on_submit() and form.submit.data:
-        flash('user_form valid')
-        session['nickname'] = forms['user_form'].nickname.data
-    return render_template('input_practice.html', forms=forms)
-
-
-@main.route('/add_user', methods=['POST'])
-def add_user():
-    # This will get filled with form info via request.
-    user_form = UserForm(nickname=session.get('nickname'))
-    if not user_form:
-        flash("Couldn't find user_form in Session. Creating a new one.")
-        user_form = UserForm()
-
-    if user_form.validate_on_submit():
-        # Get or create the user.
-        user = User.query.filter_by(nickname=user_form.nickname.data).first()
-        if user is None:
-            user = User(nickname=user_form.nickname.data)
-
-        # Associate user and their post.
-        post = Post(body=user_form.post.data,
-                    timestamp=datetime.utcnow(),
-                    author=user)
-
-        # Add and commit to database.
-        db.session.add_all([user, post])
-        db.session.commit()
-        flash('Database successfully updated.')
-    else:
-        flash('Error: form submission not validated.')
-        flash(user_form.errors)
-
-    # Go back to where ya came from!
-    return redirect(request.referrer)
-
-
-@main.route('/reference/<prefix>')
-def reference(prefix):
-    return render_template(
-        'reference/{}_reference.html'.format(prefix),
-        headers=request.headers)
-
-
-@main.route('/games')
-def games():
-    return render_template('games.html')
+    def get(self):
+        users = User.query.all()
+        return self.schema.dump(users)
 
 
 class UserAPI(Resource):
-    """Notes: 
-     - Whenver the request is dispatched, a new instance of UserView is created and
-      the dispatch_request() method is called with the params from url rule.
-      - The class itself is instantiated with the params passed as_view().
-    """
+    """API for adding/creating/deleting users by specifying their nickname."""
 
-    def get(self, nickname=None):
-        if nickname is None:
-            # Return list of all users
-            users = User.query.all()
-            if users is not None:
-                return [{'user_id': u.id, 'nickname': u.nickname} for u in users]
-        else:
-            # Return first user matching nickname or 404.
-            user = User.query.filter_by(nickname=nickname).first_or_404()
-            if user is not None:
-                return {'user_id': user.id, 'nickname': user.nickname}
-        return None
+    def __init__(self):
+        self.schema = UserSchema()
 
-    def post(self):
-        print('UserAPI.post called.')
+    def get(self, nickname):
+        user = User.query.filter_by(nickname=nickname).first_or_404()
+        return self.schema.dump(user)
+
+    def post(self, nickname):
         """Create a new user."""
-        user = self._get_or_create(request.form.get('nickname'))
-        session['nickname'] = user.nickname
-        # Add and commit to database.
+        user = User(nickname=request.values.get('nickname'))
         db.session.add(user)
         db.session.commit()
-        return {'user_id': user.id, 'nickname': user.nickname}
+        return self.schema.dump(user)
 
-    def delete(self, nickname=None):
+    def _get_data(self, nickname):
+        return {
+            'nickname': nickname
+        }
+
+    def delete(self, nickname):
         """Delete user from db."""
         user = User.query.filter_by(nickname=nickname).first_or_404()
         db.session.delete(user)
         db.session.commit()
         return '', 204
 
-    def _get_or_create(self, nickname):
-        if nickname is None:
-            raise ValueError('nickname is ' + nickname)
-        nickname = nickname.capitalize()
-        user = User.query.filter_by(nickname=nickname).first()
-        if user is None:
-            user = User(nickname=nickname)
-        return user
+
+class PostListAPI(Resource):
+
+    def __init__(self):
+        self.schema = PostSchema(many=True)
+
+    def get(self):
+        posts = Post.query.all()
+        return self.schema.dump(posts)
 
 
 class PostAPI(Resource):
+    """API for adding/creating/deleting posts (as in blog posts) and their stored info
+    from the SQLAlchemy database. [NEW]
+    """
 
-    def get(self, post_id=None):
-        if post_id is None:
-            # Return list of all users
-            posts = Post.query.all()
-            if posts is not None:
-                posts = [self._to_dict(p) for p in posts]
-        else:
-            post = Post.query.get(post_id)
-            if post is not None:
-                return self._to_dict(post)
-        return None
+    def __init__(self):
+        self.schema = PostSchema()
+
+    def get(self, post_id):
+        post = Post.query.get_or_404(post_id)
+        return self.schema.dump(post)
 
     def post(self, post_id=None):
-        print('PostAPI.post called.')
         # Associate user and their post.
-        nickname = request.form.get('nickname')
-        user_post = request.form.get('post')
-        print('nick:', nickname)
-        print('post:', user_post)
-        post = Post(body=user_post, timestamp=datetime.utcnow(),
-            author=User.query.filter_by(nickname=nickname).first())
-        print('adding post:', post)
+        nickname = request.values.get('nickname')
+        user_post = request.values.get('post')
+        post_data = self._get_data(nickname, user_post)
+        post = Post(**post_data)
         db.session.add(post)
         db.session.commit()
-        return self._to_dict(post)
+        return self.schema.dump(post)
 
-    def delete(self, post_id=None):
+    def delete(self, post_id):
         post = Post.query.get_or_404(post_id)
         db.session.delete(post)
         db.session.commit()
         return '', 204
 
-    def _to_dict(self, post):
+    def _get_data(self, nickname, user_post):
+        """For providing schema with dict (not kwargs!)."""
+        # TODO: how to issue a GET to UserAPI? (to get author).
         return {
-            'id': post.id,
-            'body': post.body,
-            'timestamp': str(post.timestamp),
-            'user_id': post.user_id}
-
-    def _to_json(self, post):
-        return jsonify(
-            id=post.id,
-            body=post.body,
-            timestamp=json.dumps(post.timestamp),
-            user_id=post.user_id)
+            'body': user_post,
+            'timestamp': datetime.utcnow(),
+            'author': User.query.filter_by(nickname=nickname).first()
+        }
 
 
-api.add_resource(UserAPI, '/user', '/user/<string:nickname>', endpoint='user')
-api.add_resource(PostAPI, '/user_post', '/user_post/<int:post_id>', endpoint='user_post')
+class RenderTemplate(View):
+    """Notes: 
+     - Whenver the request is dispatched, a new instance of UserView is created and
+      the dispatch_request() method is called with the params from url rule.
+      - The class itself is instantiated with the params passed as_view().
+    """
 
+    def __init__(self, **kwargs):
+        if session.get('theme') is None:
+            session['theme'] = current_app.config['DEFAULT_THEME']
+        self.template_name = kwargs['template_name']
+
+    def dispatch_request(self):
+        return render_template(
+            self.template_name,
+            users=User.query.all(),
+            forms={'basic_form': BasicForm(),
+                   'user_form': UserForm()})
+
+
+def add_render_template(name):
+    main.add_url_rule(
+        '/'+name,
+        view_func=RenderTemplate.as_view(
+            name,
+            template_name=(name or 'index')+'.html'))
+
+
+def add_reference(prefix):
+    endpoint = prefix + '_reference'
+    url = '/reference/' + endpoint
+    template_name = url[1:] + '.html'
+    main.add_url_rule(
+        url,
+        view_func=RenderTemplate.as_view(endpoint, template_name=template_name))
+
+
+# -------------------------------------------------------
+# BACKEND: Database Queries.
+# -------------------------------------------------------
+
+api.add_resource(UserListAPI, '/user', endpoint='users')
+api.add_resource(UserAPI, '/user/<string:nickname>', endpoint='user')
+api.add_resource(PostListAPI, '/user_post', endpoint='user_posts')
+api.add_resource(PostAPI, '/user_post/<int:post_id>', '/new_user_post', endpoint='user_post')
+
+
+# -------------------------------------------------------
+# FRONTEND: HTML/Template Rendering.
+# -------------------------------------------------------
+
+# The main pages.
+add_render_template('')
+add_render_template('index')
+add_render_template('input_practice')
+add_render_template('databases')
+add_render_template('games')
+
+# The reference pages.
+add_reference('jquery')
+add_reference('javascript')
+add_reference('canvas')
+add_reference('flask')
+add_reference('bootstrap')
 

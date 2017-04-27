@@ -10,19 +10,21 @@
     td, th { border: 1px solid black; padding: 3px 8px; }
     th     { text-align: left; }
   </style>
-{% endblock head %}
 
-{% block scripts_end %}
   <!-- Script for beautification. -->
   <script src="{{ url_for('static', filename='js/note_taker.js') }}"></script>
   <!-- muh table -->
-  <script src="{{ url_for('static', filename='js/build_table.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/exercises/build_table.js') }}"></script>
   <!-- muh censoring -->
-  <script src="{{ url_for('static', filename='js/censored_keyboard.js') }}"></script>
-{% endblock scripts_end %}
+  <script src="{{ url_for('static', filename='js/exercises/censored_keyboard.js') }}"></script>
+
+{% endblock head %}
 
 
 {% block page_content %}
+
+
+
   <div class="jumbotron">
     <h1>Eloquent JavaScript</h1>
     <p>Muh Notes</p>

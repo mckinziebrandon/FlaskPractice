@@ -1,8 +1,6 @@
 <!doctype html>
 <html lang="en">
-<!-- app/templates/base.html: Base template that includes:
-    * navigation bar
-    * title logic
+<!-- app/templates/abstract_base.html: basic layout specifications. No real content.
 
 Misc. Notes:
     - We assume that templates have been passed certain vars when called.
@@ -25,35 +23,38 @@ Misc. Notes:
       {% endblock title %}
     </title>
 
+
+    <!-- ------------- CSS ------------- -->
+
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" type="text/css" id="theme-link"
           href="https://maxcdn.bootstrapcdn.com/bootswatch/latest/{{ session['theme'] }}/bootstrap.min.css">
 
-    <!-- Bootstrap theme -->
-    <!--<link rel="stylesheet" type="text/css"
-        href="{{ url_for('static', filename='css/bootstrap-theme.min.css') }}">-->
-
-    <!-- Custom styles for this template (I see ur overrule with an overrule. -->
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/theme.css') }}">
-
-    <!-- Custom styles for this template (I see ur overrule with an overrule. -->
+    <!-- Custom styles for this template. -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/theme.css') }}">
 
     <!-- Bootstrap slider -->
     <link rel="stylesheet" type="text/css"
           href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.7.3/css/bootstrap-slider.min.css">
 
+
+    <!-- ------------- JavaScript ------------- -->
+
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
-    <!-- Slider js -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+
+    <!-- Slider JavaScript. -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.7.3/bootstrap-slider.min.js"></script>
 
-    <!-- Load the moment.js file (which depends on jQuery). -->
-    {{ moment.include_moment() }}
+    <!-- Core Bootstrap JS (NOT provided by Bootswatch!!). -->
+    <script src="{{ url_for('static', filename='js/vendor/bootstrap.min.js') }}"></script>
 
-    <!-- Load the Flask-PageDown template macro from CDN -->
-    {{ pagedown.include_pagedown() }}
+    <!-- Syntax Highlighting -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.10.0/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.10.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
 
   {% endblock head %}
 </head>
@@ -80,25 +81,6 @@ Misc. Notes:
     {% endwith %}
   </div>  <!-- end: container -->
 {%  endblock content %}
-
-{% block scripts_end %}
-
-<!-- Recommended by flask docs. -->
-<script>$SCRIPT_ROOT = {{ request.script_root|tojson|safe }}</script>
-
-
-<!-- It appears that bootstrap js must be placed here. -->
-<script src="{{ url_for('static', filename='js/vendor/bootstrap.min.js') }}"></script>
-
-<!-- Syntax Highlighting -->
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.10.0/styles/default.min.css">
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.10.0/highlight.min.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
-
-
-
-<script src="{{ url_for('static', filename='js/delete.js') }}"></script>
-{% endblock scripts_end %}
 
 </body>
 </html>

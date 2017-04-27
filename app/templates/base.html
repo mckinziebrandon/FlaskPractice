@@ -5,17 +5,30 @@
 
 {% block head %}
   {{ super() }}
+
   <!-- My own styles. -->
   <link rel="stylesheet" type="text/css"
         href="{{ url_for('static', filename='css/style_additions.css') }}">
+
+  <!-- Recommended by flask docs. -->
+  <script>$SCRIPT_ROOT = {{ request.script_root|tojson|safe }}</script>
+
+  <!-- Load the moment.js file (which depends on jQuery). -->
+  {{ moment.include_moment() }}
+
+  <!-- Load the Flask-PageDown template macro from CDN -->
+  {{ pagedown.include_pagedown() }}
+
+  <!-- REST/request handling -->
+  <script src="{{ url_for('static', filename='js/requests.js') }}"></script>
 
   <!-- For the theme selector/api calls. -->
   <script src="{{ url_for('static', filename='js/bootswatch.js') }}"></script>
 
   <!-- Make stuff look pretty. -->
   <script src="{{ url_for('static', filename='js/bootstrapify.js') }}"></script>
-
 {% endblock head %}
+
 
 {% block navbar %}
   {%  set navigation_bar = [
@@ -52,11 +65,11 @@
           <li class="dropdown">
             <a href="#" class="dropdown-toggle">Reference</a>
             <ul class="dropdown-menu">
-              <li><a href="{{ url_for('.reference', prefix="bootstrap") }}">Bootstrap</a></li>
-              <li><a href="{{ url_for('.reference', prefix="flask") }}">Flask</a></li>
-              <li><a href="{{ url_for('.reference', prefix="javascript") }}">Javascript</a></li>
-              <li><a href="{{ url_for('.reference', prefix="jquery") }}">JQuery</a></li>
-              <li><a href="{{ url_for('.reference', prefix="canvas") }}">Canvas</a></li>
+              <li><a href="{{ url_for('main.bootstrap_reference') }}">Bootstrap</a></li>
+              <li><a href="{{ url_for('main.flask_reference') }}">Flask</a></li>
+              <li><a href="{{ url_for('main.javascript_reference') }}">Javascript</a></li>
+              <li><a href="{{ url_for('main.jquery_reference') }}">JQuery</a></li>
+              <li><a href="{{ url_for('main.canvas_reference') }}">Canvas</a></li>
             </ul>  <!-- end: dropdown-menu -->
           </li>  <!-- end: dropdown -->
 
@@ -90,7 +103,6 @@
     {% block page_content %}{% endblock page_content %}
   </div>
 {%  endblock content %}
-
 
 
 

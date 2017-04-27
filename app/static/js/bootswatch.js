@@ -1,6 +1,7 @@
-/* Macro for using Bootswatch API (theme-changing). */
-
-/** Load JSON-encoded data from api server (using ajax GET HTTP request). */
+/*
+ * Macro for using Bootswatch API (theme-changing). Loads JSON-encoded
+ * data from api server (using ajax GET HTTP request).
+ */
 $.getJSON("https://bootswatch.com/api/3.json", function (data) {
 
     // Get array of themes. Each entry is an object with properties:
