@@ -113,9 +113,8 @@
   <script src="{{ url_for('static', filename='externals/require.js') }}"></script>
   <script src="{{ url_for('static', filename='built/require-config.js') }}"></script>
   <!-- Script that uses all elements that follow. -->
-  <script>
-      require(["{{ url_for('static', filename='built/games/snake.js') }}"])
-  </script>
+  <script>require(["{{ url_for('static', filename='built/games/snake.js') }}"])</script>
+  <script>require(["{{ url_for('static', filename='built/games/breakout.js') }}"])</script>
   <script></script>
 
 {% endblock page_content %}
