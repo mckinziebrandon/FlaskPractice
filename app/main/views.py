@@ -9,8 +9,8 @@
 
 Misc Notes:
     - We can access the config.py variables via app.config dictionary.
-    - crud: 
-        - create, read, update, and delte. 
+    - crud:
+        - create, read, update, and delte.
         - the four basic functions of persistent storage.
         - the basic operations to be done in a data repository.
     - rest:
@@ -48,6 +48,7 @@ from app.models import User, Post
 
 @main.before_app_first_request
 def inject_theme():
+    db.create_all()
     session['theme'] = current_app.config['DEFAULT_THEME']
 
 
@@ -85,7 +86,10 @@ class PostSchema(Schema):
 
 
 class UserListAPI(Resource):
-    """Accessing all User objects in the database."""
+    """Operations related to the pool of users:
+        - GET: get the list of User objects stored in db.
+        - POST: add another user to the db pool.
+    """
 
     def get(self):
         users = User.query.all()
@@ -93,8 +97,8 @@ class UserListAPI(Resource):
 
     def post(self):
         """Create a new user, add to our list of users."""
-        nickname = request.values.get('nickname')
-        user = User.query.filter_by(nickname=(nickname or 'Anon')).first()
+        nickname = (request.values.get('nickname') or 'Anon').capitalize()
+        user = User.query.filter_by(nickname=nickname).first()
         if user is None:
             user = User(nickname=nickname)
             db.session.add(user)
@@ -104,14 +108,19 @@ class UserListAPI(Resource):
 
 
 class UserAPI(Resource):
-    """API for adding/creating/deleting users by specifying their nickname."""
+    """Operations on a specific user, given by their nickname.
+        - GET: get the specified user object.
+        - DELETE: deleteUser the given user from the db.
+    """
 
     def get(self, nickname):
+        nickname = nickname.capitalize()
         user = User.query.filter_by(nickname=nickname).first_or_404()
         return UserSchema().dump(user)
 
     def delete(self, nickname):
         """Delete user from db."""
+        nickname = nickname.capitalize()
         user = User.query.filter_by(nickname=nickname).first_or_404()
         db.session.delete(user)
         db.session.commit()
@@ -124,23 +133,26 @@ class PostListAPI(Resource):
         posts = Post.query.all()
         return PostSchema(many=True).dump(posts)
 
-    def post(self):
+    def post(self, return_all=False):
         # Associate user and their post.
-        nickname = request.values.get('nickname')
+        nickname = (request.values.get('nickname') or 'Anon').capitalize()
         user_post = request.values.get('post')
         post_data = self._get_data(nickname, user_post)
         post = Post(**post_data)
         db.session.add(post)
         db.session.commit()
-        return PostSchema(many=True).dump(Post.query.all())
+
+        if return_all:
+            return PostSchema(many=True).dump(Post.query.all())
+        else:
+            return PostSchema().dump(post)
 
     def _get_data(self, nickname, user_post):
         """For providing schema with dict (not kwargs!)."""
         return {
             'body': user_post,
             'timestamp': datetime.utcnow(),
-            'author': User.query.filter_by(nickname=nickname).first()
-        }
+            'author': User.query.filter_by(nickname=nickname).first()}
 
 
 class PostAPI(Resource):
@@ -160,9 +172,9 @@ class PostAPI(Resource):
 
 
 class RenderTemplate(View):
-    """Notes: 
-     - Whenver the request is dispatched, a new instance of UserView is created and
-      the dispatch_request() method is called with the params from url rule.
+    """Notes:
+     - Whenever the request is dispatched, a new instance of UserView is created and
+      the dispatch_request() method is called with the params from baseURL rule.
       - The class itself is instantiated with the params passed as_view().
     """
 
@@ -200,10 +212,11 @@ def add_reference(prefix):
 # BACKEND: Database Queries.
 # -------------------------------------------------------
 
-api.add_resource(UserListAPI, '/user', endpoint='users')
 api.add_resource(UserAPI, '/user/<string:nickname>', endpoint='user')
-api.add_resource(PostListAPI, '/user_post', endpoint='user_posts')
+api.add_resource(UserListAPI, '/user', endpoint='users')
+
 api.add_resource(PostAPI, '/user_post/<int:post_id>', endpoint='user_post')
+api.add_resource(PostListAPI, '/user_post', endpoint='user_posts')
 
 
 # -------------------------------------------------------

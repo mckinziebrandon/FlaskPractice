@@ -19,7 +19,7 @@ $(document).ready(function() {
     $('ul.custom li').addClass('list-group-item');
 
     // Muh tooltips.
-    var tooltip = $('.tooltip-custom');
+    let tooltip = $('.tooltip-custom');
     // Only auto-show (for 3 sec) if on homepage.
     if (tooltip.attr('page') == 'index') {
         tooltip.tooltip('show');

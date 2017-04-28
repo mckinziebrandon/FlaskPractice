@@ -54,8 +54,8 @@
       <p>To insert "Brandon is amazing" anywhere in the text area, press F2.</p>
       <textarea id="amazing" class="form-control" rows="2"></textarea>
       <script>
-          var F2 = 113;
-          var textarea = $("#amazing").get(0);
+          const F2 = 113;
+          let textarea = $("#amazing").get(0);
           $(textarea).on("keydown", function(event) {
               if (event.keyCode == F2) {
                   replaceSelection(textarea, "Brandon is amazing");
@@ -66,8 +66,8 @@
 
           function replaceSelection(field, word) {
               // Get start and end of the selection.
-              var from = field.selectionStart;
-              var to = field.selectionEnd;
+              let from = field.selectionStart;
+              let to = field.selectionEnd;
               // Replace the currently selected part of text with word.
               field.value =
                       field.value.slice(0, from)

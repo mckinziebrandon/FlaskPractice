@@ -2,7 +2,7 @@
  * Paddle for breakout.
  * @constructor
  */
-export class Paddle {
+class Paddle {
     height: number;
     width: number;
     x: number;
@@ -30,7 +30,7 @@ export class Paddle {
  * Ball for breakout.
  * @constructor
  */
-export class Ball {
+class Ball {
     canvas: HTMLCanvasElement;
     x: number;
     y: number;
@@ -82,7 +82,7 @@ export class Ball {
  * Bricks for breakout game.
  * @constructor
  */
-export class Bricks {
+class Bricks {
     rowCount: number;
     columnCount: number;
     width: number;

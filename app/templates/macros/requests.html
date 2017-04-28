@@ -1,10 +1,21 @@
 <!-- Macros that interact with REST stuff. -->
 {% from "macros/forms.html" import render_label, render_submit %}
 
-{% macro delete_request(endpoint) %}
+<!-- Delete User -->
+{% macro delete_user(nickname) %}
   <!-- Delete button -->
-  <div class="delete-request">
-    <button type="button" url="{{ url_for(endpoint, **kwargs) }}"
+  <div class="delete-user">
+    <button type="button" nickname="{{ nickname }}"
+            class="btn btn-med btn-danger pull-right">Delete</button>
+  </div>
+{% endmacro %}
+
+
+<!-- Delete Post -->
+{% macro delete_post(post_id) %}
+  <!-- Delete button -->
+  <div class="delete-post">
+    <button type="button" post-id="{{ post_id }}"
             class="btn btn-med btn-danger pull-right">Delete</button>
   </div>
 {% endmacro %}

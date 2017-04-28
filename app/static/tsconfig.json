@@ -8,7 +8,8 @@
   "files": [
     "./js/require-config.ts",
     "./js/games/snake.ts",
-    "./js/games/breakout.ts"
+    "./js/games/breakout.ts",
+    "./js/requests.ts"
   ]
 }
 

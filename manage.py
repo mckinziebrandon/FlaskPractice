@@ -45,6 +45,8 @@ def deploy():
     from flask_migrate import upgrade
     # Migrate db to latest revision.
     upgrade()
+    # Create tables.
+    db.create_all()
 
 
 if __name__ == '__main__':
