@@ -7,7 +7,6 @@
   },
   "files": [
     "./js/require-config.ts",
-    "./js/hello.ts",
     "./js/games/snake.ts",
     "./js/games/breakout.ts"
   ]

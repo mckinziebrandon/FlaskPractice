@@ -46,12 +46,12 @@ $(document).ready(function() {
         var userPost = $(':input[name="post"]');
 
         // Post for user name.
-        $.post($SCRIPT_ROOT + '/user/' + nickname.val(), {
+        $.post($SCRIPT_ROOT + '/user', {
             'nickname': nickname.val()
         });
 
         // Post for userPost.
-        $.post($SCRIPT_ROOT + '/new_user_post', {
+        $.post($SCRIPT_ROOT + '/user_post', {
             'nickname': nickname.val(),
             'post': userPost.val()
         }, function(data) {

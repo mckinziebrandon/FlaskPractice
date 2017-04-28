@@ -87,69 +87,44 @@ class PostSchema(Schema):
 class UserListAPI(Resource):
     """Accessing all User objects in the database."""
 
-    def __init__(self):
-        self.schema = UserSchema(many=True)
-
     def get(self):
         users = User.query.all()
-        return self.schema.dump(users)
+        return UserSchema(many=True).dump(users)
+
+    def post(self):
+        """Create a new user, add to our list of users."""
+        nickname = request.values.get('nickname')
+        user = User.query.filter_by(nickname=nickname).first()
+        if user is None:
+            user = User(nickname=nickname)
+            db.session.add(user)
+            db.session.commit()
+        # Return the updated list of all users.
+        return UserSchema(many=True).dump(User.query.all())
 
 
 class UserAPI(Resource):
     """API for adding/creating/deleting users by specifying their nickname."""
 
-    def __init__(self):
-        self.schema = UserSchema()
-
     def get(self, nickname):
         user = User.query.filter_by(nickname=nickname).first_or_404()
-        return self.schema.dump(user)
-
-    def post(self, nickname):
-        """Create a new user."""
-        user = User.query.filter_by(nickname=request.value.get('nickname')).first()
-        if user is None:
-            user = User(nickname=request.values.get('nickname'))
-            db.session.add(user)
-            db.session.commit()
-        return self.schema.dump(user)
-
-    def _get_data(self, nickname):
-        return {
-            'nickname': nickname
-        }
+        return UserSchema().dump(user)
 
     def delete(self, nickname):
         """Delete user from db."""
         user = User.query.filter_by(nickname=nickname).first_or_404()
         db.session.delete(user)
         db.session.commit()
-        return '', 204
+        return 'User {} deleted.'.format(nickname), 204
 
 
 class PostListAPI(Resource):
 
-    def __init__(self):
-        self.schema = PostSchema(many=True)
-
     def get(self):
         posts = Post.query.all()
-        return self.schema.dump(posts)
+        return PostSchema(many=True).dump(posts)
 
-
-class PostAPI(Resource):
-    """API for adding/creating/deleting posts (as in blog posts) and their stored info
-    from the SQLAlchemy database. [NEW]
-    """
-
-    def __init__(self):
-        self.schema = PostSchema()
-
-    def get(self, post_id):
-        post = Post.query.get_or_404(post_id)
-        return self.schema.dump(post)
-
-    def post(self, post_id=None):
+    def post(self):
         # Associate user and their post.
         nickname = request.values.get('nickname')
         user_post = request.values.get('post')
@@ -157,22 +132,31 @@ class PostAPI(Resource):
         post = Post(**post_data)
         db.session.add(post)
         db.session.commit()
-        return self.schema.dump(post)
-
-    def delete(self, post_id):
-        post = Post.query.get_or_404(post_id)
-        db.session.delete(post)
-        db.session.commit()
-        return '', 204
+        return PostSchema(many=True).dump(Post.query.all())
 
     def _get_data(self, nickname, user_post):
         """For providing schema with dict (not kwargs!)."""
-        # TODO: how to issue a GET to UserAPI? (to get author).
         return {
             'body': user_post,
             'timestamp': datetime.utcnow(),
             'author': User.query.filter_by(nickname=nickname).first()
         }
+
+
+class PostAPI(Resource):
+    """API for adding/creating/deleting posts (as in blog posts) and their stored info
+    from the SQLAlchemy database. [NEW]
+    """
+
+    def get(self, post_id):
+        post = Post.query.get_or_404(post_id)
+        return PostSchema().dump(post)
+
+    def delete(self, post_id):
+        post = Post.query.get_or_404(post_id)
+        db.session.delete(post)
+        db.session.commit()
+        return 'Post {} deleted.'.format(post_id), 204
 
 
 class RenderTemplate(View):
@@ -219,7 +203,7 @@ def add_reference(prefix):
 api.add_resource(UserListAPI, '/user', endpoint='users')
 api.add_resource(UserAPI, '/user/<string:nickname>', endpoint='user')
 api.add_resource(PostListAPI, '/user_post', endpoint='user_posts')
-api.add_resource(PostAPI, '/user_post/<int:post_id>', '/new_user_post', endpoint='user_post')
+api.add_resource(PostAPI, '/user_post/<int:post_id>', endpoint='user_post')
 
 
 # -------------------------------------------------------
