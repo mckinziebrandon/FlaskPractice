@@ -110,8 +110,8 @@ class UserAPI(Resource):
         user = User.query.filter_by(nickname=request.value.get('nickname')).first()
         if user is None:
             user = User(nickname=request.values.get('nickname'))
-        db.session.add(user)
-        db.session.commit()
+            db.session.add(user)
+            db.session.commit()
         return self.schema.dump(user)
 
     def _get_data(self, nickname):
