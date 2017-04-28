@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "outDir": "./built/",
+    "sourceMap": true,
+    "module": "amd",
+    "target": "es2015"
+  },
+  "files": [
+    "./js/require-config.ts",
+    "./js/hello.ts",
+    "./js/games/snake.ts",
+    "./js/games/breakout.ts"
+  ],
+  "include": [
+    "./js/games"
+  ]
+}
+
