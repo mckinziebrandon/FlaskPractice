@@ -29,9 +29,9 @@ manager.add_command('db', MigrateCommand)
 @manager.command
 def test():
     """Run the unit tests (see the tests package).
-    
+
     This can be run from the cmd line via 'python3 manage.py test'.
-    
+
     Note: the decorator above allows us to define this as a custom method
     for our manager object.
     """
