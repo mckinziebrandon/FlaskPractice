@@ -17,7 +17,6 @@ class TestDatabase(unittest.TestCase):
         self.app = create_app('testing')
         self.app_context = self.app.app_context()
         self.app_context.push()
-        self.url_root = request.url_root
         db.create_all()
 
     def tearDown(self):
@@ -29,10 +28,4 @@ class TestDatabase(unittest.TestCase):
     def test_app_exists(self):
         self.assertFalse(current_app is None)
 
-    def test_user_list_api(self):
-        """Add a new user model to the db."""
-
-        nickname = 'Sally'
-        response = post(self.url_root + '/user', data={'nickname': nickname})
-        print(response)
 

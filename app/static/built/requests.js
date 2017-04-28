@@ -99,12 +99,25 @@ $(document).ready(function () {
             'nickname': nickname.val(),
             'post': userPost.val()
         }, function (userPost) {
+            // :(
+            location.reload();
+            /* TODO: .....
             let userName = userPost.author.nickname;
             let postBody = userPost.body;
             let timestamp = userPost.timestamp;
-            if (!$(`.user-row-${userName}`).length) {
-                $('.user-post-list').prepend(`<p>New user ${userName} registered.</p>`);
+
+            if (!$(`.user-row-${ userName }`).length) {
+                $('.user-post-list').prepend(
+                    `<p>New user ${ userName } registered.</p>`);
+            } else {
+                let ul = $(`.user-row-${ userName } #${ userName }-posts`)
+                    .find('ul');
+                let postRow = $(`<div class='row post-row-${ userPost.id}'></div>`)
+                postRow
+                    .append(`<div class='col-sm-10'></div>`)
+                    .append(`<li class='justify-content-between'></li>`);
             }
+            */
         });
         e.preventDefault();
         e.stopPropagation();
