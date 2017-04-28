@@ -49,14 +49,33 @@
 
   <div class="jumbotron">
     <h1>Games in JavaScript</h1>
-    <p>Using the canvas element for making games.</p>
+    <p>Using the canvas element for making games.
+      All written in <a href="https://www.typescriptlang.org/">TypeScript.</a>
+    </p>
   </div>
 
 
   <div class="row">
     <h2>Breakout</h2>
+
+    <div class="col-sm-7">
     <p>Mouse-over to play.</p>
     <canvas id="breakout-canvas" width="480" height="320"></canvas>
+    </div>
+
+    <div class="col-sm-5 pull-right">
+      <h3>Example Snippet</h3>
+      <pre><code class="js">
+      export class Paddle {
+        height: number;
+        width: number;
+        x: number;
+        y: number;
+        step: number;
+      }
+      </code></pre>
+      <p>TypeScript makes OOP much easier than vanilla JS.</p>
+    </div>
   </div>
 
   <hr>

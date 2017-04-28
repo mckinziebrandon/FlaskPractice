@@ -11,7 +11,7 @@ define(["require", "exports"], function (require, exports) {
             this.width = 75;
             this.x = (canvas.width - this.width) / 2;
             this.y = (canvas.height - this.height);
-            this.step = 7;
+            this.step = 10;
         }
         draw(ctx) {
             ctx.beginPath();
@@ -31,8 +31,8 @@ define(["require", "exports"], function (require, exports) {
             this.canvas = canvas;
             this.x = canvas.width / 2;
             this.y = canvas.height - 30;
-            this.dx = speed || 2;
-            this.dy = -(speed || 2);
+            this.dx = speed;
+            this.dy = -speed;
             this.radius = 10;
         }
         draw(ctx) {
@@ -137,7 +137,7 @@ define(["require", "exports"], function (require, exports) {
         $(document).on('keydown', keyDownHandler);
         $(document).on('keyup', keyUpHandler);
         let bricks = new Bricks();
-        let ball = new Ball(1, canvas);
+        let ball = new Ball(3, canvas);
         let paddle = new Paddle(canvas);
         function keyDownHandler(e) {
             if (e.keyCode === RIGHT_ARROW_KEY) {

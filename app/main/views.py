@@ -94,7 +94,7 @@ class UserListAPI(Resource):
     def post(self):
         """Create a new user, add to our list of users."""
         nickname = request.values.get('nickname')
-        user = User.query.filter_by(nickname=nickname).first()
+        user = User.query.filter_by(nickname=(nickname or 'Anon')).first()
         if user is None:
             user = User(nickname=nickname)
             db.session.add(user)
