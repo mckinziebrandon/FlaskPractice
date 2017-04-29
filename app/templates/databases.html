@@ -26,21 +26,18 @@
       <!-- Loop over all users -->
       {% for user in users if user.posts.count() %}
 
-        <!-- so i don't have to keep typing this. -->
-        {% set user_name = user.nickname|capitalize %}
-
-        <div class="row user-row-{{ user_name }}">
+        <div class="row user-row-{{ user.nickname }}">
           <div class="col-sm-10">
             <div class="panel panel-primary">
 
               <!-- Panel headings are names of users. -->
               <div class="panel-heading clearfix" data-toggle="collapse"
-                   href="#{{ user_name }}-posts" aria-expanded="false">
-                {{ user_name }}
+                   href="#{{ user.nickname }}-posts" aria-expanded="false">
+                {{ user.nickname }}
               </div>
 
               <!-- Post list for the given user. -->
-              <div id="{{ user_name }}-posts" class="panel-body collapse">
+              <div id="{{ user.nickname }}-posts" class="panel-body collapse">
                 <ul class="custom">
                   {%  for post in user.posts %}
                     <div class="row post-row-{{ post.id }}">
@@ -70,7 +67,7 @@
           </div>
           <!-- Delete the user (and thus all their posts. -->
           <div class="col-sm-2">
-            {{ delete_user(user_name) }}
+            {{ delete_user(user.nickname) }}
           </div>
         </div>
       {% endfor %}

@@ -1,8 +1,10 @@
 """app/__init__.py: Initialize session objects."""
 
+import os
 from flask import Flask
 from flask_moment import Moment
 from flask_restful import Resource, Api
+from flask_basicauth import BasicAuth
 from flask_pagedown import PageDown
 from flask_sqlalchemy import SQLAlchemy
 from flask_admin import Admin
@@ -17,7 +19,9 @@ pagedown = PageDown()
 # Flask-restful api interface.
 api = Api()
 # Database visualizer.
-admin = Admin(name='Flask Interactive', template_mode='bootstrap3')
+admin = Admin(name=os.getenv('FLASK_CONFIG', 'Default').title(), template_mode='bootstrap3')
+# Basic authentication (mainly for using flask-admin).
+basic_auth = BasicAuth()
 
 
 def create_app(config_name):
@@ -38,6 +42,7 @@ def create_app(config_name):
     app = Flask(__name__)
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
+    basic_auth.init_app(app)
 
     # Initialize our database.
     db.init_app(app)

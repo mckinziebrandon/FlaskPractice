@@ -12,6 +12,7 @@ import bleach
 from app import db
 from flask import session, url_for, request, g
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import validates
 from markdown import markdown
 
 
@@ -45,6 +46,13 @@ class User(db.Model):
     # - lazy='dynamic': "Instead of loading the items, return another query
     #                    object which we can refine before loading items.
     posts = db.relationship('Post', backref='author', lazy='dynamic')
+
+    @validates('nickname')
+    def convert_upper(self, key, value):
+        if not isinstance(value, str):
+            raise ValueError('convert_upper received {} as nickname'.format(
+                value))
+        return value.capitalize()
 
     def __repr__(self):
         return '<User {0} with {1} posts>'.format(

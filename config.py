@@ -1,11 +1,12 @@
 import os
+from flask_basicauth import BasicAuth
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 class Config:
 
     DEFAULT_THEME = 'lumen'
-
+    # Boolean: True if you == Brandon McKinze; False otherwise :)
     FLASK_PRACTICE_ADMIN = os.environ.get('FLASK_PRACTICE_ADMIN')
     # Activates the cross-site request forgery prevention.
     WTF_CSRF_ENABLED = True
@@ -18,6 +19,10 @@ class Config:
     SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
     # Commit the database when app closes.
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
+
+    # Username/password for flask admin access.
+    BASIC_AUTH_USERNAME = os.environ.get('BASIC_AUTH_USERNAME')
+    BASIC_AUTH_PASSWORD = os.environ.get('BASIC_AUTH_PASSWORD')
 
     @staticmethod
     def init_app(app):

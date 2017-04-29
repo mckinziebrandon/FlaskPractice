@@ -16,3 +16,4 @@ Flask-RESTful==0.3.5
 Flask-Restless==0.17.0
 marshmallow==2.13.5
 Flask-Admin==1.5.0
+Flask-BasicAuth==0.2.0

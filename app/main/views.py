@@ -25,6 +25,10 @@ Misc Notes:
             - protocol is client/server, stateless, layered, and supports caching.
 """
 
+
+from flask import make_response
+from werkzeug.exceptions import HTTPException
+
 try:
     # Python3
     from http.client import TEMPORARY_REDIRECT
@@ -35,13 +39,14 @@ except ImportError:
 import json
 from datetime import datetime
 from flask_restful import Resource, fields, marshal_with
+import flask_basicauth
 from marshmallow import Schema, fields, post_load, pprint
 from flask.views import View
 from flask import session, url_for, request, current_app, render_template, \
         flash, redirect
-from flask_admin.contrib.sqla import ModelView
+from flask_admin.contrib import sqla
 
-from app import db, api, admin
+from app import db, api, admin, basic_auth
 from app.main import main
 from app.main.forms import BasicForm, UserForm
 from app.models import User, Post
@@ -55,7 +60,7 @@ def inject_theme():
 
 @main.route('/new_theme', methods=['POST'])
 def new_theme():
-    session['theme'] = request.form['new_theme'].lower()
+    session['theme'] = request.form.get('new_theme', 'lumen').lower()
     return redirect(request.referrer)
 
 
@@ -98,7 +103,7 @@ class UserListAPI(Resource):
 
     def post(self):
         """Create a new user, add to our list of users."""
-        nickname = (request.values.get('nickname') or 'Anon').capitalize()
+        nickname = (request.values.get('nickname', 'Anon')).capitalize()
         user = User.query.filter_by(nickname=nickname).first()
         if user is None:
             user = User(nickname=nickname)
@@ -136,7 +141,7 @@ class PostListAPI(Resource):
 
     def post(self, return_all=False):
         # Associate user and their post.
-        nickname = (request.values.get('nickname') or 'Anon').capitalize()
+        nickname = (request.values.get('nickname', 'Anon')).capitalize()
         user_post = request.values.get('post')
         post_data = self._get_data(nickname, user_post)
         post = Post(**post_data)
@@ -181,8 +186,8 @@ class RenderTemplate(View):
 
     def __init__(self, **kwargs):
         if session.get('theme') is None:
-            session['theme'] = current_app.config['DEFAULT_THEME']
-        self.template_name = kwargs['template_name']
+            session['theme'] = current_app.config.get('DEFAULT_THEME', 'lumen')
+        self.template_name = kwargs.get('template_name', '404.html')
 
     def dispatch_request(self):
         return render_template(
@@ -204,9 +209,8 @@ def add_reference(prefix):
     endpoint = prefix + '_reference'
     url = '/reference/' + endpoint
     template_name = url[1:] + '.html'
-    main.add_url_rule(
-        url,
-        view_func=RenderTemplate.as_view(endpoint, template_name=template_name))
+    main.add_url_rule(url, view_func=RenderTemplate.as_view(
+        endpoint, template_name=template_name))
 
 
 # -------------------------------------------------------
@@ -237,6 +241,29 @@ add_reference('javascript')
 add_reference('canvas')
 add_reference('flask')
 add_reference('bootstrap')
+
+
+# -------------------------------------------------------
+# ADMIN: Authentication for the admin (me) on /admin.
+# -------------------------------------------------------
+
+
+class AuthException(HTTPException):
+    def __init__(self, message):
+        super().__init__(message, make_response(
+            "You could not be authenticated. Please refresh the page.", 401,
+            {'WWW-Authenticate': 'Basic realm="Login Required"'}))
+
+
+class ModelView(sqla.ModelView):
+    def is_accessible(self):
+        if not basic_auth.authenticate():
+            raise AuthException('Not authenticated.')
+        else:
+            return True
+
+    def inaccessible_callback(self, name, **kwargs):
+        return redirect(basic_auth.challenge())
 
 admin.add_view(ModelView(User, db.session))
 admin.add_view(ModelView(Post, db.session))
