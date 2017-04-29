@@ -92,16 +92,19 @@ $(document).ready(function() {
     let userListRequest = new UserListRequest();
     let userPostRequest = new UserPostRequest();
 
-    /** Handle DELETE requests. */
+    /* Handle DELETE requests. */
+
+    // Delete a user upon click.
     $('.delete-user .btn').on('click', function(e) {
         userRequest.deleteUser($(this).attr('nickname'));
     });
 
+    // Delete a post of a given user upon click.
     $('.delete-post .btn').on('click', function(e) {
         userPostRequest.deleteUserPost($(this).attr('post-id'));
     });
 
-    /** Handle POST requests associated with forms.
+    /** Handle POST requests associated with UserForm.
       * 
       * - Info: UserForm has two fields:
       *   - nickname: string;

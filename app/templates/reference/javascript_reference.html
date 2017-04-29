@@ -11,13 +11,6 @@
     th     { text-align: left; }
   </style>
 
-  <!-- Script for beautification. -->
-  <script src="{{ url_for('static', filename='js/note_taker.js') }}"></script>
-  <!-- muh table -->
-  <script src="{{ url_for('static', filename='js/exercises/build_table.js') }}"></script>
-  <!-- muh censoring -->
-  <script src="{{ url_for('static', filename='js/exercises/censored_keyboard.js') }}"></script>
-
 {% endblock head %}
 
 
@@ -335,3 +328,16 @@
 
 
 {% endblock page_content %}
+
+
+{% block scripts %}
+
+  {{ super() }}
+  <!-- Script for beautification. -->
+  <script src="{{ url_for('static', filename='js/note_taker.js') }}"></script>
+  <!-- muh table -->
+  <script src="{{ url_for('static', filename='js/exercises/build_table.js') }}"></script>
+  <!-- muh censoring -->
+  <script src="{{ url_for('static', filename='js/exercises/censored_keyboard.js') }}"></script>
+
+{% endblock scripts %}

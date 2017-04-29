@@ -10,26 +10,6 @@
   <link rel="stylesheet" type="text/css"
         href="{{ url_for('static', filename='css/style_additions.css') }}">
 
-  <!-- Recommended by flask docs. -->
-  <script>
-      var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }}
-  </script>
-
-  <!-- Load the moment.js file (which depends on jQuery). -->
-  {{ moment.include_moment() }}
-
-  <!-- Load the Flask-PageDown template macro from CDN -->
-  {{ pagedown.include_pagedown() }}
-
-  <!-- REST/request handling -->
-  <script src="{{ url_for('static', filename='built/requests.js') }}"></script>
-
-  <!-- For the theme selector/api calls. -->
-  <script src="{{ url_for('static', filename='js/bootswatch.js') }}"></script>
-
-  <!-- Make stuff look pretty. -->
-  <script src="{{ url_for('static', filename='js/bootstrapify.js') }}"></script>
-
 
 {% endblock head %}
 
@@ -98,15 +78,37 @@
 
 <!-- Declare a block with name 'content' for derived templates. -->
 {% block content %}
-
   <!-- Allow for message handling/bookkeeping first. -->
   {{ super() }}
-
   <!-- Inject derived pages' content inside the following container. -->
   <div class="container">
     {% block page_content %}{% endblock page_content %}
   </div>
 {%  endblock content %}
 
+
+{% block scripts %}
+{{ super() }}
+
+  <!-- Recommended by flask docs. -->
+  <script>
+      var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }}
+  </script>
+
+  <!-- Load the moment.js file (which depends on jQuery). -->
+  {{ moment.include_moment() }}
+
+  <!-- Load the Flask-PageDown template macro from CDN -->
+  {{ pagedown.include_pagedown() }}
+
+  <!-- REST/request handling -->
+  <script src="{{ url_for('static', filename='built/requests.js') }}"></script>
+
+  <!-- For the theme selector/api calls. -->
+  <script src="{{ url_for('static', filename='js/bootswatch.js') }}"></script>
+
+  <!-- Make stuff look pretty. -->
+  <script src="{{ url_for('static', filename='js/bootstrapify.js') }}"></script>
+{% endblock scripts %}
 
 

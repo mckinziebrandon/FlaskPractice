@@ -1,12 +1,6 @@
 {% extends "base.html" %}
 {% set active_page = "flask_reference" %}
 
-{% block head %}
-  {{ super() }}
-  <!-- Script for beautification. -->
-  <script src="{{ url_for('static', filename='js/note_taker.js') }}"></script>
-{% endblock head %}
-
 {% block page_content %}
 
   <div class="jumbotron">
@@ -144,3 +138,10 @@
 
   </div>
 {% endblock page_content %}
+
+
+{% block scripts %}
+  {{ super() }}
+<!-- Script for beautification. -->
+<script src="{{ url_for('static', filename='js/note_taker.js') }}"></script>
+{% endblock scripts %}

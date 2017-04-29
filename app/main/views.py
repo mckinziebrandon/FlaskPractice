@@ -39,8 +39,9 @@ from marshmallow import Schema, fields, post_load, pprint
 from flask.views import View
 from flask import session, url_for, request, current_app, render_template, \
         flash, redirect
+from flask_admin.contrib.sqla import ModelView
 
-from app import db, api
+from app import db, api, admin
 from app.main import main
 from app.main.forms import BasicForm, UserForm
 from app.models import User, Post
@@ -236,4 +237,7 @@ add_reference('javascript')
 add_reference('canvas')
 add_reference('flask')
 add_reference('bootstrap')
+
+admin.add_view(ModelView(User, db.session))
+admin.add_view(ModelView(Post, db.session))
 

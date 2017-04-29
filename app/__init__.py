@@ -5,6 +5,7 @@ from flask_moment import Moment
 from flask_restful import Resource, Api
 from flask_pagedown import PageDown
 from flask_sqlalchemy import SQLAlchemy
+from flask_admin import Admin
 from config import config
 
 # Initialize our database.
@@ -15,6 +16,8 @@ moment = Moment()
 pagedown = PageDown()
 # Flask-restful api interface.
 api = Api()
+# Database visualizer.
+admin = Admin(name='Flask Interactive', template_mode='bootstrap3')
 
 
 def create_app(config_name):
@@ -42,6 +45,8 @@ def create_app(config_name):
     moment.init_app(app)
     # Client-sdie Markdown-to-HTML converter implemented in JS.
     pagedown.init_app(app)
+    #
+    admin.init_app(app)
 
     api.init_app(app)
     app.register_blueprint(main_blueprint)
