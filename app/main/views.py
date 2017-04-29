@@ -50,6 +50,18 @@ from app.main import main
 from app.main.forms import BasicForm, UserForm
 from app.models import User, Post
 
+
+@main.before_app_first_request
+def inject_theme():
+    session['theme'] = current_app.config['DEFAULT_THEME']
+
+@main.route('/new_theme', methods=['POST'])
+def new_theme():
+    """bootswatch.js issues POST requests here when updating the site theme."""
+    session['theme'] = request.form.get('new_theme', 'lumen').lower()
+    return redirect(request.referrer)
+
+
 class UserSchema(Schema):
     """UserSchema"""
     # id = fields.Integer()
@@ -205,18 +217,6 @@ def add_reference(prefix):
     template_name = url[1:] + '.html'
     main.add_url_rule(url, view_func=RenderTemplate.as_view(
         endpoint, template_name=template_name))
-
-
-@main.before_app_first_request
-def inject_theme():
-    session['theme'] = current_app.config['DEFAULT_THEME']
-
-
-@main.route('/new_theme', methods=['POST'])
-def new_theme():
-    """bootswatch.js issues POST requests here when updating the site theme."""
-    session['theme'] = request.form.get('new_theme', 'lumen').lower()
-    return redirect(request.referrer)
 
 
 @main.route('/render_post')

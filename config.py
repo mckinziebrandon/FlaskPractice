@@ -22,8 +22,8 @@ class Config:
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
 
     # Username/password for flask admin access.
-    BASIC_AUTH_USERNAME = os.environ.get('BASIC_AUTH_USERNAME')
-    BASIC_AUTH_PASSWORD = os.environ.get('BASIC_AUTH_PASSWORD')
+    BASIC_AUTH_USERNAME = os.getenv('BASIC_AUTH_USERNAME', 'admin')
+    BASIC_AUTH_PASSWORD = os.getenv('BASIC_AUTH_PASSWORD', 'password')
 
     @staticmethod
     def init_app(app):
