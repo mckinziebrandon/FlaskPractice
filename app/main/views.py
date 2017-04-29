@@ -284,6 +284,6 @@ class ModelView(sqla.ModelView):
     def inaccessible_callback(self, name, **kwargs):
         return redirect(basic_auth.challenge())
 
-admin.add_view(ModelView(User, db.session))
-admin.add_view(ModelView(Post, db.session))
+# admin.add_view(ModelView(User, db.session))
+# admin.add_view(ModelView(Post, db.session))
 

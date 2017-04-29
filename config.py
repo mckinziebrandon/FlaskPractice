@@ -1,5 +1,4 @@
 import os
-from flask_basicauth import BasicAuth
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 

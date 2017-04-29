@@ -45,20 +45,8 @@ def test():
 @manager.command
 def deploy():
     from flask_migrate import upgrade
-    maybe_create_tables(db)
     # Migrate db to latest revision.
-    # upgrade()
-
-
-def maybe_create_tables(database):
-    """ Create tables if they don't exist. """
-    with app.app_context():
-        try:
-            User.query.all()
-            Post.query.all()
-        except sqlalchemy.exc.OperationalError:
-            db.create_all()
-
+    upgrade()
 
 if __name__ == '__main__':
     manager.run()
