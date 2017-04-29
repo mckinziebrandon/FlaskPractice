@@ -7,7 +7,7 @@ class Config:
 
     DEFAULT_THEME = 'lumen'
     # Boolean: True if you == Brandon McKinze; False otherwise :)
-    FLASK_PRACTICE_ADMIN = os.getenv('FLASK_PRACTICE_ADMIN', None)
+    FLASK_PRACTICE_ADMIN = os.getenv('FLASK_PRACTICE_ADMIN', 'false')
     # Activates the cross-site request forgery prevention.
     WTF_CSRF_ENABLED = True
     # Used to create cryptographic token used to valide a form.
