@@ -53,7 +53,6 @@ from app.models import User, Post
 
 @main.before_app_first_request
 def inject_theme():
-    #db.create_all()
     session['theme'] = current_app.config['DEFAULT_THEME']
 
 
@@ -286,6 +285,6 @@ class ModelView(sqla.ModelView):
     def inaccessible_callback(self, name, **kwargs):
         return redirect(basic_auth.challenge())
 
-# admin.add_view(ModelView(User, db.session))
-# admin.add_view(ModelView(Post, db.session))
+admin.add_view(ModelView(User, db.session))
+admin.add_view(ModelView(Post, db.session))
 
