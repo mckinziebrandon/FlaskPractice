@@ -53,13 +53,28 @@ from app.models import User, Post
 
 @main.before_app_first_request
 def inject_theme():
+    db.create_all()
     session['theme'] = current_app.config['DEFAULT_THEME']
+
 
 @main.route('/new_theme', methods=['POST'])
 def new_theme():
     """bootswatch.js issues POST requests here when updating the site theme."""
     session['theme'] = request.form.get('new_theme', 'lumen').lower()
     return redirect(request.referrer)
+
+
+@main.route('/render_post')
+def render_post():
+    post = Post.query.get_or_404(request.values.get('post_id'))
+    return render_template('macros/request_templates.html',
+                           post=post)
+
+
+@main.route('/render_user')
+def render_user():
+    user = User.query.filter_by(nickname=request.values.get('nickname')).first()
+    return render_template('macros/request_templates.html', user=user)
 
 
 class UserSchema(Schema):
@@ -217,19 +232,6 @@ def add_reference(prefix):
     template_name = url[1:] + '.html'
     main.add_url_rule(url, view_func=RenderTemplate.as_view(
         endpoint, template_name=template_name))
-
-
-@main.route('/render_post')
-def render_post():
-    post = Post.query.get_or_404(request.values.get('post_id'))
-    return render_template('macros/request_templates.html',
-                           post=post)
-
-
-@main.route('/render_user')
-def render_user():
-    user = User.query.filter_by(nickname=request.values.get('nickname')).first()
-    return render_template('macros/request_templates.html', user=user)
 
 
 # -------------------------------------------------------
