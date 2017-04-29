@@ -47,7 +47,7 @@ def deploy():
     from flask_migrate import upgrade
     maybe_create_tables(db)
     # Migrate db to latest revision.
-    upgrade()
+    # upgrade()
 
 
 def maybe_create_tables(database):
@@ -61,5 +61,4 @@ def maybe_create_tables(database):
 
 
 if __name__ == '__main__':
-    maybe_create_tables(db)
     manager.run()
