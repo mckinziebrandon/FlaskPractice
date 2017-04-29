@@ -53,7 +53,7 @@ from app.models import User, Post
 
 @main.before_app_first_request
 def inject_theme():
-    db.create_all()
+    #db.create_all()
     session['theme'] = current_app.config['DEFAULT_THEME']
 
 
