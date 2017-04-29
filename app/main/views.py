@@ -124,6 +124,7 @@ class UserAPI(Resource):
         user = User.query.filter_by(nickname=nickname).first_or_404()
         return UserSchema().dump(user)
 
+    @basic_auth.required
     def delete(self, nickname):
         """Delete user from db."""
         nickname = nickname.capitalize()
@@ -170,6 +171,7 @@ class PostAPI(Resource):
         post = Post.query.get_or_404(post_id)
         return PostSchema().dump(post)
 
+    @basic_auth.required
     def delete(self, post_id):
         post = Post.query.get_or_404(post_id)
         db.session.delete(post)
