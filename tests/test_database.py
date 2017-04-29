@@ -1,13 +1,15 @@
 """Unit tests for the application."""
 
-import unittest
 from flask import current_app
 from flask import request
 from app import create_app, db
 from app.models import User, Post
 from app.main.views import UserSchema, PostSchema
 
-from requests import get, post
+import sys
+import unittest
+import sqlite3
+import sqlalchemy
 
 
 class TestDatabase(unittest.TestCase):
@@ -27,5 +29,17 @@ class TestDatabase(unittest.TestCase):
 
     def test_app_exists(self):
         self.assertFalse(current_app is None)
+
+    def test_maybe_create(self):
+        """Ensure proper errors raised on bad db ops."""
+
+        db.drop_all()
+        self.assertRaises(sqlalchemy.exc.OperationalError, User.query.all)
+        self.assertRaises(sqlalchemy.exc.OperationalError, Post.query.all)
+        db.create_all()
+
+
+
+
 
 

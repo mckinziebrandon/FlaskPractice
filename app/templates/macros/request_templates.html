@@ -1,0 +1,57 @@
+{% from "macros/requests.html" import delete_post, delete_user %}
+
+{% if post %}
+  <!-- CLASS: 'post-row-<post.id> -->
+  <div class="row post-row-{{ post.id }}">
+    <div class="col-sm-10">
+      <!-- Post body -->
+      <li class="justify-content-between list-group-item">
+        <!-- Timestamp on the right. -->
+        <span id="{{ post.id }}-badge" class="badge badge-default badge-pill">
+      {{ moment(post.timestamp).fromNow(refresh=True) }}
+      </span>
+        {% if post.body_html %}
+          <!-- safe: tell Jinja2 not to escape the HTML elements. -->
+          {{ post.body_html | safe }}
+        {% else %}
+          {{ post.body }}
+        {% endif %}
+      </li>
+    </div>
+    <!-- Delete a single post for this user. -->
+    <div class="col-sm-2">{{ delete_post(post.id) }}</div>
+    {{ moment.include_moment() }}
+  </div>
+{% endif %}
+
+{% if user %}
+  <div class="row" id="user-row-{{ user.nickname }}">
+    <div class="col-sm-10">
+      <div class="panel panel-primary">
+
+        <!-- PANEL HEADING (Blue bar with name on it). -->
+        <div class="panel-heading clearfix" data-toggle="collapse"
+             href="#{{ user.nickname }}-posts" aria-expanded="false">
+          {{ user.nickname }}
+        </div>
+
+        <!-- ID: '<user.nickname>-posts -->
+        <div id="{{ user.nickname }}-posts" class="panel-body collapse">
+          <ul class="list-group custom">
+            <!-- inject post here -->
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete (btn) the user (and thus all their posts. -->
+    <div class="col-sm-2">
+      {{ delete_user(user.nickname) }}
+    </div>
+
+  </div>
+{% endif %}
+
+
+
+

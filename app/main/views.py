@@ -1,4 +1,4 @@
-"""app/main/views.py: the handlers that respond to requests from browsers/other clients.
+"""app/main/views.py: routing and REST api. Notes:
     - In Flask handlers are written as Python functions.
     - Each view function is mapped to one or more request URLs.
 
@@ -17,12 +17,12 @@ Misc Notes:
         - representational state transfer.
         - a style of architecture based on a set of principles that describe how
           networked resources are defined and addressed.
-        - operates on resoure representations. typically not data objects, but complex
-          data abstractions.
+        - operates on resoure representations. typically not data objects, 
+          but complex data abstractions.
         - an app/architecture considered restful:
             - state and functionality are divided into distributed resources.
-            - every resource is uniquely addressable using a minimal set of commands.
-            - protocol is client/server, stateless, layered, and supports caching.
+            - every resource is uniquely addressable with minimal set of cmds.
+            - protocol is client/server, stateless, layered, supports caching.
 """
 
 
@@ -36,11 +36,10 @@ except ImportError:
     # Python2
     from httplib import TEMPORARY_REDIRECT
 
-import json
 from datetime import datetime
-from flask_restful import Resource, fields, marshal_with
+from flask_restful import Resource, fields
 import flask_basicauth
-from marshmallow import Schema, fields, post_load, pprint
+from marshmallow import Schema, fields, post_load
 from flask.views import View
 from flask import session, url_for, request, current_app, render_template, \
         flash, redirect
@@ -50,19 +49,6 @@ from app import db, api, admin, basic_auth
 from app.main import main
 from app.main.forms import BasicForm, UserForm
 from app.models import User, Post
-
-
-@main.before_app_first_request
-def inject_theme():
-    db.create_all()
-    session['theme'] = current_app.config['DEFAULT_THEME']
-
-
-@main.route('/new_theme', methods=['POST'])
-def new_theme():
-    session['theme'] = request.form.get('new_theme', 'lumen').lower()
-    return redirect(request.referrer)
-
 
 class UserSchema(Schema):
     """UserSchema"""
@@ -79,12 +65,12 @@ class UserSchema(Schema):
 
 class PostSchema(Schema):
     """PostSchema"""
-    # id = fields.Integer()
+    id = fields.Integer()
     post = fields.String()
     timestamp = fields.DateTime()
     author = fields.Nested(UserSchema, only=['nickname'])
     class Meta:
-        fields = ('body', 'timestamp', 'author')
+        fields = ('id', 'body', 'timestamp', 'author')
 
     @post_load
     def make_post(self, data):
@@ -101,16 +87,21 @@ class UserListAPI(Resource):
         users = User.query.all()
         return UserSchema(many=True).dump(users)
 
-    def post(self):
+    def post(self, return_all=False):
         """Create a new user, add to our list of users."""
         nickname = (request.values.get('nickname', 'Anon')).capitalize()
+        session['nickname'] = nickname
         user = User.query.filter_by(nickname=nickname).first()
         if user is None:
             user = User(nickname=nickname)
             db.session.add(user)
             db.session.commit()
         # Return the updated list of all users.
-        return UserSchema(many=True).dump(User.query.all())
+        schema = UserSchema(many=return_all)
+        if return_all:
+            return schema.dump(User.query.all())
+        else:
+            return schema.dump(user)
 
 
 class UserAPI(Resource):
@@ -163,8 +154,8 @@ class PostListAPI(Resource):
 
 
 class PostAPI(Resource):
-    """API for adding/creating/deleting posts (as in blog posts) and their stored info
-    from the SQLAlchemy database. [NEW]
+    """API for adding/creating/deleting posts (as in blog posts) and their 
+    stored info from the SQLAlchemy database. [NEW]
     """
 
     def get(self, post_id):
@@ -181,8 +172,9 @@ class PostAPI(Resource):
 
 class RenderTemplate(View):
     """Notes:
-     - Whenever the request is dispatched, a new instance of UserView is created and
-      the dispatch_request() method is called with the params from baseURL rule.
+     -  Whenever the request is dispatched, a new instance of UserView is 
+        created and the dispatch_request() method is called with the params 
+        from baseURL rule.
       - The class itself is instantiated with the params passed as_view().
     """
 
@@ -213,6 +205,31 @@ def add_reference(prefix):
     template_name = url[1:] + '.html'
     main.add_url_rule(url, view_func=RenderTemplate.as_view(
         endpoint, template_name=template_name))
+
+
+@main.before_app_first_request
+def inject_theme():
+    session['theme'] = current_app.config['DEFAULT_THEME']
+
+
+@main.route('/new_theme', methods=['POST'])
+def new_theme():
+    """bootswatch.js issues POST requests here when updating the site theme."""
+    session['theme'] = request.form.get('new_theme', 'lumen').lower()
+    return redirect(request.referrer)
+
+
+@main.route('/render_post')
+def render_post():
+    post = Post.query.get_or_404(request.values.get('post_id'))
+    return render_template('macros/request_templates.html',
+                           post=post)
+
+
+@main.route('/render_user')
+def render_user():
+    user = User.query.filter_by(nickname=request.values.get('nickname')).first()
+    return render_template('macros/request_templates.html', user=user)
 
 
 # -------------------------------------------------------

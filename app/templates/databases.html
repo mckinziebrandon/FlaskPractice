@@ -10,14 +10,14 @@
   <div class="jumbotron">
     <h1>Databases</h1>
     <p>
-    Interact with a database (<span class="text-primary">Flask-SQLAlchemy</span>)
-    by issuing GET/POST requests (<span class="text-primary">Flask-RESTful</span>) through
-    AJAX calls (<span class="text-primary">TypeScript/JQuery</span>).
+      Interact with a database (<span class="text-primary">Flask-SQLAlchemy</span>)
+      by issuing GET/POST requests (<span class="text-primary">Flask-RESTful</span>) through
+      AJAX calls (<span class="text-primary">TypeScript/JQuery</span>).
     </p>
   </div>
 
   <div class="row">
-    <div class="col-sm-12 user-post-list">
+    <div class="col-sm-12" id="user-post-list">
 
       <h2>Users</h2>
       <p>Below is a list of all users stored in the database. Click a user's name
@@ -26,51 +26,60 @@
       <!-- Loop over all users -->
       {% for user in users if user.posts.count() %}
 
-        <div class="row user-row-{{ user.nickname }}">
+        <div class="row" id="user-row-{{ user.nickname }}">
           <div class="col-sm-10">
             <div class="panel panel-primary">
 
-              <!-- Panel headings are names of users. -->
+              <!-- PANEL HEADING (Blue bar with name on it). -->
               <div class="panel-heading clearfix" data-toggle="collapse"
                    href="#{{ user.nickname }}-posts" aria-expanded="false">
                 {{ user.nickname }}
               </div>
 
-              <!-- Post list for the given user. -->
+              <!-- ID: '<user.nickname>-posts -->
               <div id="{{ user.nickname }}-posts" class="panel-body collapse">
                 <ul class="custom">
+
                   {%  for post in user.posts %}
+
+                    <!-- CLASS: 'post-row-<post.id> -->
                     <div class="row post-row-{{ post.id }}">
                       <div class="col-sm-10">
+
                         <!-- Post body -->
                         <li class="justify-content-between">
+
                           <!-- Timestamp on the right. -->
                           <span class="badge badge-default badge-pill">
                             {{ moment(post.timestamp).fromNow(refresh=True) }}
                           </span>
+
                           {% if post.body_html %}
                             <!-- safe: tell Jinja2 not to escape the HTML elements. -->
                             {{ post.body_html | safe }}
                           {% else %}
                             {{ post.body }}
                           {% endif %}
+
                       </div>
+
                       <!-- Delete a single post for this user. -->
-                      <div class="col-sm-2">
-                        {{ delete_post(post.id) }}
-                      </div>
+                      <div class="col-sm-2">{{ delete_post(post.id) }}</div>
+
                     </div>
-                  {%  endfor %}
-                </ul>
-              </div>
+                  {%  endfor %}  <!-- End loop over <user>'s posts. -->
+
+                </ul>  <!-- End <ul/> post list for <user> -->
+              </div>  <!-- End <div/> post list for <user> -->
             </div>
           </div>
-          <!-- Delete the user (and thus all their posts. -->
-          <div class="col-sm-2">
-            {{ delete_user(user.nickname) }}
-          </div>
-        </div>
-      {% endfor %}
+
+          <!-- Delete (btn) the user (and thus all their posts. -->
+          <div class="col-sm-2">{{ delete_user(user.nickname) }}</div>
+
+        </div>  <!-- End user-row-<user.nickname> -->
+
+      {% endfor %}   <!-- End loop over users -->
     </div>
   </div>
 
@@ -78,11 +87,10 @@
   <div class="row">
     <div class="col-sm-10">
       <h2>Add to Database</h2>
-        {{ post_request(forms['user_form']) }}
+      {{ post_request(forms['user_form']) }}
     </div>
   </div>  <!-- End: Add to Database (row) -->
 
-  <!--
   <hr>
   <br>
   <div class="row">
@@ -92,14 +100,11 @@
           <h3>Your Request Response</h3>
         </div>
         <div id="request-display" class="panel-body">
-  -->
-          <!-- Inject recent request info here. -->
-  <!--
+  <!-- Inject recent request info here. -->
         </div>
       </div>
     </div>
   </div>
-  -->
 
 {%  endblock page_content %}
 

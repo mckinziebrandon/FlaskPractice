@@ -19,20 +19,22 @@ pagedown = PageDown()
 # Flask-restful api interface.
 api = Api()
 # Database visualizer.
-admin = Admin(name=os.getenv('FLASK_CONFIG', 'Default').title(), template_mode='bootstrap3')
+admin = Admin(
+    name=os.getenv('FLASK_CONFIG', 'Default').title(),
+    template_mode='bootstrap3')
 # Basic authentication (mainly for using flask-admin).
 basic_auth = BasicAuth()
 
 
 def create_app(config_name):
-    """The application factory, which allows the app to be created at runtime. This is
-    in contrast to before, where it was created in the global scope (i.e. no way to 
-    apply configuration changes dynamically).
+    """The application factory, which allows the app to be created at runtime. 
+    This is in contrast to before, where it was created in the global scope 
+    (i.e. no way to apply configuration changes dynamically).
     
     Returns:
-        app: the created application instance. Note that the app is still incomplete,
-            as it is missing routes and custom error page handlers, which will be
-            handled by blueprints.
+        app: the created application instance. Note that the app is still 
+        missing routes and custom error page handlers, which will be handled 
+        by blueprints.
     """
 
     from .main import main as main_blueprint

@@ -32,7 +32,7 @@
     <div class="form-group">
       <!-- Labeled input(s) -->
       {{ render_label(form.nickname.label) }}
-      {{ form.nickname(class="form-control", autocomplete="off") }}
+      {{ form.nickname(class="form-control", autocomplete="off", value=session.get('nickname', '')) }}
     </div>
 
     <!-- Blog Post -->

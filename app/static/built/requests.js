@@ -8,7 +8,7 @@ class UserRequest {
                 type: 'DELETE',
                 success: function () {
                     // Remove user from DOM.
-                    $(`.user-row-${nickname}`).remove();
+                    $(`#user-row-${nickname}`).remove();
                 }
             });
         };
@@ -49,84 +49,103 @@ class UserListRequest {
                 url: self.url,
                 data: { 'nickname': nickname },
                 success: function (response) {
+                    self.renderTemplate(nickname);
                     self.display(response);
                 }
             });
         };
         /** Insert data response into DOM. */
-        this.display = (userPosts) => {
+        this.display = (response) => {
             let requestDisplay = $('#request-display');
-            requestDisplay.html(` ${userPosts}`);
-            if (userPosts.constructor == Array) {
-                userPosts.forEach(function (userPost) {
+            requestDisplay.html(` ${response}`);
+            if (response.constructor == Array) {
+                response.forEach(function (userPost) {
                     let body = userPost.body;
                     requestDisplay.append(`<p>${body}</p>`);
                 });
             }
         };
+        this.renderTemplate = (nickname) => {
+            if (!$(`#user-row-${nickname}`).length) {
+                $.get($SCRIPT_ROOT + '/render_user', {
+                    'nickname': nickname
+                }, function (response) {
+                    // Insert the new User HTML into the DOM and render.
+                    $('#user-post-list').append(response);
+                });
+            }
+            $(`#${nickname}-posts`).collapse('show');
+        };
         this.url = $SCRIPT_ROOT + '/user';
+    }
+}
+class PostListRequest {
+    constructor() {
+        this.get = () => {
+            $.get(this.url, function (userPosts) {
+                console.log(`users (get): ${userPosts}`);
+            });
+        };
+        this.post = (nickname, userPost) => {
+            let self = this;
+            $.post(self.url, {
+                'nickname': nickname,
+                'post': userPost
+            }, function (response) {
+                let userName = response.author.nickname;
+                let timestamp = response.timestamp;
+                self.renderTemplate(userName, response.id);
+            });
+        };
+        this.renderTemplate = (nickname, id) => {
+            // Issue a GET request to backend for template snippet.
+            $.get($SCRIPT_ROOT + '/render_post', { 'post_id': id }, function (response) {
+                $(`#${nickname}-posts > ul`).append(response);
+                $(`#${nickname}-posts`).collapse('show');
+            });
+        };
+        this.url = $SCRIPT_ROOT + '/user_post';
     }
 }
 $(document).ready(function () {
     let userRequest = new UserRequest();
     let userListRequest = new UserListRequest();
     let userPostRequest = new UserPostRequest();
-    /** Handle DELETE requests. */
+    let postListRequest = new PostListRequest();
+    /* Handle DELETE requests. */
+    // Delete a user upon click.
     $('.delete-user .btn').on('click', function (e) {
         userRequest.deleteUser($(this).attr('nickname'));
     });
+    // Delete a post of a given user upon click.
     $('.delete-post .btn').on('click', function (e) {
         userPostRequest.deleteUserPost($(this).attr('post-id'));
     });
-    /** Handle POST requests associated with forms.
-      *
-      * - Info: UserForm has two fields:
-      *   - nickname: string;
-      *   - post: text (area);
-      *
-      * - Actions: Update database via . . .
-      *   - POST request to UserListAPI.
-      *   - POST request to PostListAPI.
-      */
+    /** Handle POST requests associated with UserForm.
+     *
+     * - Info: UserForm has two fields:
+     *   - nickname: string;
+     *   - post: text (area);
+     *
+     * - Actions: Update database via . . .
+     *   - POST request to UserListAPI.
+     *   - POST request to PostListAPI.
+     */
     $('.user-form .submit-btn').click(function (e) {
         // Extract values from user form(s).
         let nickname = $(':input[name="nickname"]');
         let userPost = $(':input[name="post"]');
         // Post for user name.
         userListRequest.post(nickname.val());
-        // Post for userPost.
-        $.post($SCRIPT_ROOT + '/user_post', {
-            'nickname': nickname.val(),
-            'post': userPost.val()
-        }, function (userPost) {
-            // :(
-            location.reload();
-            /* TODO: .....
-            let userName = userPost.author.nickname;
-            let postBody = userPost.body;
-            let timestamp = userPost.timestamp;
-
-            if (!$(`.user-row-${ userName }`).length) {
-                $('.user-post-list').prepend(
-                    `<p>New user ${ userName } registered.</p>`);
-            } else {
-                let ul = $(`.user-row-${ userName } #${ userName }-posts`)
-                    .find('ul');
-                let postRow = $(`<div class='row post-row-${ userPost.id}'></div>`)
-                postRow
-                    .append(`<div class='col-sm-10'></div>`)
-                    .append(`<li class='justify-content-between'></li>`);
-            }
-            */
-        });
+        postListRequest.post(nickname.val(), userPost.val());
         e.preventDefault();
         e.stopPropagation();
     });
     /** Handle POST requests for message-only forms.
-      *
-      * - Info: BasicForm has one field:
-      *   - message: simple <input type=text/>;
-      */
+     *
+     * - Info: BasicForm has one field:
+     *   - message: simple <input type=text/>;
+     */
     $('.basic-form .submit-btn').on('click', function (e) {
         // Display a modal on submission.
         let message = $(':input[name="message"]');
