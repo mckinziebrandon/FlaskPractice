@@ -44,7 +44,6 @@ def create_app(config_name):
     app = Flask(__name__)
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
-    basic_auth.init_app(app)
 
     # Initialize our database.
     db.init_app(app)
@@ -54,6 +53,8 @@ def create_app(config_name):
     pagedown.init_app(app)
     #
     admin.init_app(app)
+
+    basic_auth.init_app(app)
 
     api.init_app(app)
     app.register_blueprint(main_blueprint)
