@@ -20,7 +20,7 @@ pagedown = PageDown()
 api = Api()
 # Database visualizer.
 admin = Admin(
-    name=os.getenv('FLASK_CONFIG', 'Default').title(),
+    name=os.getenv('FLASK_CONFIG', config['default']).title(),
     template_mode='bootstrap3')
 # Basic authentication (mainly for using flask-admin).
 basic_auth = BasicAuth()
