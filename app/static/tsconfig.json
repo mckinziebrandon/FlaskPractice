@@ -1,15 +1,16 @@
 {
   "compilerOptions": {
     "outDir": "./built/",
+    "baseUrl": ".",
     "sourceMap": true,
     "module": "amd",
     "target": "es2015"
   },
   "files": [
-    "./js/require-config.ts",
     "./js/games/snake.ts",
     "./js/games/breakout.ts",
-    "./js/requests.ts"
+    "./js/requests.ts",
+    "./js/secret_page.ts"
   ]
 }
 

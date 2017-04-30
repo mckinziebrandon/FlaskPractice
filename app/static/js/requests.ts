@@ -176,6 +176,8 @@ $(document).ready(function() {
         e.preventDefault();
         e.stopPropagation();
 
+        // Clear post body when done.
+        userPost.val('');
     });
 
     /** Handle POST requests for message-only forms.

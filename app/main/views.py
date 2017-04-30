@@ -288,3 +288,8 @@ class ModelView(sqla.ModelView):
 admin.add_view(ModelView(User, db.session))
 admin.add_view(ModelView(Post, db.session))
 
+
+@main.route('/secret_page')
+def secret_page():
+    """Shhh. It's a secret."""
+    return render_template('secret_page.html')

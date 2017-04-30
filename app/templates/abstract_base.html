@@ -39,6 +39,12 @@ Misc. Notes:
           href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.7.3/css/bootstrap-slider.min.css">
 
 
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+    <!-- Slider JavaScript. -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.7.3/bootstrap-slider.min.js"></script>
+
   {% endblock head %}
 </head>
 
@@ -67,12 +73,6 @@ Misc. Notes:
 
 {% block scripts %}
     <!-- ------------- JavaScript ------------- -->
-
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-
-    <!-- Slider JavaScript. -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.7.3/bootstrap-slider.min.js"></script>
 
     <!-- Core Bootstrap JS (NOT provided by Bootswatch!!). -->
     <script src="{{ url_for('static', filename='js/vendor/bootstrap.min.js') }}"></script>

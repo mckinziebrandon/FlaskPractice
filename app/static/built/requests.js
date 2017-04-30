@@ -140,6 +140,8 @@ $(document).ready(function () {
         postListRequest.post(nickname.val(), userPost.val());
         e.preventDefault();
         e.stopPropagation();
+        // Clear post body when done.
+        userPost.val('');
     });
     /** Handle POST requests for message-only forms.
      *
