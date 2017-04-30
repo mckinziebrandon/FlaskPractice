@@ -76,7 +76,8 @@ $(document).ready(function () {
     }
     /** Helper function for extracting the most common word. */
     let getKeyByValue = (value) => {
-        return Array.from(wordFreq.keys()).filter(key => wordFreq.get(key) === value)[0];
+        return Array.from(wordFreq.keys())
+            .filter(key => wordFreq.get(key) === value)[0];
     };
     /**
      * Redraw the entire database tree when a value is added/changed/removed
@@ -93,7 +94,6 @@ $(document).ready(function () {
         });
         let maxWordCount = Math.max(...wordFreq.values());
         let mostCommonWord = getKeyByValue(maxWordCount);
-        //let mostCommonWord = $.inArray(maxWordCount, Array.from(wordFreq.values()));
         $('#most-common-word').html(`
           <p>Most common word (value):
             "<strong class='text-success'>${mostCommonWord}</strong>"; Count:
