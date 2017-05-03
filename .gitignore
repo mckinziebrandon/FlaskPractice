@@ -9,3 +9,6 @@ db_create.py
 /data_dev.db
 /data_test.db
 /app/main/notes.py
+
+venv
+**/node_modules/*

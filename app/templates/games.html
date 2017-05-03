@@ -3,42 +3,8 @@
 
 {% block head %}
   {{ super() }}
-  <style type="text/css">
-
-
-    hr {
-      border: none;
-      height: 2px;
-      background-color: #5e5e5e;
-    }
-
-    .row {
-      padding-bottom: 1.5em;
-    }
-
-    canvas {
-      border: 2px solid black;
-      border-radius: 5px;
-    }
-
-    .slider-selection {
-      background: #BABABA;
-    }
-
-    #clockdiv > div{
-      padding: 5px;
-      position: absolute;
-      left: -5em;
-      border-radius: 3px;
-      /*background: lightseagreen;
-      display: inline-block;*/
-    }
-
-    .smalltext{
-      padding-top: 5px;
-      font-size: 16px;
-    }
-  </style>
+  <link rel="stylesheet" type="text/css"
+        href="{{ url_for('static', filename='css/games.css') }}">
 {% endblock head %}
 
 {% block page_content %}
@@ -54,8 +20,8 @@
     <h2>Breakout</h2>
 
     <div class="col-xs-12 col-sm-7">
-    <p>Mouse-over to play.</p>
-    <canvas id="breakout-canvas" width="480" height="320"></canvas>
+      <p>Mouse-over to play.</p>
+      <canvas id="breakout-canvas" width="480" height="320"></canvas>
     </div>
 
     <div class="col-xs-12 col-sm-5 pull-right">
@@ -127,14 +93,13 @@
 {% endblock page_content %}
 
 
-  {% block scripts %}
-    {{ super() }}
+{% block scripts %}
+  {{ super() }}
+
   <!-- Allows us to use typescript. -->
-  <script src="{{ url_for('static', filename='externals/require.js') }}"></script>
-  <script src="{{ url_for('static', filename='built/require-config.js') }}"></script>
-  <!-- Script that uses all elements that follow. -->
-  <script>require(["{{ url_for('static', filename='built/games/snake.js') }}"])</script>
-  <script>require(["{{ url_for('static', filename='built/games/breakout.js') }}"])</script>
-  <script></script>
-    {% endblock scripts %}
+  <script src="{{ url_for('static', filename='js/lib/require.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/built/require-config.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/built/games/main.js') }}"></script>
+
+{% endblock scripts %}
 

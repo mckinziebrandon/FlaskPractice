@@ -92,23 +92,21 @@
 
   <!-- Recommended by flask docs. -->
   <script>
-      var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }}
+      var $SCRIPT_ROOT = '{{ request.script_root|tojson|safe }}';
+      var $JS_URL = '{{ url_for('static', filename='js') }}';
   </script>
 
   <!-- Load the moment.js file (which depends on jQuery). -->
   {{ moment.include_moment() }}
-
   <!-- Load the Flask-PageDown template macro from CDN -->
   {{ pagedown.include_pagedown() }}
 
   <!-- REST/request handling -->
-  <script src="{{ url_for('static', filename='built/requests.js') }}"></script>
-
+  <script src="{{ url_for('static', filename='js/built/requests.js') }}"></script>
   <!-- For the theme selector/api calls. -->
-  <script src="{{ url_for('static', filename='js/bootswatch.js') }}"></script>
-
+  <script src="{{ url_for('static', filename='js/util/bootswatch.js') }}"></script>
   <!-- Make stuff look pretty. -->
-  <script src="{{ url_for('static', filename='js/bootstrapify.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/util/bootstrapify.js') }}"></script>
 {% endblock scripts %}
 
 

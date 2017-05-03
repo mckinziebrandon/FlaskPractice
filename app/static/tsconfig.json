@@ -1,16 +1,35 @@
 {
   "compilerOptions": {
-    "outDir": "./built/",
+    "outDir": "./js/built/",
     "baseUrl": ".",
     "sourceMap": true,
     "module": "amd",
+    "allowJs": true,
     "target": "es2015"
   },
+  "typeRoots": [
+    "node_modules/@types"
+  ],
+  "types": [
+    "knockout",
+    "firebase",
+    "jquery"
+  ],
   "files": [
-    "./js/games/snake.ts",
-    "./js/games/breakout.ts",
+    "./js/require-config.ts",
     "./js/requests.ts",
     "./js/secret_page.ts"
+  ],
+  "include": [
+    //"./js/**/*"
+    "./js/games/*"
+  ],
+  "exclude": [
+    "canvas",
+    "exercises",
+    "node_modules",
+    "util",
+    "built"
   ]
 }
 

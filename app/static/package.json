@@ -1,17 +1,11 @@
 {
   "name": "proj",
-  "version": "1.0.0",
-  "description": "",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
+  "author": "Brandon McKinzie",
   "dependencies": {
     "@types/firebase": "^2.4.31",
     "@types/knockout": "^3.4.40",
     "@types/requirejs": "^2.1.29",
-    "firebase": "^3.9.0",
-    "jquery": "^3.2.1"
+    "@types/jquery": "^3.2.1",
+    "firebase": "^3.9.0"
   }
 }

@@ -1,0 +1,32 @@
+hr {
+  border: none;
+  height: 2px;
+  background-color: #5e5e5e;
+}
+
+.row {
+  padding-bottom: 1.5em;
+}
+
+canvas {
+  border: 2px solid black;
+  border-radius: 5px;
+}
+
+.slider-selection {
+  background: #BABABA;
+}
+
+#clockdiv > div{
+  padding: 5px;
+  position: absolute;
+  left: -5em;
+  border-radius: 3px;
+  /*background: lightseagreen;
+  display: inline-block;*/
+}
+
+.smalltext {
+  padding-top: 5px;
+  font-size: 16px;
+}

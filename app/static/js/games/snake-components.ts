@@ -1,4 +1,4 @@
-import { Vector } from './vector';
+import { Vector } from './vector.js';
 
 export class Square {
     id: number;

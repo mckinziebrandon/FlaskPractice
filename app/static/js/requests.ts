@@ -2,14 +2,13 @@
 
 // Global vars.
 // http://stackoverflow.com/questions/13252225
-declare var $SCRIPT_ROOT: string;
 
 class UserRequest {
     baseURL: string;
 
     // Default constructor.
     constructor() {
-        this.baseURL = $SCRIPT_ROOT + '/user';
+        this.baseURL = '/user';
     }
 
     deleteUser = (nickname: string): void => {
@@ -29,7 +28,7 @@ class UserPostRequest {
     baseURL: string;
 
     constructor() {
-        this.baseURL = $SCRIPT_ROOT + '/user_post';
+        this.baseURL = '/user_post';
     }
 
     deleteUserPost = (postID: string): void => {
@@ -48,7 +47,7 @@ class UserListRequest {
     url: string;
 
     constructor() {
-        this.url = $SCRIPT_ROOT + '/user';
+        this.url = '/user';
     }
 
     get = (): void => {
@@ -88,7 +87,7 @@ class UserListRequest {
 
     renderTemplate = (nickname: string): void => {
         if (!$(`#user-row-${ nickname }`).length) {
-            $.get($SCRIPT_ROOT + '/render_user', {
+            $.get('/render_user', {
                 'nickname': nickname
             }, function(response) {
                 // Insert the new User HTML into the DOM and render.
@@ -104,7 +103,7 @@ class PostListRequest {
     url: string;
 
     constructor() {
-        this.url = $SCRIPT_ROOT + '/user_post';
+        this.url = '/user_post';
     }
 
     get = (): void => {
@@ -127,7 +126,7 @@ class PostListRequest {
 
     renderTemplate = (nickname: string, id: any): void => {
         // Issue a GET request to backend for template snippet.
-        $.get($SCRIPT_ROOT + '/render_post', { 'post_id': id }, function(response) {
+        $.get('/render_post', { 'post_id': id }, function(response) {
             $(`#${ nickname }-posts > ul`).append(response);
             $(`#${ nickname }-posts`).collapse('show');
         });
